@@ -299,30 +299,6 @@ BEV-1](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf) to
 the metered TOU energy usage kWh does not agree with PG&E bills, so the rate is
 calculated as *Generation Credit/Total Usage* and applied to submeter bills.
 
-## Taxes and Surcharges
-Tax and surcharge rates on PG&E bills generally do not agree with tariffs,
-so **evbilling** calculates these rates and shows them in parentheses in
-line items.  From the 6/8/2024 - 6/30/2024 billing period, for example:
-```
-Power Charge Indifference Adjustment ($0.00796/kWh)           $    0.17
-Franchise Fee Surcharge (0.094% $/kWh)                        $    0.02
-San Francisco Utility Users' Tax (7.498%)                     $    0.23
-SF Prop C Tax Surcharge (0.989%)                              $    0.03
-Local Utility Users Tax (7.463%)                              $    0.14
-Energy Commission Surcharge ($0.00047/kWh)                    $    0.01
-```
-In this example:
-```
-Charge                                  Should Be
-------                                  ---------
-Power Charge Indifference Adjustment    $0.00809/kWh
-Franchise Fee Surcharge                 0.5% $/kWh
-San Francisco Utility Users' Tax        7.500% Net
-SF Prop C Tax Surcharge                 0.986% Net
-Local Utility Users Tax                 7.500% Net
-Energy Commission Surcharge             $0.0003/kWh
-```
-
 ## CleanPowerSF Rate Changes
 CleanPowerSF changes rates annually on July 1.  Unlike PG&E rates changes, these
 are combined in a single rate period on the PG&E bill, which **evbilling**
