@@ -1,7 +1,9 @@
 # EVBilling
+
 **evbilling** - produce EV charger submeter bills for PG&E BEV-1 rate schedule
 
 # SYNOPSIS
+
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
 [**--copybill** | **--no-copybill**] [**-d** | **--debug** | **--no-debug**]
 [**--fixocr** | **--no-fixocr**] [**--ocr** | **--no-ocr**] [**--page PAGE**]
@@ -10,6 +12,7 @@
 [**DIRECTORY**]
 
 # DESCRIPTION
+
 **evbilling** produces bills for Electric Vehicle (EV) chargers connected to the
 EV power panel at The Palace at Washington Square condominium in San Francisco,
 CA.  The EV power panel is equipped with an [Emporia Vue 3 energy
@@ -51,6 +54,7 @@ file (see ARGUMENTS below):
 directory or to the directory specified by the *DIRECTORY* argument.
 
 # OPTIONS
+
 **-h, --help**
 :   Print a help message and exit.
 
@@ -88,6 +92,7 @@ directory or to the directory specified by the *DIRECTORY* argument.
 :   Write PDF submeter bills; default True.
 
 # ARGUMENTS
+
 *FILE* :   The PG&E PDF bill file to be processed.  *FILE* must have the format
 *nnnn*custbill*mmddyyyy*.pdf, where *nnnn* is the last four digits of the PG&E
 account number and *mmddyyyy* is the PG&E bill statement date.
@@ -105,6 +110,7 @@ CONTACT_EMAIL = 'pws.ev.energy@gmail.com'
 ```
 
 ## EV_SYSTEM and EV_USERNAME
+
 ```
 EV_SYSTEM = 'emporiavue'
 EV_USERNAME = 'pws.ev.energy@gmail.com'
@@ -121,6 +127,7 @@ keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ```
 
 ## EVSE_kW_RATINGS
+
 ```
 EVSE_kW_RATINGS = {
     'PWS-304-P05':120*16/1000,  # NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal
@@ -171,17 +178,15 @@ Failure to notify PG&E can incur an OVERAGE FEE, as described in [PG&E Electric
 Schedule BEV, SPECIAL CONDITIONS, 8. OVERAGE/OVERAGE
 FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
 
-**NOTE**: **evbilling** will require modification to process an OVERAGE FEE
-if/when one is incurred, since it is not known how this fee will appear on a
-BEV-1 rate schedule bill.
-
 ## CPSF_RATE_CHANGE
+
 ```
 CPSF_RATE_CHANGE = '7/1'
 """Date of CleanPowerSF annual rate change."""
 ```
 
 ## TOU_HOURS
+
 ```
 TOU_HOURS = {Tou.SUPER_OFF_PEAK:    [range(9, 12+2)],
              Tou.PEAK:              [range(12+4, 12+9)],
@@ -201,6 +206,7 @@ to 2 PM (12+2).
 `TOU_HOURS`.
 
 # ENVIRONMENT
+
 `FONTCONFIG_PATH` should be set to `C:\Users\`*`User`*`\.config\fontconfig` in
 the User environment.
 
@@ -225,6 +231,7 @@ fc-cache -fv
 ```
 
 # EXAMPLES
+
 Most options are intended for testing and debugging.  After downloading a PG&E
 bill named e.g. 2318custbill06132024.pdf, the command:
 ```
@@ -292,7 +299,9 @@ be compared to the downloaded bill to assure accuracy.
 corrects these "obvious" errors before writing the **sidecar** file.
 
 # LIMITATIONS
+
 ## Generation Credit
+
 It is unclear how the Generation Credit is calculated.  Applying the unbundled
 TOU generation energy rates from [PG&E Electric Schedule
 BEV-1](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf) to
@@ -300,6 +309,7 @@ the metered TOU energy usage kWh does not agree with PG&E bills, so the rate is
 calculated as *Generation Credit/Total Usage* and applied to submeter bills.
 
 ## CleanPowerSF Rate Changes
+
 CleanPowerSF changes rates annually on July 1.  Unlike PG&E rates changes, these
 are combined in a single rate period on the PG&E bill, which **evbilling**
 splits into two rate periods, the first ending on June 30 and the second
@@ -312,6 +322,7 @@ p.5](https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e6
 and manually entered in the **sidecar** file.
 
 # SEE ALSO
+
 * [Emporia Energy Help Center](https://help.emporiaenergy.com/en/)<br>
 * [Emporia Account Login](https://web.emporiaenergy.com/login)<br>
 * [PG&E Electric Schedule BEV-1](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf)<br>
@@ -325,10 +336,11 @@ and manually entered in the **sidecar** file.
 * [docTR: Document Text Recognition](https://mindee.github.io/doctr/latest/index.html)<br>
 
 # AUTHOR
+
 Keith Gorlen<br>
 gorlen@comcast.net
 
 # COPYRIGHT
+
 Copyright (c) 2024 Keith Gorlen<br>
 All Rights Reserved
-
