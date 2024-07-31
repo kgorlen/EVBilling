@@ -6,10 +6,10 @@
 
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
 [**--copybill** | **--no-copybill**] [**-d** | **--debug** | **--no-debug**]
-[**--fixocr** | **--no-fixocr**] [**--ocr** | **--no-ocr**] [**--page PAGE**]
-[**--print** | **--no-print**] [**-q** | **--quiet** | **--no-quiet**]
-[**--showocr** | **--no-showocr**] [**--submeter** | **--no-submeter**] **FILE**
-[**DIRECTORY**]
+[**--dump** | **--no-dump**] [**--fixocr** | **--no-fixocr**] [**--ocr** |
+**--no-ocr**] [**--page PAGE**] [**--print** | **--no-print**] [**-q** |
+**--quiet** | **--no-quiet**] [**--showocr** | **--no-showocr**] [**--submeter**
+| **--no-submeter**] **FILE** [**DIRECTORY**]
 
 # DESCRIPTION
 
@@ -49,6 +49,9 @@ file (see ARGUMENTS below):
   Owner's Unit number and *nn* is the EV charger parking space number.
 * *nnnn*custbill*mmddyyyy*-*circuit*.txt -- a plain text submeter bill for each
   *circuit* connected to the EV power panel.
+* *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
+  of the raw usage data, formatted as a day-by-hour matrix, for each *circuit*
+  connected to the EV power panel, if **--dump** is specified.
 
 **evbilling** also writes a log file named **evbilling.log** to the current
 directory or to the directory specified by the *DIRECTORY* argument.
@@ -67,6 +70,9 @@ directory or to the directory specified by the *DIRECTORY* argument.
 **-d, --debug**
 :   Log debugging information; default False.
 
+**--dump, --no-dump**
+:   Dump raw usage data, formatted as a day-by-hour matrix, to a .csv file.
+
 **--fixocr**
 :   Fix obvious OCR errors; default True.
 
@@ -77,7 +83,10 @@ directory or to the directory specified by the *DIRECTORY* argument.
 :   Submeter bill output directory; default: current directory.
 
 **--page** *number*
-:   PG&E Electric Delivery Charges page number; default: 3.
+ :   PG&E Electric Delivery Charges page number; default: 3.
+ **evbilling** processes only the *Details of PG&E Electric Delivery Charges*
+and *Details of CleanPowerSF Electric Generation Charges* pages, which it
+assumes are on consecutive pages.
 
 **--print**
 :   Print PG&E bill OCR text to `stdout`; default: False.
