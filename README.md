@@ -1,3 +1,7 @@
+<!--
+Markdown Guide: https://www.markdownguide.org/basic-syntax/
+-->
+
 # EVBilling
 
 **evbilling** - produce EV charger submeter bills for PG&E BEV-1 rate schedule
@@ -71,7 +75,7 @@ directory or to the directory specified by the *DIRECTORY* argument.
 :   Log debugging information; default False.
 
 **--dump, --no-dump**
-:   Dump raw usage data, formatted as a day-by-hour matrix, to a .csv file.
+:   Dump hourly usage data, formatted as a day-by-hour matrix, to a .csv file; default True.
 
 **--fixocr**
 :   Fix obvious OCR errors; default True.
