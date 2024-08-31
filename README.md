@@ -218,30 +218,77 @@ to 2 PM (12+2).
 `Tou.OFF_PEAK` is set automatically to be all hours other than those defined in
 `TOU_HOURS`.
 
-# ENVIRONMENT
+# INSTALLATION
 
-`FONTCONFIG_PATH` should be set to `C:\Users\`*`User`*`\.config\fontconfig` in
+## ENVIRONMENT
+
+Set `FONTCONFIG_PATH` to `C:\Users\`*`User`*`\.config\fontconfig` in
 the User environment.
 
 `C:\Users\`*`User`*`\.config\fontconfig` should include a **fonts.conf** file, e.g.:
-```markdown
 
-    <?xml version="1.0"?>
-    <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-    <fontconfig>
-    <dir>C:/Windows/Fonts</dir>
-    <cachedir>C:/Users/Your User Name Here/AppData/Local/fontconfig/cache</cachedir>
-    <config>
-        <rescan>
-            <int>30</int>
-        </rescan>
-    </config>
-    </fontconfig>
+```markdown
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+<dir>C:/Windows/Fonts</dir>
+<cachedir>C:/Users/Your User Name Here/AppData/Local/fontconfig/cache</cachedir>
+<config>
+    <rescan>
+        <int>30</int>
+    </rescan>
+</config>
+</fontconfig>
 ```
+
 Run the following command to build font information cache files:
 ```
 fc-cache -fv
 ```
+
+## PREREQUISITES
+
+[Install python 3.12 or later version](https://www.python.org/downloads/).
+
+Install [pipx](https://pipx.pypa.io/stable/):
+
+```
+pip install pipx
+```
+
+Install [keyring](https://pypi.org/project/keyring/):
+
+```
+pipx install keyring
+```
+
+## INSTALL **evbilling** FROM `.whl` package
+
+<pre>
+<code>pipx install <i>path</i>\evbilling-<i>version</i>-py3-none-any.whl</code>
+</pre>
+
+For example:
+
+<pre>
+<code>pipx install <i>path</i>\evbilling-0.1.5-py3-none-any.whl</code>
+</pre>
+
+## INSTALL **evbilling** FROM `.tar.gz` package
+
+Alternatively, install evbilling from a `.tar.gz` package file:
+
+<pre>
+<code>pipx install <i>path</i>\evbilling-<i>version</i>.tar.gz</code>
+</pre>
+
+For example:
+
+<pre>
+<code>pipx install <i>path</i>\evbilling-0.1.5-.tar.gz</code>
+</pre>
+
+Note that the `.tar.gz` package file must be in a directory named `evbilling`.
 
 # EXAMPLES
 
