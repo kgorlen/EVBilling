@@ -10,10 +10,12 @@ Markdown Guide: https://www.markdownguide.org/basic-syntax/
 
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
 [**--copybill** | **--no-copybill**] [**-d** | **--debug** | **--no-debug**]
-[**--dump** | **--no-dump**] [**--fixocr** | **--no-fixocr**] [**--ocr** |
-**--no-ocr**] [**--page PAGE**] [**--print** | **--no-print**] [**-q** |
+[**--dump** | **--no-dump**] [**--fixocr** | **--no-fixocr**] [**--forceocr** |
+**--no-forceocr**] [**--pages PAGES**] [**--print** | **--no-print**] [**-q** |
 **--quiet** | **--no-quiet**] [**--showocr** | **--no-showocr**] [**--submeter**
-| **--no-submeter**] **FILE** [**DIRECTORY**]
+| **--no-submeter**] [**-v** | **--version** | **--no-version**] [**--zip** |
+**--no-zip**]
+**FILE** [**DIRECTORY**]
 
 # DESCRIPTION
 
@@ -55,7 +57,9 @@ file (see ARGUMENTS below):
   *circuit* connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
   of the raw usage data, formatted as a day-by-hour matrix, for each *circuit*
-  connected to the EV power panel, if **--dump** is specified.
+  connected to the EV power panel unless **--no-dump** is specified.
+* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files
+  unless **--no-zip** is specified.
 
 **evbilling** also writes a log file named **evbilling.log** to the current
 directory or to the directory specified by the *DIRECTORY* argument.
@@ -65,44 +69,46 @@ directory or to the directory specified by the *DIRECTORY* argument.
 **-h, --help**
 :   Print a help message and exit.
 
-**--autoblock**
-:   Automatically locate OCR text blocks; default True.
+**--autoblock, --no-autoblock**
+:   Automatically locate OCR text blocks; default --autoblock.
 
-**--copybill**
-:   Copy the PG&E bill PDF file to the output directory; default True.
+**--copybill, --no-copybill**
+:   Copy the PG&E bill PDF file to the output directory; default --copybill.
 
-**-d, --debug**
-:   Log debugging information; default False.
+**-d, --debug, --no-debug**
+:   Log debugging information; default --no-debug.
 
 **--dump, --no-dump**
-:   Dump hourly usage data, formatted as a day-by-hour matrix, to a .csv file; default True.
+:   Dump hourly usage data, formatted as a day-by-hour matrix, to a .csv file; default --dump.
 
-**--fixocr**
-:   Fix obvious OCR errors; default True.
+**--fixocr, --no-fixocr**
+:   Fix obvious OCR errors; default --fixocr.
 
-**--ocr**
-:   Force PDF Optical Character Recognition (OCR); default False.
+**--forceocr, --no-forceocr**
+:   Force PDF Optical Character Recognition (OCR); default --no-forceocr.
 
-**--output** *directory*
-:   Submeter bill output directory; default: current directory.
+**--pages** *ij*
+:   Two single-digit page numbers, *i* is the *Details of PG&E
+ Electric Delivery Charges* page number and *j* is the *Details of CleanPowerSF
+ Electric Generation Charges* page number; default: 34.
+ 
+**--print, --no-print**
+:   Print PG&E bill OCR text to `stdout`; default: --no-print.
 
-**--page** *number*
- :   PG&E Electric Delivery Charges page number; default: 3.
- **evbilling** processes only the *Details of PG&E Electric Delivery Charges*
-and *Details of CleanPowerSF Electric Generation Charges* pages, which it
-assumes are on consecutive pages.
+**-q, --quiet, --no-quiet**
+:   Do not print INFO, WARNING, ERROR, or CRITICAL messages to `stderr`; default --no-quiet.
 
-**--print**
-:   Print PG&E bill OCR text to `stdout`; default: False.
+**--showocr, --no-showocr**
+:   Show OCR result; implies **--forceocr**; default --no-showocr.
 
-**-q, --quiet**
-:   Do not print INFO, WARNING, ERROR, or CRITICAL messages to `stderr`; default False.
+**--submeter, --no-submeter**
+:   Write PDF submeter bills; default --submeter.
 
-**--showocr**
-:   Show OCR result; implies **--ocr**; default False.
+**-v, --version, --no-version**
+:   Display the version number and exit.
 
-**--submeter**
-:   Write PDF submeter bills; default True.
+**--zip, --no-zip**
+:   Write all PDF bill files to *nnnn*custbill*mmddyyyy*.zip file; default --zip.
 
 # ARGUMENTS
 
