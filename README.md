@@ -296,6 +296,25 @@ For example:
 
 Note that the `.tar.gz` package file must be in a directory named `evbilling`.
 
+## CONFIGURE **runevbilling**
+
+Optionally, **runevbilling** can be configured for use with the *Windows File
+Explorer* *Open with ...* menu to allow **evbilling** to be run on a PG&E PDF
+bill file without needing to launch **cmd** and enter a command.
+
+To configure **runevbilling**:
+
+1. Browse with Windows File Explorer to the folder containing the PG&E PDF bill
+   file to be processed.
+1. Right-click on the bill file and choose *Open with* -> *Choose another app*.
+1. Scroll to the bottom and choose *More apps*.
+1. Scroll to the bottom and choose *Look for another app on this PC*.
+1. Browse to `C:\Users\`*Username*`\.local\bin`.
+1. Open **runevbilling.exe**.
+
+This will run **evbilling** on the bill file and add **runevbilling.exe** to the
+*Choose another app* menu for future use.
+
 # EXAMPLES
 
 Most options are intended for testing and debugging.  After downloading a PG&E
