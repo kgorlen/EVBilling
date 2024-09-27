@@ -28,14 +28,14 @@ downloaded from [pge.com](https://www.pge.com/).
 
 The **evbilling** program:
 
-1.  performs Optical Character Recognition (OCR) on a Pacific Gas &
+1. performs Optical Character Recognition (OCR) on a Pacific Gas &
     Electric/CleanPowerSF PDF bill to obtain billing periods, rates, and
     charges;
-2.  writes an OCR **sidecar** text file, which can be edited if necessary to
+2. writes an OCR **sidecar** text file, which can be edited if necessary to
     correct OCR errors;
-3.  downloads hourly usage data for the billing period for the individual EV
+3. downloads hourly usage data for the billing period for the individual EV
     chargers from the Emporia Vue server; and
-4.  writes EV charger PDF and plain text submeter bill files, accounting for
+4. writes EV charger PDF and plain text submeter bill files, accounting for
     rate changes and varying Time-Of-Use (TOU) rates.
 
 **evbilling** writes the following files to a directory named *yyyy*-*mm*-*dd*
@@ -123,6 +123,7 @@ account number and *mmddyyyy* is the PG&E bill statement date.
 Edit the **evsettings.py** module to change the settings used by **evbilling**.
 
 ## CONTACT_EMAIL
+
 ```
 CONTACT_EMAIL = 'pws.ev.energy@gmail.com'
 """Email address to appear in submeter bill footer."""
@@ -135,12 +136,14 @@ EV_SYSTEM = 'emporiavue'
 EV_USERNAME = 'pws.ev.energy@gmail.com'
 """keyring arguments for the Emporia Vue server."""
 ```
+
 These settings are used to retrieve the Emporia Vue server account password from
 the PC's keyring.  Set the Emporia Vue password with the command:
 <pre>
 keyring set "<i>EV_SYSTEM</i>" "<i>EV_USERNAME</i>"
 </pre>
 For example:
+
 ```
 keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ```
@@ -157,6 +160,7 @@ EVSE_kW_RATINGS = {
     }
 """EVSE (Electric Vehicle Service Equipment) power ratings in kW."""
 ```
+
 The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 **charge** based on a measurement of the maximum kW power usage in any single
 15-minute period during a monthly billing cycle.  The subscription charge is
@@ -170,8 +174,10 @@ whenever EV chargers are connected, disconnected, or replaced.  Initially, the
 nominal charger power rating can be set, but should be updated to the actual
 value as measured by the Emporia Vue application.
 
-PG&E should be notified whenever the load on the EV power panel changes.  From
-[PG&E Electric Schedule BEV, SPECIAL CONDITIONS, 7. GRACE
+**NB: Whenever the load on the EV power panel changes, contact the PG&E Solar
+department at 877-743-4112 and ask to be transferred to Solar/EV Business
+department to adjust the number of 10 kW blocks and request a grace period.**
+From [PG&E Electric Schedule BEV, SPECIAL CONDITIONS, 7. GRACE
 PERIOD](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf):
 
 *GRACE PERIOD: A grace period is a period of three (3) billing cycles, each
@@ -181,9 +187,9 @@ customer’s monthly pre-defined kW subscription. A grace period is triggered
 under the following two conditions:*
 <i>
 
-1.  <b>Customer Enrollment</b>: A grace period is triggered when a customer
+1. <b>Customer Enrollment</b>: A grace period is triggered when a customer
     enrolls in a BEV rate.
-2.  <b>Addition of Electrical Vehicle Service Equipment (EVSE)</b>: After a
+2. <b>Addition of Electrical Vehicle Service Equipment (EVSE)</b>: After a
     customer is enrolled in BEV rate, a second qualifying event for grace
     periods is if an existing customer enrolled on the BEV rate (either BEV-1 or
     BEV-2 rate option) adds additional charging infrastructure that increases
@@ -212,12 +218,15 @@ TOU_HOURS = {Tou.SUPER_OFF_PEAK:    [range(9, 12+2)],
              }
 """Time-Of-Use hourly ranges."""
 ```
+
 The `TOU_HOURS` table defines the hours to which various Time-Of-Use (TOU) $/kWh
 rates apply.  The table associates TOU names (keys) with corresponding lists of
 hourly ranges (values).  For example, the entry:
+
 ```
              Tou.SUPER_OFF_PEAK:    [range(9, 12+2)],
 ```
+
 associates the "Super Off Peak" TOU period with the range of hours from 9 AM (9)
 to 2 PM (12+2).
 
@@ -248,6 +257,7 @@ the User environment.
 ```
 
 Run the following command to build font information cache files:
+
 ```
 fc-cache -fv
 ```
@@ -282,7 +292,7 @@ For example:
 
 ## INSTALL **evbilling** FROM `.tar.gz` package
 
-Alternatively, install evbilling from a `.tar.gz` package file:
+Alternatively, install **evbilling** from a `.tar.gz` package file:
 
 <pre>
 <code>pipx install <i>path</i>\evbilling-<i>version</i>.tar.gz</code>
@@ -294,7 +304,36 @@ For example:
 <code>pipx install <i>path</i>\evbilling-0.1.5-.tar.gz</code>
 </pre>
 
-Note that the `.tar.gz` package file must be in a directory named `evbilling`.
+## CONFIGURE **evtariffs**
+
+The **evtariffs** command downloads the PG&E tariff PDF files required by
+**evbilling** and prepends the tariff effective date to the PDF filename:
+
+```
+usage: evtariffs.py [-h] [-d | --debug | --no-debug] [-q | --quiet | --no-quiet] [-v | --version | --no-version] [DIRECTORY]
+
+Download PG&E BEV tariffs and order by effective date
+
+positional arguments:
+  DIRECTORY             Output directory; default "C:\Users\<Username>\.evbilling\tariffs"
+
+options:
+  -h, --help            show this help message and exit
+  -d, --debug, --no-debug
+                        Log debug info; default --no-debug
+  -q, --quiet, --no-quiet
+                        Do not print verbose output; default --quiet
+  -v, --version, --no-version
+                        Display the version number and exit
+
+```
+
+Schedule the **evtariffs** command to be run at least weekly so that newly
+published tariffs are not missed.
+
+**Note:** The *DIRECTORY* argument is used only for testing since **evbilling**
+expects tariffs to be found in the default directory, and **evtariffs** writes a
+log file, ```evtariffs.log```, to the tariffs directory.
 
 ## CONFIGURE **runevbilling**
 
@@ -319,9 +358,11 @@ This will run **evbilling** on the bill file and add **runevbilling.exe** to the
 
 Most options are intended for testing and debugging.  After downloading a PG&E
 bill named e.g. 2318custbill06132024.pdf, the command:
+
 ```
 evbilling 2318custbill06132024.pdf
 ```
+
 will create a subdirectory named **2024-06-13** to which it will write all files
 as described earlier, including the submeter PDF bill files to be sent to the
 Owners.
@@ -337,11 +378,14 @@ When run, **evbilling** checks for an existing **sidecar** file and uses it
 instead of performing OCR on the PG&E bill.  It may be necessary to correct and
 rerun the command repeatedly until all OCR errors have been corrected.  For
 example, suppose **evbilling** fails:
+
 ```
 evbilling 2318custbill07162024.pdf
 2024-07-27 15:42:13 - CRITICAL - Missing 1011044609 PG&E charges: {'Franchise Fee Surcharge'}.; exiting.
 ```
+
 The **2318custbill07162024-OCR.txt** file may then contain the excerpt:
+
 ```
 === Page 3 details ===
 Details of PG&E Electric Delivery Charges
@@ -363,15 +407,18 @@ Franchise e Fee Surcharge 0.02
 San Francisco Utility Users' Tax (7.500%) 6.82
 SF Prop C Tax Surcharge 0.90
 ```
+
 The problem is the "e" between "Franchise" and "Fee".*  After editing
  **2318custbill07162024-OCR.txt** with e.g. Notepad to remove the 'e',
 **evbilling** is rerun and fails again:
+
 ```
 2024-07-27 15:44:41 - ERROR - Invalid 1011044609 PG&E charge:  Peak 1.804500 kWh @ $0.40040 $ 0.12
 2024-07-27 15:44:41 - ERROR - Calculated PG&E total charges $135.96 not equal to OCR total charges $136.56
 2024-07-27 15:44:41 - ERROR - 2 error(s) found while processing 2318custbill07162024.pdf.
 2024-07-27 15:44:41 - CRITICAL - For details see log file: Testing\evbilling.log.; exiting.
 ```
+
 Comparing the invalid PG&E charge to the original bill shows that the Peak
 energy charge should be $0.72 instead of $0.12.  After correcting this error,
 **evbilling** runs without errors.
@@ -383,15 +430,183 @@ be compared to the downloaded bill to assure accuracy.
 *OCR actually makes this type of error, but the **evbilling --fixocr** option
 corrects these "obvious" errors before writing the **sidecar** file.
 
-# LIMITATIONS
+# EXPLANATION OF SUBMETER BILL LINE ITEMS
 
-## Generation Credit
+A submeter bill consists of three pages, described in the following sections.
 
-It is unclear how the Generation Credit is calculated.  Applying the unbundled
-TOU generation energy rates from [PG&E Electric Schedule
-BEV-1](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf) to
-the metered TOU energy usage kWh does not agree with PG&E bills, so the rate is
-calculated as *Generation Credit/Total Usage* and applied to submeter bills.
+The header of every page contains the submeter *Account* name, the *Statement
+Date* from the corresponding PG&E main bill, and the *Due Date*, which is the
+first day of the month after the *Statement Date*.
+
+The footer of every page has the contact email address and the date on which
+the submeter bill was produced.
+
+## Submeter Bill Page 1
+
+**Charger Power Rating**
+: Charger power rating in kW, obtained from **evsettings.py**.
+
+**Total Usage**
+: Total charger energy usage for the billing period in kWh, as measured by the
+submeter.
+
+**PG&E Electric Delivery Charges**
+: Total PG&E Electric Delivery Charges from page 2.
+
+**CleanPowerSF Electric Generation Charges**
+: Total CleanPowerSF Electric Generation Charges from page 3.
+
+**Metering Difference Adjustment**
+: Adjustment for the difference between the PG&E panel meter reading and the sum of the individual submeter readings.  Formula:
+
+```
+[(PG&E main bill Total Amount Due) - sum(All submeter PG&E and CleanPowerSF charges)]
+                           *(Submeter Total Usage)
+-------------------------------------------------------------------------------------
+                         (PG&E main bill Total Usage)
+```
+
+**Total Amount Due**
+: Sum of submeter PG&E Electric Delivery Charges, CleanPowerSF Electric
+Generation Charges, and the Metering Difference Adjustment.
+
+**Effective Rate**
+: (Total Amount Due/Total Usage)
+
+**Cost Breakdown Chart**
+: Pie chart showing cost and percentage of the submeter bill for Peak kWh, Off
+Peak kWh, Super Off Peak kWh, Subscription Charge and any Overage Fees, and
+Taxes & Fees for the billing period.
+
+**Energy Usage Cost Chart**
+: Stacked bar chart showing Peak kWh cost, Off Peak kWh cost, Super Off Peak kWh cost,
+and Subscription cost for each day of the billing period.  All costs include taxes & fees,
+and all energy (kWh) usage costs include the Metering Difference Adjustment.
+
+**Monthly kWh Usage Chart**
+: Stacked bar chart showing Peak kWh, Off Peak kWh, and Super Off Peak kWh energy
+usage for the current month and the previous 12 months.
+
+## Submeter Bill Page 2: Details of PG&E Electric Delivery Charges
+
+**Subscription Level**
+: Cost based on the Charger Power Rating from page 1.  Formula:
+
+```
+(PG&E main bill Subscription Level charge)*(Charger Power Rating in kW)
+-----------------------------------------------------------------------
+                 sum(All Charger Power Ratings in kW)
+
+```
+
+**Overage Fees**
+: Fees charged for exceeding the Subscription Level kW peak power demand.
+Formula:
+
+```
+(PG&E main bill Overage Fees charge)*(Charger Power Rating in kW)
+-----------------------------------------------------------------
+              sum(All Charger Power Ratings in kW)
+
+```
+
+**PG&E Energy Charges**
+: Peak, Off Peak, and Super Off Peak kWh costs based on submeter kWh
+measurements.
+
+**PG&E Energy Credits**
+: Peak, Off Peak, and Super Off Peak kWh energy generation credits due
+to CleanPowerSF electric generation.  The Generation Credit rates and
+the Unbundled Power Charge Indifference Adjustment (PCIA) are obtained
+from the BEV-1 tariff in effect during the billing period.  Formula:
+
+```
+-[(Generation Credit rate $/kWh) + (Unbundled PCIA rate $/kWh)]
+           *(Peak, Off Peak, or Super Off Peak kWh)
+```
+
+**Total Generation Credit**
+: Sum of the PG&E Energy Credits.
+
+**Power Charge Indifference Adjustment**
+: Addition to PG&E costs to compensate for PG&E generation assets stranded by
+CleanPowerSF customers. The PCIA is determined by the "vintage" year that a
+customer started to obtain power from CleanPowerSF.  Formula:
+
+```
+(PG&E main bill Power Charge Indifference Adjustment charge)
+------------------------------------------------------------*(Submeter Total Usage kWh)
+             (PG&E main bill Total Usage kWh)
+
+```
+
+**Net Charges**
+: Sum of Subscription Level charge, Subscription Overage Fees, PG&E Energy Charges,
+Total Generation Credit, and Power Charge Indifference Adjustment.
+
+**Franchise Fee Surcharge**
+: Collect the fee PG&E pays to San Francisco for use of city streets to
+transmit, distribute, and supply electricity.  Formula:
+
+```
+(PG&E main bill Franchise Fee Surcharge)
+----------------------------------------*(Submeter Total Usage kWh)
+    (PG&E main bill Total Usage kWh)
+
+```
+
+**San Francisco Utility Users' Tax**
+: Collect the tax PG&E pays to San Francisco for non-residential electricity
+consumption.  Formula:
+
+```
+(PG&E main bill San Francisco Utility Users' Tax)
+----------------------------------------*(Submeter Net Charges)
+       (PG&E main bill Net Charges)
+
+```
+
+**SF Prop C Tax Surcharge**
+: Collect the tax PG&E pays to San Francisco to fund its homelessness programs.
+Formula:
+
+```
+(PG&E main bill SF Prop C Tax Surcharge)
+----------------------------------------*(Submeter Net Charges)
+       (PG&E main bill Net Charges)
+
+```
+
+## Submeter Bill Page 3: Details of CleanPowerSF Electric Generation Charges
+
+**CleanPowerSF Energy Charges**
+: Peak, Off Peak, and Super Off Peak kWh costs based on submeter kWh
+measurements.
+
+**Net Charges**
+: Sum of CleanPowerSF Energy Charges.
+
+**Local Utility Users Tax**
+: Collect the tax CleanPowerSF pays to San Francisco for non-residential electricity
+consumption.  Formula:
+
+```
+(CleanPowerSF main bill Local Utility Users' Tax)
+-------------------------------------------------*(Submeter Net Charges)
+       (CleanPowerSF main bill Net Charges)
+
+```
+
+**Energy Commission Surcharge**
+: Collect the tax CleanPowerSF pays to California for consumption of electrical
+energy.  Formula:
+
+```
+(CleanPowerSF main bill Energy Commission Surcharge)
+----------------------------------------------------*(Submeter Net Charges)
+         (CleanPowerSF main bill Net Charges)
+
+```
 
 ## CleanPowerSF Rate Changes
 
@@ -410,7 +625,7 @@ and manually entered in the **sidecar** file.
 
 * [Emporia Energy Help Center](https://help.emporiaenergy.com/en/)<br>
 * [Emporia Account Login](https://web.emporiaenergy.com/login)<br>
-* [PG&E Electric Schedule BEV-1](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf)<br>
+* [PG&E Electric Schedule BEV](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf)<br>
 * [Commercial Business Electric Vehicle (BEV) Rates](https://www.pge.com/tariffs/en/rate-information/electric-rates.html#accordion-a84c67dc1e-item-69d101345a)<br>
 * [CleanPowerSF Commercial Rates, B-EV-1, p.5](https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e64535d5bbbb39dbe/1719950143549/CPSF+Commercial+Rates+2024.pdf)<br>
 * [SF Franchise Fee Surcharge](https://sfcontroller.org/sites/default/files/Documents/Auditing/BOS%20PGE%20Franchise%20Fee%20Audit%20Report%20%202.23.21.pdf)<br>
