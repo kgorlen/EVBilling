@@ -333,7 +333,9 @@ published tariffs are not missed.
 
 **Note:** The *DIRECTORY* argument is used only for testing since **evbilling**
 expects tariffs to be found in the default directory, and **evtariffs** writes a
-log file, ```evtariffs.log```, to the tariffs directory.
+log file, ```evtariffs.log```, to the tariffs directory.  To store the tariffs
+in a different directory, create a link to it named ```tariffs``` in the default
+```.evbilling``` directory.
 
 ## CONFIGURE **runevbilling**
 
@@ -515,14 +517,21 @@ Formula:
 measurements.
 
 **PG&E Energy Credits**
-: Peak, Off Peak, and Super Off Peak kWh energy generation credits due
-to CleanPowerSF electric generation.  The Generation Credit rates and
-the Unbundled Power Charge Indifference Adjustment (PCIA) are obtained
-from the BEV-1 tariff in effect during the billing period.  Formula:
+: Credit rates are obtained from the BEV-1 tariff in effect during the billing
+period.
+
+***Peak, Off Peak, and Super Off Peak generation credits***
+: Credits due to electric generation by CleanPowerSF instead of PG&E. Formula:
 
 ```
--[(Generation Credit rate $/kWh) + (Unbundled PCIA rate $/kWh)]
-           *(Peak, Off Peak, or Super Off Peak kWh)
+-(Generation Credit rate $/kWh)*(Peak, Off Peak, or Super Off Peak kWh)
+```
+
+***Bundled Power Charge Indifference Adjustment (PCIA) credit***
+: Credit against the Vintaged Power Charge Indifference Adjustment. Formula:
+
+```
+(Bundled Power Charge Indifference Adjustment rate $/kWh)*(Submeter Total Usage kWh)
 ```
 
 **Total Generation Credit**
