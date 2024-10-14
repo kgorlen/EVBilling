@@ -495,9 +495,9 @@ usage for the current month and the previous 12 months.
 : Cost based on the Charger Power Rating from page 1.  Formula:
 
 ```
-(PG&E main bill Subscription Level charge)*(Charger Power Rating in kW)
------------------------------------------------------------------------
-                 sum(All Charger Power Ratings in kW)
+                                     (Charger Power Rating in kW)
+(Number 10kW blocks)*Months*Rate*------------------------------------
+                                 sum(All Charger Power Ratings in kW)
 
 ```
 
