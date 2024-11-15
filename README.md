@@ -151,19 +151,19 @@ keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ## EVSE_kW_RATINGS
 
 ```
-EVSE_kW_RATINGS = {
+EVSE_kW_RATINGS: dict[str, float] = {
     'PWS-304-P05':120*16/1000,  # NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal
-    'PWS-404-P06':1.46,         # NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024
-    'PWS-502-P07':208*40/1000,  # Tesla 80A, nominal
-    'PWS-405-P14':208*48/1000,  # Tesla Gen3, nominal
-    'PWS-403-P20':208*40/1000,  # Tesla 80A, nominal
+    'PWS-404-P06':1.45,         # NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024
+    'PWS-502-P07':208*32/1000,  # Tesla 80A, nominal
+    'PWS-405-P14':208*40/1000,  # Tesla Gen3, nominal
+    'PWS-403-P20':208*32/1000,  # Tesla 80A, nominal
     }
 """EVSE (Electric Vehicle Service Equipment) power ratings in kW."""
 ```
 
 The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 **charge** based on a measurement of the maximum kW power usage in any single
-15-minute period during a monthly billing cycle.  The subscription charge is
+15-minute period during a monthly billing cycle.  The subscription level is
 purchased in blocks of 10 kW, and the charge is apportioned to the EV chargers
 based on their kW power ratings.
 
@@ -202,6 +202,21 @@ under the following two conditions:*
 Failure to notify PG&E can incur an OVERAGE FEE, as described in [PG&E Electric
 Schedule BEV, SPECIAL CONDITIONS, 8. OVERAGE/OVERAGE
 FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
+
+## INCLUDE_kW_LIMIT
+
+'''
+INCLUDE_kW_LIMIT = 5    # kW
+"""Include excess subscription charges in submeter bills if
+TOTAL_EVSE_kW_RATINGS > INCLUDE_kW_LIMIT."""
+
+Since the subscription level is purchased in blocks of 10 kW, it will generally
+exceed the total maximum power demand of all EV chargers. The `INCLUDE_kW_LIMIT`
+setting determines if the excess subscription is apportioned to the EV chargers
+based on their kW power ratings, or if the excess is excluded from submeter
+bills.  Its purpose is to keep charging costs economical when there are only one
+or two low-power chargers, such as those for PHEVs, connected to the EV power
+panel.
 
 ## CPSF_RATE_CHANGE
 
@@ -501,6 +516,15 @@ usage for the current month and the previous 12 months.
 
 ```
 
+If the sum(All Charger Power Ratings in kW) is below the `INCLUDE_kW_LIMIT`:
+
+```
+                                  (Charger Power Rating in kW)
+(Number 10kW blocks)*Months*Rate*------------------------------
+                                    Subscription Level in kW
+
+```
+
 **Overage Fees**
 : Fees charged for exceeding the Subscription Level kW peak power demand.
 Formula:
@@ -511,6 +535,9 @@ Formula:
               sum(All Charger Power Ratings in kW)
 
 ```
+
+Overage Fees are **excluded** if the sum(All Charger Power Ratings in kW) is
+below the `INCLUDE_kW_LIMIT`.
 
 **PG&E Energy Charges**
 : Peak, Off Peak, and Super Off Peak kWh costs based on submeter kWh
