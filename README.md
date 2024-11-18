@@ -1,10 +1,16 @@
 <!--
 Markdown Guide: https://www.markdownguide.org/basic-syntax/
 -->
+<!--
+Disable markdownlint errors:
+fenced-code-language MD040
+no-inline-html MD033
+-->
+<!-- markdownlint-disable MD040 MD033-->
 
 # EVBilling
 
-**evbilling** - produce EV charger submeter bills for PG&E BEV-1 rate schedule
+**evbilling** - produce EV charger submeter bills for the PG&E BEV-1 rate schedule
 
 # SYNOPSIS
 
@@ -61,8 +67,9 @@ file (see ARGUMENTS below):
 * *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files
   unless **--no-zip** is specified.
 
-**evbilling** also writes a log file named **evbilling.log** to the current
-directory or to the directory specified by the *DIRECTORY* argument.
+**evbilling** also writes a log file named **evbilling.log** to the conventional
+OS-dependent log directory, `C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs` on
+Windows.
 
 # OPTIONS
 
@@ -91,7 +98,7 @@ directory or to the directory specified by the *DIRECTORY* argument.
 :   Two single-digit page numbers, *i* is the *Details of PG&E
  Electric Delivery Charges* page number and *j* is the *Details of CleanPowerSF
  Electric Generation Charges* page number; default: 34.
- 
+
 **--print, --no-print**
 :   Print PG&E bill OCR text to `stdout`; default: --no-print.
 
@@ -120,27 +127,34 @@ account number and *mmddyyyy* is the PG&E bill statement date.
 
 # SETTINGS
 
-Edit the **evsettings.py** module to change the settings used by **evbilling**.
+Settings for **evbilling** are configured in the **evbilling.toml** file in the
+conventional OS-dependent data directory,
+`C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
 
-## CONTACT_EMAIL
+See [TOML: A config file format for humans](https://toml.io/en/) for the
+**.toml** file format specification.
+
+## [credentials]
+
+### contact_email
 
 ```
-CONTACT_EMAIL = 'pws.ev.energy@gmail.com'
-"""Email address to appear in submeter bill footer."""
+# Email address to appear in submeter bill footer
+contact_email = "pws.ev.energy@gmail.com"
 ```
 
-## EV_SYSTEM and EV_USERNAME
+### ev_system and ev_username
 
 ```
-EV_SYSTEM = 'emporiavue'
-EV_USERNAME = 'pws.ev.energy@gmail.com'
-"""keyring arguments for the Emporia Vue server."""
+# keyring arguments for the Emporia Vue server
+ev_system = "emporiavue"
+ev_username = "pws.ev.energy@gmail.com"
 ```
 
 These settings are used to retrieve the Emporia Vue server account password from
 the PC's keyring.  Set the Emporia Vue password with the command:
 <pre>
-keyring set "<i>EV_SYSTEM</i>" "<i>EV_USERNAME</i>"
+keyring set "<i>ev_system</i>" "<i>ev_username</i>"
 </pre>
 For example:
 
@@ -148,16 +162,17 @@ For example:
 keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ```
 
-## EVSE_kW_RATINGS
+## [ev_chargers]
+
+The `[ev_chargers]` section describes the EVSE (Electric Vehicle Service
+Equipment) power ratings in kW.
 
 ```
-EVSE_kW_RATINGS: dict[str, float] = {
-    'PWS-304-P05':120*16/1000,  # NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal
-    'PWS-404-P06':1.45,         # NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024
-    'PWS-502-P07':208*32/1000,  # Tesla 80A, nominal
-    'PWS-405-P14':208*40/1000,  # Tesla Gen3, nominal
-    'PWS-403-P20':208*32/1000,  # Tesla 80A, nominal
-    }
+PWS-304-P05 = 1.92  # NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A
+PWS-404-P06 = 1.45  # NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024
+PWS-502-P07 = 6.66  # Tesla 80A, nominal 208V*32A
+PWS-405-P14 = 8.32  # Tesla Gen3, nominal 208V*40A
+PWS-403-P20 = 6.66  # Tesla 80A, nominal 208V*32A
 """EVSE (Electric Vehicle Service Equipment) power ratings in kW."""
 ```
 
@@ -167,7 +182,7 @@ The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 purchased in blocks of 10 kW, and the charge is apportioned to the EV chargers
 based on their kW power ratings.
 
-The EV charger names (keys) in the `EVSE_kW_RATING` setting must match the
+The EV charger names (keys) in the `[ev_chargers]` setting must match the
 circuit names configured in the Emporia Vue application, and the corresponding
 values are the EV charger power ratings in kW.  This setting must be updated
 whenever EV chargers are connected, disconnected, or replaced.  Initially, the
@@ -176,7 +191,7 @@ value as measured by the Emporia Vue application.
 
 **NB: Whenever the load on the EV power panel changes, contact the PG&E Solar
 department at 877-743-4112 and ask to be transferred to Solar/EV Business
-department to adjust the number of 10 kW blocks and request a grace period.**
+department to adjust the number of 10 kW blocks and request a grace period.
 From [PG&E Electric Schedule BEV, SPECIAL CONDITIONS, 7. GRACE
 PERIOD](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf):
 
@@ -203,59 +218,130 @@ Failure to notify PG&E can incur an OVERAGE FEE, as described in [PG&E Electric
 Schedule BEV, SPECIAL CONDITIONS, 8. OVERAGE/OVERAGE
 FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
 
-## INCLUDE_kW_LIMIT
+## [policy]
 
-'''
-INCLUDE_kW_LIMIT = 5    # kW
-"""Include excess subscription charges in submeter bills if
-TOTAL_EVSE_kW_RATINGS > INCLUDE_kW_LIMIT."""
+### include_kW_limit
+
+```
+# Include excess subscription charges in submeter bills if
+# sum(EV charger power ratings) > include_kW_limit.
+include_kW_limit = 5.0  # kW
+```
 
 Since the subscription level is purchased in blocks of 10 kW, it will generally
-exceed the total maximum power demand of all EV chargers. The `INCLUDE_kW_LIMIT`
+exceed the total maximum power demand of all EV chargers. The `include_kW_limit`
 setting determines if the excess subscription is apportioned to the EV chargers
 based on their kW power ratings, or if the excess is excluded from submeter
 bills.  Its purpose is to keep charging costs economical when there are only one
 or two low-power chargers, such as those for PHEVs, connected to the EV power
 panel.
 
-## CPSF_RATE_CHANGE
+## [links]
+
+The `[links]` section contains links to websites with information about tariffs,
+rates, credits, taxes, fees, and surcharges. The **evtariffs** command downloads
+tariffs from the `pge_bev_tariff_url` and saves these in the
+`pge_bev_tariff_dir` for use by **evbilling**.  Other links are shown in the
+*Further information* sections on the PG&E and CleanpowerSF details pages.
+
+Links should be kept current.
 
 ```
-CPSF_RATE_CHANGE = '7/1'
-"""Date of CleanPowerSF annual rate change."""
+# URL of PG&E BEV PDF tariff file for evtariffs command
+pge_bev_tariff_url = """
+https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf"""
+
+# PG&E BEV tariff download directory for evtariffs command
+pge_bev_tariff_dir = '\\NAS0\Household\Household Documents\1731 Powell\HOA\PWS Collaboration\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
+
+# Further information links:
+
+pge_electric_schedule_bev1 = """[PG&E Electric Schedule BEV-1]\
+(https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf)"""
+
+pge_commercial_bev_tariffs = """[Commercial Business Electric Vehicle (BEV) Rates]\
+(https://www.pge.com/tariffs/en/rate-information/electric-rates.html#accordion-a84c67dc1e-item-69d101345a)"""
+
+cpsf_commercial_rates = """[CleanPowerSF Commercial Rates, B-EV-1, p.5]\
+(https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e64535d5bbbb39dbe/1719950143549/CPSF+Commercial+Rates+2024.pdf)"""
+
+sf_franchise_fee_surcharge  = """[Franchise Fee Surcharge]\
+(https://sfcontroller.org/sites/default/files/Documents/Auditing/BOS%20PGE%20Franchise%20Fee%20Audit%20Report%20%202.23.21.pdf)"""
+
+sf_utility_users_tax = """[San Francisco Utility Users Tax]\
+(https://sfgov.org/lafco/sites/default/files/FileCenter/Documents/52280-4%20City%20and%20County%20of%20San%20Francisco%20Controller%E2%80%99s%20Office%20%28April%202005%29%20The%20Utility%20Users%20Tax.pdf)"""
+
+sf_prop_c_tax_surcharge = """[SF Prop C Tax Surcharge]\
+(https://sftreasurer.org/business/taxes-fees/homelessness-gross-receipts-tax-hgr)"""
+
+energy_commission_surcharge = """[Energy Commission Surcharge]\
+(https://www.cdtfa.ca.gov/formspubs/L924.pdf)"""
+
+evbilling_source = """[EV Billing Software Version {__version__}](https://github.com/kgorlen/EVBilling)"""
+
+# 'Further information' PG&E links in submeter bill PDF files:
+pge_reference_urls = [
+    "pge_electric_schedule_bev1",
+    "pge_commercial_bev_tariffs",
+    "sf_franchise_fee_surcharge",
+    "sf_utility_users_tax",
+    "sf_prop_c_tax_surcharge",
+    "evbilling_source",
+]
+
+# 'Further information' CleanPowerSF links in submeter bill PDF files:
+cpsf_reference_urls = [
+    "cpsf_commercial_rates",
+    "sf_utility_users_tax",
+    "energy_commission_surcharge",
+    "evbilling_source",
+]
 ```
 
-## TOU_HOURS
+## [time_of_use]
+
+The `[time_of_use]` section defines the hours when *Super Off Peak* and *Peak*
+Time Of Use (TOU) rates are in effect.  All other hours are assumed to be billed
+at *Off Peak* rates.
 
 ```
-TOU_HOURS = {Tou.SUPER_OFF_PEAK:    [range(9, 12+2)],
-             Tou.PEAK:              [range(12+4, 12+9)],
-             }
-"""Time-Of-Use hourly ranges."""
+"Super Off Peak" = [[9, 14]]    # 9:00am to 2:00pm
+"Peak" = [[16, 21]]             # 4:00pm to 9:00pm
+# All other hours are "Off Peak"
 ```
 
-The `TOU_HOURS` table defines the hours to which various Time-Of-Use (TOU) $/kWh
-rates apply.  The table associates TOU names (keys) with corresponding lists of
-hourly ranges (values).  For example, the entry:
+Hours are numbered from 0 (midnight to 1:00am) to 23 (11:00pm to midnight). The
+notation [*i*, *j*] defines a range of hours from hour *i* to hour *j*-1, and
+the ending hour must be larger than the starting hour (i.e. [*i*, *j*] is
+converted to the Python `range(i, j)`).  Multiple ranges can be specified for a
+TOU rate period; for example, the following defines the two-hour TOU range from
+11:00pm to 1:00am:
 
 ```
-             Tou.SUPER_OFF_PEAK:    [range(9, 12+2)],
+"Super Off Peak" = [[23, 24], [0, 1]]
 ```
 
-associates the "Super Off Peak" TOU period with the range of hours from 9 AM (9)
-to 2 PM (12+2).
+## [rate_info]
 
-`Tou.OFF_PEAK` is set automatically to be all hours other than those defined in
-`TOU_HOURS`.
+### cpsf_rate_change
+
+The `cpsf_rate_change` setting defines the month and day when CleanPowerSF
+annually updates electric generation rates.  See *CleanPowerSF Rate Changes*
+for details.
+
+```
+# Date of CleanPowerSF annual rate change
+cpsf_rate_change = "7/1"
+```
 
 # INSTALLATION
 
 ## ENVIRONMENT
 
-Set `FONTCONFIG_PATH` to `C:\Users\`*`User`*`\.config\fontconfig` in
+Set `FONTCONFIG_PATH` to `C:\Users\`*`Username`*`\.config\fontconfig` in
 the User environment.
 
-`C:\Users\`*`User`*`\.config\fontconfig` should include a **fonts.conf** file, e.g.:
+`C:\Users\`*`Username`*`\.config\fontconfig` should include a **fonts.conf** file, e.g.:
 
 ```markdown
 <?xml version="1.0"?>
@@ -330,7 +416,7 @@ usage: evtariffs.py [-h] [-d | --debug | --no-debug] [-q | --quiet | --no-quiet]
 Download PG&E BEV tariffs and order by effective date
 
 positional arguments:
-  DIRECTORY             Output directory; default "C:\Users\<Username>\.evbilling\tariffs"
+  DIRECTORY             Output directory; default "C:\Users\<User>\.evbilling\tariffs"
 
 options:
   -h, --help            show this help message and exit
@@ -346,17 +432,19 @@ options:
 Schedule the **evtariffs** command to be run at least weekly so that newly
 published tariffs are not missed.
 
+**evtariffs** writes a log file named **evtariffs.log** to the conventional
+OS-dependent log directory, `C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs`
+on Windows.
+
 **Note:** The *DIRECTORY* argument is used only for testing since **evbilling**
-expects tariffs to be found in the default directory, and **evtariffs** writes a
-log file, ```evtariffs.log```, to the tariffs directory.  To store the tariffs
-in a different directory, create a link to it named ```tariffs``` in the default
-```.evbilling``` directory.
+expects tariffs to be found in the **pge_bev_tariff_dir** configured in
+**evbilling.toml** (see *SETTINGS*).
 
 ## CONFIGURE **runevbilling**
 
 Optionally, **runevbilling** can be configured for use with the *Windows File
 Explorer* *Open with ...* menu to allow **evbilling** to be run on a PG&E PDF
-bill file without needing to launch **cmd** and enter a command.
+bill file without needing to launch a **cmd** window and enter a command.
 
 To configure **runevbilling**:
 
@@ -365,7 +453,7 @@ To configure **runevbilling**:
 1. Right-click on the bill file and choose *Open with* -> *Choose another app*.
 1. Scroll to the bottom and choose *More apps*.
 1. Scroll to the bottom and choose *Look for another app on this PC*.
-1. Browse to `C:\Users\`*Username*`\.local\bin`.
+1. Browse to `C:\Users\`*`Username`*`\.local\bin`.
 1. Open **runevbilling.exe**.
 
 This will run **evbilling** on the bill file and add **runevbilling.exe** to the
@@ -646,7 +734,7 @@ energy.  Formula:
 
 ## CleanPowerSF Rate Changes
 
-CleanPowerSF changes rates annually on July 1.  Unlike PG&E rates changes, these
+CleanPowerSF changes rates annually on July 1\*.  Unlike PG&E rates changes, these
 are combined in a single rate period on the PG&E bill, which **evbilling**
 splits into two rate periods, the first ending on June 30 and the second
 beginning on July 1, assuming that the first and second rates listed for each
@@ -656,6 +744,9 @@ and the missing rates must looked up from previous bills or on [CleanPowerSF
 Commercial Rates, B-EV-1,
 p.5](https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e64535d5bbbb39dbe/1719950143549/CPSF+Commercial+Rates+2024.pdf)
 and manually entered in the **sidecar** file.
+
+\*Update the `cpsf_rate_change` setting if CleanPowerSF changes the date of its
+annual rate update.
 
 # SEE ALSO
 
@@ -670,11 +761,12 @@ and manually entered in the **sidecar** file.
 * [Energy Commission Surcharge](https://www.cdtfa.ca.gov/formspubs/L924.pdf)<br>
 * [PyEmVue -- Unofficial library for interacting with the Emporia Vue energy monitor](https://pypi.org/project/pyemvue/)<br>
 * [docTR: Document Text Recognition](https://mindee.github.io/doctr/latest/index.html)<br>
+* [TOML: A config file format for humans](https://toml.io/en/)<br>
 
 # AUTHOR
 
 Keith Gorlen<br>
-gorlen@comcast.net
+<gorlen@comcast.net>
 
 # COPYRIGHT
 
