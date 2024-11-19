@@ -236,6 +236,21 @@ bills.  Its purpose is to keep charging costs economical when there are only one
 or two low-power chargers, such as those for PHEVs, connected to the EV power
 panel.
 
+## [tariffs]
+
+The `[tariffs]` section controls from where **evtariffs** downloads tariffs and
+where it stores them.
+
+```
+# URL of PG&E BEV PDF tariff file for evtariffs command
+pge_bev_tariff_url = """
+https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf"""
+
+# PG&E BEV tariff download directory for evtariffs command on PalaceSecurity PC:
+pge_bev_tariff_dir = 'C:\Users\Palace_security\OneDrive - Grayson Community Management\General - PWS External\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
+
+```
+
 ## [links]
 
 The `[links]` section contains links to websites with information about tariffs,
