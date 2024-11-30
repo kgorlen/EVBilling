@@ -15,13 +15,12 @@ no-inline-html MD033
 # SYNOPSIS
 
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
-[**--copybill** | **--no-copybill**] [**-d** | **--debug** | **--no-debug**]
-[**--dump** | **--no-dump**] [**--fixocr** | **--no-fixocr**] [**--forceocr** |
-**--no-forceocr**] [**--pages PAGES**] [**--print** | **--no-print**] [**-q** |
-**--quiet** | **--no-quiet**] [**--showocr** | **--no-showocr**] [**--submeter**
-| **--no-submeter**] [**-v** | **--version** | **--no-version**] [**--zip** |
-**--no-zip**]
-**FILE** [**DIRECTORY**]
+[**-d** | **--debug** | **--no-debug**] [**--fixocr** | **--no-fixocr**]
+[**--forceocr** | **--no-forceocr**] [**--outdir** *DIRECTORY*] [**--pages**
+*PAGES*] [**--print** | **--no-print**] [**-q** | **--quiet** | **--no-quiet**]
+[**--showocr** | **--no-showocr**] [**--submeter** | **--no-submeter**] [**-v**
+| **--version** | **--no-version**]
+**FILES ...**
 
 # DESCRIPTION
 
@@ -46,11 +45,10 @@ The **evbilling** program:
 
 **evbilling** writes the following files to a directory named *yyyy*-*mm*-*dd*
 that it creates in the current directory or in the directory specified by the
-*DIRECTORY* argument, where *yyyy*-*mm*-*dd* is the statement date of the bill
+**--outdir** argument, where *yyyy*-*mm*-*dd* is the statement date of the bill
 file (see ARGUMENTS below):
 
-* *nnnn*custbill*mmddyyyy*.pdf -- a copy of the PG&E bill file unless
-  **--no-copybill** is specified.
+* *nnnn*custbill*mmddyyyy*.pdf -- a copy of the PG&E bill file.
 * *nnnn*custbill*mmddyyyy*-OCR.txt -- the OCR result **sidecar** text file for
   the PG&E bill.
 * *nnnn*custbill*mmddyyyy*.txt -- a plain text version of the PG&E bill, created
@@ -63,9 +61,8 @@ file (see ARGUMENTS below):
   *circuit* connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
   of the raw usage data, formatted as a day-by-hour matrix, for each *circuit*
-  connected to the EV power panel unless **--no-dump** is specified.
-* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files
-  unless **--no-zip** is specified.
+  connected to the EV power panel.
+* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files.
 
 **evbilling** also writes a log file named **evbilling.log** to the conventional
 OS-dependent log directory, `C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs` on
@@ -79,20 +76,17 @@ Windows.
 **--autoblock, --no-autoblock**
 :   Automatically locate OCR text blocks; default --autoblock.
 
-**--copybill, --no-copybill**
-:   Copy the PG&E bill PDF file to the output directory; default --copybill.
-
 **-d, --debug, --no-debug**
 :   Log debugging information; default --no-debug.
-
-**--dump, --no-dump**
-:   Dump hourly usage data, formatted as a day-by-hour matrix, to a .csv file; default --dump.
 
 **--fixocr, --no-fixocr**
 :   Fix obvious OCR errors; default --fixocr.
 
 **--forceocr, --no-forceocr**
 :   Force PDF Optical Character Recognition (OCR); default --no-forceocr.
+
+**--outdir** *directory*
+:   Output directory, default current working directory
 
 **--pages** *ij*
 :   Two single-digit page numbers, *i* is the *Details of PG&E
@@ -114,16 +108,11 @@ Windows.
 **-v, --version, --no-version**
 :   Display the version number and exit.
 
-**--zip, --no-zip**
-:   Write all PDF bill files to *nnnn*custbill*mmddyyyy*.zip file; default --zip.
-
 # ARGUMENTS
 
-*FILE* :   The PG&E PDF bill file to be processed.  *FILE* must have the format
-*nnnn*custbill*mmddyyyy*.pdf, where *nnnn* is the last four digits of the PG&E
-account number and *mmddyyyy* is the PG&E bill statement date.
-
-*DIRECTORY* :   Output directory, default current working directory.
+*FILES* :   List of PG&E PDF bill files to be processed.  *FILES* must have the
+format *nnnn*custbill*mmddyyyy*.pdf, where *nnnn* is the last four digits of the
+PG&E account number and *mmddyyyy* is the PG&E bill statement date.
 
 # SETTINGS
 
