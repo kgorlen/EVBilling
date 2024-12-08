@@ -110,9 +110,10 @@ Windows.
 
 # ARGUMENTS
 
-*FILES* :   List of PG&E PDF bill files to be processed.  *FILES* must have the
+*FILES* :   List of directories or PG&E PDF bill files to be processed.  *FILES* must have the
 format *nnnn*custbill*mmddyyyy*.pdf, where *nnnn* is the last four digits of the
-PG&E account number and *mmddyyyy* is the PG&E bill statement date.
+PG&E account number and *mmddyyyy* is the PG&E bill statement date.  If a directory
+is specified, all bill files in the directory will be processed.
 
 # SETTINGS
 
@@ -770,7 +771,7 @@ annual rate update.
 # AUTHOR
 
 Keith Gorlen<br>
-<gorlen@comcast.net>
+<kgorlen@gmail.com>
 
 # COPYRIGHT
 
