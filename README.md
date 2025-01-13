@@ -570,10 +570,13 @@ submeter.
 : Adjustment for the difference between the PG&E panel meter reading and the sum of the individual submeter readings.  Formula:
 
 ```
-[(PG&E main bill Total Amount Due) - sum(All submeter PG&E and CleanPowerSF charges)]
-                           *(Submeter Total Usage)
--------------------------------------------------------------------------------------
-                         (PG&E main bill Total Usage)
+
+   (Submeter Total Usage)
+----------------------------
+(PG&E main bill Total Usage)
+
+X [(PG&E main bill Total Amount Due) - sum(All submeter PG&E and CleanPowerSF charges)]
+
 ```
 
 **Total Amount Due**
@@ -603,18 +606,18 @@ usage for the current month and the previous 12 months.
 : Cost based on the Charger Power Rating from page 1.  Formula:
 
 ```
-                                     (Charger Power Rating in kW)
-(Number 10kW blocks)*Months*Rate*------------------------------------
-                                 sum(All Charger Power Ratings in kW)
+                                       (Charger Power Rating in kW)
+(Number 10kW blocks)*Months*Rate X ------------------------------------
+                                   sum(All Charger Power Ratings in kW)
 
 ```
 
 If the sum(All Charger Power Ratings in kW) is below the `INCLUDE_kW_LIMIT`:
 
 ```
-                                  (Charger Power Rating in kW)
-(Number 10kW blocks)*Months*Rate*------------------------------
-                                    Subscription Level in kW
+                                   (Charger Power Rating in kW)
+(Number 10kW blocks)*Months*Rate X ----------------------------
+                                     Subscription Level in kW
 
 ```
 
@@ -623,9 +626,9 @@ If the sum(All Charger Power Ratings in kW) is below the `INCLUDE_kW_LIMIT`:
 Formula:
 
 ```
-(PG&E main bill Overage Fees charge)*(Charger Power Rating in kW)
------------------------------------------------------------------
-              sum(All Charger Power Ratings in kW)
+(PG&E main bill Overage Fees charge) X (Charger Power Rating in kW)
+-------------------------------------------------------------------
+                sum(All Charger Power Ratings in kW)
 
 ```
 
@@ -664,7 +667,7 @@ customer started to obtain power from CleanPowerSF.  Formula:
 
 ```
 (PG&E main bill Power Charge Indifference Adjustment charge)
-------------------------------------------------------------*(Submeter Total Usage kWh)
+------------------------------------------------------------ X (Submeter Total Usage kWh)
              (PG&E main bill Total Usage kWh)
 
 ```
@@ -678,9 +681,9 @@ Total Generation Credit, and Power Charge Indifference Adjustment.
 transmit, distribute, and supply electricity.  Formula:
 
 ```
-(PG&E main bill Franchise Fee Surcharge)
-----------------------------------------*(Submeter Total Usage kWh)
-    (PG&E main bill Total Usage kWh)
+ (PG&E main bill Franchise Fee Surcharge)
+------------------------------------------ X (Submeter Total PG&E Energy Charges)
+(PG&E main bill Total PG&E Energy Charges)
 
 ```
 
@@ -690,8 +693,8 @@ consumption.  Formula:
 
 ```
 (PG&E main bill San Francisco Utility Users' Tax)
-----------------------------------------*(Submeter Net Charges)
-       (PG&E main bill Net Charges)
+------------------------------------------------- X (Submeter Net Charges)
+          (PG&E main bill Net Charges)
 
 ```
 
@@ -701,8 +704,8 @@ Formula:
 
 ```
 (PG&E main bill SF Prop C Tax Surcharge)
-----------------------------------------*(Submeter Net Charges)
-       (PG&E main bill Net Charges)
+---------------------------------------- X (Submeter Net Charges)
+      (PG&E main bill Net Charges)
 
 ```
 
@@ -721,7 +724,7 @@ consumption.  Formula:
 
 ```
 (CleanPowerSF main bill Local Utility Users' Tax)
--------------------------------------------------*(Submeter Net Charges)
+------------------------------------------------- X (Submeter Net Charges)
        (CleanPowerSF main bill Net Charges)
 
 ```
@@ -732,8 +735,8 @@ energy.  Formula:
 
 ```
 (CleanPowerSF main bill Energy Commission Surcharge)
-----------------------------------------------------*(Submeter Net Charges)
-         (CleanPowerSF main bill Net Charges)
+---------------------------------------------------- X (Submeter Net Charges)
+        (CleanPowerSF main bill Net Charges)
 
 ```
 
@@ -755,7 +758,9 @@ annual rate update.
 
 # SEE ALSO
 
+* [Emporia Vue 3 3-PHASE Energy Monitor](https://shop.emporiaenergy.com/products/emporia-vue-3-3-phase-energy-monitor)<br>
 * [Emporia Energy Help Center](https://help.emporiaenergy.com/en/)<br>
+* [Emporia Vue 3 Energy Monitor](https://help.emporiaenergy.com/en/collections/9734036-energy-monitors)<br>
 * [Emporia Account Login](https://web.emporiaenergy.com/login)<br>
 * [PG&E Electric Schedule BEV](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf)<br>
 * [Commercial Business Electric Vehicle (BEV) Rates](https://www.pge.com/tariffs/en/rate-information/electric-rates.html#accordion-a84c67dc1e-item-69d101345a)<br>
