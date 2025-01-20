@@ -56,10 +56,7 @@ file (see ARGUMENTS below):
 * *nnnn*custbill*mmddyyyy*.txt -- a plain text version of the PG&E bill, created
   if OCR completes without errors.
 * *nnnn*custbill*mmddyyyy*-*circuit*.pdf -- a PDF submeter bill for each
-  *circuit* connected to the EV power panel.  The *circuit* names configured
-  with the Emporia Vue app have the format PWS-*uuu*-P*nn* *d.dd*kW, where *uuu* is the
-  Owner's Unit number, *nn* is the EV charger parking space number, and *d.dd* is
-  the power rating of the EV charger in kilowatts (kW).
+  *circuit* connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*-*circuit*.txt -- a plain text submeter bill for each
   *circuit* connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
@@ -132,18 +129,19 @@ The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 purchased in blocks of 10 kW, and the charge is apportioned to the EV chargers
 based on their power (kW) ratings.
 
-Power ratings are specified in EV charger circuit names, which must end with
-space followed by the power rating in kilowatts (kW). For example, these names
-use the format *bbb*-*uuu*-P*ss* *d.dd*kW, where *bbb* is the building code,
-*uuu* is the building unit number, *ss* is the parking space number, and
-*d.dd* is the power rating:
+Power ratings are specified as part EV charger circuit names, which must be
+followed with space and the power rating in kilowatts (kW). Text after "kW" is
+ignored.  For example circuit names for The Palace have the format
+PWS-*uuu*-P*nn* *d.dd*kW, where *uuu* is the Owner's Unit number, *nn* is the
+EV charger parking space number, and *d.dd* is the power rating of the EV
+charger:
 
 ```
-PWS-304-P05 1.92kW
-PWS-404-P06 1.45kW
-PWS-502-P07 6.66kW
-PWS-405-P14 8.32kW
-PWS-403-P20 6.66kW
+PWS-304-P05 1.92kW (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
+PWS-404-P06 1.45kW (NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024)
+PWS-502-P07 6.66kW (Tesla 80A, nominal 208V*32A)
+PWS-405-P14 8.32kW (Tesla Gen3, nominal 208V*40A)
+PWS-403-P20 6.66kW (Tesla 80A, nominal 208V*32A)
 ```
 
 The circuit name without the power rating appears as the account name on
@@ -630,15 +628,6 @@ usage for the current month and the previous 12 months.
 
 ```
 
-If the sum(All Charger Power Ratings in kW) is below the `INCLUDE_kW_LIMIT`:
-
-```
-                                   (Charger Power Rating in kW)
-(Number 10kW blocks)*Months*Rate X ----------------------------
-                                     Subscription Level in kW
-
-```
-
 **Overage Fees**
 : Fees charged for exceeding the Subscription Level kW peak power demand.
 Formula:
@@ -649,9 +638,6 @@ Formula:
                 sum(All Charger Power Ratings in kW)
 
 ```
-
-Overage Fees are **excluded** if the sum(All Charger Power Ratings in kW) is
-below the `INCLUDE_kW_LIMIT`.
 
 **PG&E Energy Charges**
 : Peak, Off Peak, and Super Off Peak kWh costs based on submeter kWh
