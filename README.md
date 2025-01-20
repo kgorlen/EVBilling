@@ -28,8 +28,10 @@ no-inline-html MD033
 EV power panel at The Palace at Washington Square condominium in San Francisco,
 CA.  The EV power panel is equipped with an [Emporia Vue 3 energy
 monitor](https://shop.emporiaenergy.com/products/emporia-vue-3-3-phase-energy-management-hub-monitor-with-8-sensors).
-Input is a Pacific Gas & Electric (PG&E) BEV-1 rate schedule bill in PDF format
-downloaded from [pge.com](https://www.pge.com/).
+Inputs are Pacific Gas & Electric (PG&E) BEV-1 rate schedule bills in PDF format
+downloaded from [pge.com](https://www.pge.com/) and Business Electric Vehicles
+tariffs downloaded from
+[pge.com/tariffs](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
 
 The **evbilling** program:
 
@@ -55,8 +57,9 @@ file (see ARGUMENTS below):
   if OCR completes without errors.
 * *nnnn*custbill*mmddyyyy*-*circuit*.pdf -- a PDF submeter bill for each
   *circuit* connected to the EV power panel.  The *circuit* names configured
-  with the Emporia Vue app have the format PWS-*uuu*-P*nn*, where *uuu* is the
-  Owner's Unit number and *nn* is the EV charger parking space number.
+  with the Emporia Vue app have the format PWS-*uuu*-P*nn* *d.dd*kW, where *uuu* is the
+  Owner's Unit number, *nn* is the EV charger parking space number, and *d.dd* is
+  the power rating of the EV charger in kilowatts (kW).
 * *nnnn*custbill*mmddyyyy*-*circuit*.txt -- a plain text submeter bill for each
   *circuit* connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
