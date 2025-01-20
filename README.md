@@ -185,7 +185,7 @@ FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
 
 ## Merged Circuits
 
-Merged Circuits are used to monitor chargers powered by mutiple phases.  The
+Merged Circuits are used to monitor chargers powered by multiple phases.  The
 name of a merged circuit must match the names of all circuits merged to create
 it.
 
