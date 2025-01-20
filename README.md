@@ -63,10 +63,11 @@ file (see ARGUMENTS below):
   of the raw usage data, formatted as a day-by-hour matrix, for each *circuit*
   connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files.
+* *nnnn*custbill*mmddyyyy*-EVE.json -- a .json file containing a copy of the charger configuration
+  used to process the PG&E bill.
 
-**evbilling** also writes a log file named **evbilling.log** to the conventional
-OS-dependent log directory, `C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs` on
-Windows.
+**evbilling** also writes a log file named **evbilling.log**.  See **SETTINGS
+[logging]** for details.
 
 # OPTIONS
 
@@ -115,14 +116,94 @@ format *nnnn*custbill*mmddyyyy*.pdf, where *nnnn* is the last four digits of the
 PG&E account number and *mmddyyyy* is the PG&E bill statement date.  If a directory
 is specified, all bill files in the directory will be processed.
 
-# SETTINGS
+# EMPORIA APP OR WEBSITE SETTINGS
 
-Settings for **evbilling** are configured in the **evbilling.toml** file in the
-conventional OS-dependent data directory,
-`C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
+EV charger names, power ratings, and channels are configured with the Emporia
+Vue app or website under *Manage/Setup Devices -> Energy and Circuits*.
+
+## EV Charger Names and Power Ratings
+
+The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
+**charge** based on a measurement of the maximum kW power usage in any single
+15-minute period during a monthly billing cycle.  The subscription level is
+purchased in blocks of 10 kW, and the charge is apportioned to the EV chargers
+based on their power (kW) ratings.
+
+Power ratings are specified in EV charger circuit names, which must end with
+space followed by the power rating in kilowatts (kW). For example, these names
+use the format *bbb*-*uuu*-P*ss* *d.dd*kW, where *bbb* is the building code,
+*uuu* is the building unit number, *ss* is the parking space number, and
+*d.dd* is the power rating:
+
+```
+PWS-304-P05 1.92kW
+PWS-404-P06 1.45kW
+PWS-502-P07 6.66kW
+PWS-405-P14 8.32kW
+PWS-403-P20 6.66kW
+```
+
+The circuit name without the power rating appears as the account name on
+submeter bills.
+
+EV charger circuits must be updated whenever EV chargers are connected,
+disconnected, or replaced.  Initially, the nominal charger power rating can be
+set, but should be updated to the actual value as measured by the Emporia Vue
+application.
+
+**NB**: Whenever the load on the EV power panel changes, contact the PG&E Solar
+department at 877-743-4112 and ask to be transferred to Solar/EV Business
+department to adjust the number of 10 kW blocks and request a grace period.
+From [PG&E Electric Schedule BEV, SPECIAL CONDITIONS, 7. GRACE
+PERIOD](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf):
+
+*GRACE PERIOD: A grace period is a period of three (3) billing cycles, each
+with a minimum of 27 days, in which a BEV customer is not subject to overage
+fees (see “Special Conditions” section, item 8) associated with exceeding the
+customer’s monthly pre-defined kW subscription. A grace period is triggered
+under the following two conditions:*
+<i>
+
+1. <b>Customer Enrollment</b>: A grace period is triggered when a customer
+    enrolls in a BEV rate.
+2. <b>Addition of Electrical Vehicle Service Equipment (EVSE)</b>: After a
+    customer is enrolled in BEV rate, a second qualifying event for grace
+    periods is if an existing customer enrolled on the BEV rate (either BEV-1 or
+    BEV-2 rate option) adds additional charging infrastructure that increases
+    load. In this case, a customer must notify PG&E that they have increased the
+    amount of EVSE infrastructure behind the meter, which will then trigger a
+    grace period.
+
+</i>
+
+Failure to notify PG&E can incur an OVERAGE FEE, as described in [PG&E Electric
+Schedule BEV, SPECIAL CONDITIONS, 8. OVERAGE/OVERAGE
+FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
+
+## Merged Circuits
+
+Merged Circuits are used to monitor chargers powered by mutiple phases.  The
+name of a merged circuit must match the names of all circuits merged to create
+it.
+
+# **evbilling** SETTINGS
+
+Settings for **evbilling** are configured in the **evbilling.toml** file in the conventional OS-dependent
+data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
 
 See [TOML: A config file format for humans](https://toml.io/en/) for the
 **.toml** file format specification.
+
+## [logging]
+
+The optional `[logging]` section sets where rotating log files are written. If
+omitted, log files are written to the conventional OS-dependent log directory,
+`C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs` on Windows.
+
+```
+evbilling = "\\NAS0\home\git\Keith\EVBilling\Testing\evbilling.log"
+evtariffs = "\\NAS0\home\git\Keith\EVBilling\Testing\evtariffs.log"
+```
 
 ## [credentials]
 
@@ -152,84 +233,11 @@ For example:
 keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ```
 
-## [ev_chargers]
-
-The `[ev_chargers]` section describes the EVSE (Electric Vehicle Service
-Equipment) power ratings in kW.
-
-```
-PWS-304-P05 = 1.92  # NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A
-PWS-404-P06 = 1.45  # NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024
-PWS-502-P07 = 6.66  # Tesla 80A, nominal 208V*32A
-PWS-405-P14 = 8.32  # Tesla Gen3, nominal 208V*40A
-PWS-403-P20 = 6.66  # Tesla 80A, nominal 208V*32A
-"""EVSE (Electric Vehicle Service Equipment) power ratings in kW."""
-```
-
-The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
-**charge** based on a measurement of the maximum kW power usage in any single
-15-minute period during a monthly billing cycle.  The subscription level is
-purchased in blocks of 10 kW, and the charge is apportioned to the EV chargers
-based on their kW power ratings.
-
-The EV charger names (keys) in the `[ev_chargers]` setting must match the
-circuit names configured in the Emporia Vue application, and the corresponding
-values are the EV charger power ratings in kW.  This setting must be updated
-whenever EV chargers are connected, disconnected, or replaced.  Initially, the
-nominal charger power rating can be set, but should be updated to the actual
-value as measured by the Emporia Vue application.
-
-**NB: Whenever the load on the EV power panel changes, contact the PG&E Solar
-department at 877-743-4112 and ask to be transferred to Solar/EV Business
-department to adjust the number of 10 kW blocks and request a grace period.
-From [PG&E Electric Schedule BEV, SPECIAL CONDITIONS, 7. GRACE
-PERIOD](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf):
-
-*GRACE PERIOD: A grace period is a period of three (3) billing cycles, each
-with a minimum of 27 days, in which a BEV customer is not subject to overage
-fees (see “Special Conditions” section, item 8) associated with exceeding the
-customer’s monthly pre-defined kW subscription. A grace period is triggered
-under the following two conditions:*
-<i>
-
-1. <b>Customer Enrollment</b>: A grace period is triggered when a customer
-    enrolls in a BEV rate.
-2. <b>Addition of Electrical Vehicle Service Equipment (EVSE)</b>: After a
-    customer is enrolled in BEV rate, a second qualifying event for grace
-    periods is if an existing customer enrolled on the BEV rate (either BEV-1 or
-    BEV-2 rate option) adds additional charging infrastructure that increases
-    load. In this case, a customer must notify PG&E that they have increased the
-    amount of EVSE infrastructure behind the meter, which will then trigger a
-    grace period.
-
-</i>
-
-Failure to notify PG&E can incur an OVERAGE FEE, as described in [PG&E Electric
-Schedule BEV, SPECIAL CONDITIONS, 8. OVERAGE/OVERAGE
-FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
-
-## [policy]
-
-### include_kW_limit
-
-```
-# Include excess subscription charges in submeter bills if
-# sum(EV charger power ratings) > include_kW_limit.
-include_kW_limit = 5.0  # kW
-```
-
-Since the subscription level is purchased in blocks of 10 kW, it will generally
-exceed the total maximum power demand of all EV chargers. The `include_kW_limit`
-setting determines if the excess subscription is apportioned to the EV chargers
-based on their kW power ratings, or if the excess is excluded from submeter
-bills.  Its purpose is to keep charging costs economical when there are only one
-or two low-power chargers, such as those for PHEVs, connected to the EV power
-panel.
-
 ## [tariffs]
 
-The `[tariffs]` section controls from where **evtariffs** downloads tariffs and
-where it stores them.
+The `[tariffs]` section controls from where **evtariffs** downloads tariffs,
+where it stores them, and the *Ping key** assigned by
+[healthchecks.io](https://healthchecks.io/).
 
 ```
 # URL of PG&E BEV PDF tariff file for evtariffs command
@@ -239,7 +247,11 @@ https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf"""
 # PG&E BEV tariff download directory for evtariffs command on PalaceSecurity PC:
 pge_bev_tariff_dir = 'C:\Users\Palace_security\OneDrive - Grayson Community Management\General - PWS External\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
 
+# Ping key assigned by https://healthchecks.io/
+healthchecks_uuid = "**********************"
 ```
+
+See **CONFIGURE evtariffs** in **INSTALLATION**.
 
 ## [links]
 
@@ -435,11 +447,14 @@ options:
 ```
 
 Schedule the **evtariffs** command to be run at least weekly so that newly
-published tariffs are not missed.
+published tariffs are not missed.  When run, **evtariffs** sends a ping message
+to [healthchecks.io](https://healthchecks.io/).  See the [healthchecks.io
+documentation](https://healthchecks.io/docs/) for instructions for setting up an
+account and obtaining a *Ping key*, which is used to set the **healthchecks_key**
+in the **[tariffs]** section of the **evbilling.toml** file.
 
-**evtariffs** writes a log file named **evtariffs.log** to the conventional
-OS-dependent log directory, `C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs`
-on Windows.
+**evtariffs** writes a log file named **evtariffs.log**.  See **SETTINGS
+[logging]** for details.
 
 **Note:** The *DIRECTORY* argument is used only for testing since **evbilling**
 expects tariffs to be found in the **pge_bev_tariff_dir** configured in
