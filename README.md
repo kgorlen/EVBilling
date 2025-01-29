@@ -25,8 +25,8 @@ no-inline-html MD033
 # DESCRIPTION
 
 **evbilling** produces bills for Electric Vehicle (EV) chargers connected to the
-EV power panel at The Palace at Washington Square condominium in San Francisco,
-CA.  The EV power panel is equipped with an [Emporia Vue 3 energy
+EV power panel at The Palace at Washington Square condominium building in San
+Francisco, CA.  The EV power panel is equipped with an [Emporia Vue 3 energy
 monitor](https://shop.emporiaenergy.com/products/emporia-vue-3-3-phase-energy-management-hub-monitor-with-8-sensors).
 Inputs are Pacific Gas & Electric (PG&E) BEV-1 rate schedule bills in PDF format
 downloaded from [pge.com](https://www.pge.com/) and Business Electric Vehicles
@@ -84,7 +84,7 @@ file (see ARGUMENTS below):
 :   Fix obvious OCR errors; default --fixocr.
 
 **--forceocr, --no-forceocr**
-:   Force PDF Optical Character Recognition (OCR); default --no-forceocr.
+:   Force OCR; default --no-forceocr.
 
 **--outdir** *directory*
 :   Output directory, default current working directory
@@ -570,7 +570,8 @@ the submeter bill was produced.
 ## Submeter Bill Page 1
 
 **Charger Power Rating**
-: Charger power rating in kW, obtained from **evsettings.py**.
+: Charger power rating in kW, determined as described in *EV Charger Names and
+Settings*.
 
 **Total Usage**
 : Total charger energy usage for the billing period in kWh, as measured by the
@@ -752,7 +753,7 @@ splits into two rate periods, the first ending on June 30 and the second
 beginning on July 1, assuming that the first and second rates listed for each
 TOU period are the rates for the first and second rate periods, respectively.
 If rates are missing due to no usage during a TOU period, **evbilling** stops
-and the missing rates must looked up from previous bills or on [CleanPowerSF
+and the missing rates must be looked up from previous bills or on [CleanPowerSF
 Commercial Rates, B-EV-1,
 p.5](https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e64535d5bbbb39dbe/1719950143549/CPSF+Commercial+Rates+2024.pdf)
 and manually entered in the **sidecar** file.
