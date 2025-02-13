@@ -129,17 +129,17 @@ The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 purchased in blocks of 10 kW, and the charge is apportioned to the EV chargers
 based on their power (kW) ratings.
 
-Power ratings are specified as part EV charger circuit names, which must be
-followed with space and the power rating in kilowatts (kW). Text after "kW" is
-ignored.  For example circuit names for The Palace have the format
-PWS-*uuu*-P*nn* *d.dd*kW, where *uuu* is the Owner's Unit number, *nn* is the
-EV charger parking space number, and *d.dd* is the power rating of the EV
-charger:
+EV charger circuit names starting with "OFF" are ignored.  Power ratings are
+specified by following the circuit name with space and the power rating in
+kilowatts (kW). Text after "kW" is ignored.  For example circuit names for The
+Palace have the format PWS-*uuu*-P*nn* *d.dd*kW, where *uuu* is the Owner's Unit
+number, *nn* is the EV charger parking space number, and *d.dd* is the power
+rating of the EV charger:
 
 ```
-PWS-304-P05 1.92kW (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
+OFF PWS-304-P05 1.92kW (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
 PWS-404-P06 1.45kW (NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024)
-PWS-502-P07 6.66kW (Tesla 80A, nominal 208V*32A)
+OFF PWS-502-P07 6.66kW (Tesla 80A, nominal 208V*32A)
 PWS-405-P14 8.32kW (Tesla Gen3, nominal 208V*40A)
 PWS-403-P20 6.66kW (Tesla 80A, nominal 208V*32A)
 ```
@@ -195,16 +195,25 @@ data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
 See [TOML: A config file format for humans](https://toml.io/en/) for the
 **.toml** file format specification.
 
-## [logging]
+## [header]
 
-The optional `[logging]` section sets where rotating log files are written. If
-omitted, log files are written to the conventional OS-dependent log directory,
-`C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs` on Windows.
+The optional `[header]` section specifies the title and thumbnail image shown on
+submeter bill PDF page headers.
+
+### title
 
 ```
-evbilling = "\\NAS0\home\git\Keith\EVBilling\Testing\evbilling.log"
-evtariffs = "\\NAS0\home\git\Keith\EVBilling\Testing\evtariffs.log"
+title = "The Palace at Washington Square\nEV Charger Energy Statement"
 ```
+
+### thumbnail
+
+```
+thumbnail = "The-Palace-at-Washington-Square.jpg"
+```
+
+`thumbnail` may be either a .jpg or .png file in the conventional OS-dependent
+data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows. 
 
 ## [credentials]
 
@@ -234,10 +243,21 @@ For example:
 keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ```
 
+## [logging]
+
+The optional `[logging]` section sets where rotating log files are written. If
+omitted, log files are written to the conventional OS-dependent log directory,
+`C:\Users\`*`Username`*`\AppData\Local\EVBilling\Logs` on Windows.
+
+```
+evbilling = "\\NAS0\home\git\Keith\EVBilling\Testing\evbilling.log"
+evtariffs = "\\NAS0\home\git\Keith\EVBilling\Testing\evtariffs.log"
+```
+
 ## [tariffs]
 
 The `[tariffs]` section controls from where **evtariffs** downloads tariffs,
-where it stores them, and the *Ping key** assigned by
+where it stores them, and the *Ping key* assigned by
 [healthchecks.io](https://healthchecks.io/).
 
 ```
@@ -249,7 +269,7 @@ https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf"""
 pge_bev_tariff_dir = 'C:\Users\Palace_security\OneDrive - Grayson Community Management\General - PWS External\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
 
 # Ping key assigned by https://healthchecks.io/
-healthchecks_uuid = "**********************"
+healthchecks_uuid = "https://hc-ping.com/**********************"
 ```
 
 See **CONFIGURE evtariffs** in **INSTALLATION**.
