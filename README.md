@@ -132,16 +132,17 @@ based on their power (kW) ratings.
 EV charger circuit names starting with "OFF" are ignored.  Power ratings are
 specified by following the circuit name with space and the power rating in
 kilowatts (kW). Text after "kW" is ignored.  For example circuit names for The
-Palace have the format PWS-*uuu*-P*nn* *d.dd*kW, where *uuu* is the Owner's Unit
-number, *nn* is the EV charger parking space number, and *d.dd* is the power
-rating of the EV charger:
+Palace have the format PWS-*uuu*-P*nn* *d.dd*kW #*breakers*, where *uuu* is the
+Owner's Unit number, *nn* is the EV charger parking space number, *d.dd* is the
+power rating of the EV charger, and *breaker* is a list of the circuit's
+breakers:
 
 ```
-OFF PWS-304-P05 1.92kW (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
-PWS-404-P06 1.45kW (NEMA 5-!5R, Toyota G9060-47130 charging cable, measured June, 2024)
-OFF PWS-502-P07 6.66kW (Tesla 80A, nominal 208V*32A)
-PWS-405-P14 8.32kW (Tesla Gen3, nominal 208V*40A)
-PWS-403-P20 6.66kW (Tesla 80A, nominal 208V*32A)
+PWS-403-P20 6.7kW #13,15 (Tesla 80A, measured Feb., 2025)
+PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130 charging cable, measured Feb., 2025)
+PWS-405-P14 8.5kW #14,16 (Tesla Gen3, measured Feb., 2025)
+OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
+OFF PWS-502-P07 6.7kW #19,21 (Tesla 80A, nominal 208V*32A)
 ```
 
 The circuit name without the power rating appears as the account name on
@@ -213,7 +214,7 @@ thumbnail = "The-Palace-at-Washington-Square.jpg"
 ```
 
 `thumbnail` may be either a .jpg or .png file in the conventional OS-dependent
-data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows. 
+data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
 
 ## [credentials]
 
