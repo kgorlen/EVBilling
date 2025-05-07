@@ -138,11 +138,11 @@ power rating of the EV charger, and *breaker* is a list of the circuit's
 breakers:
 
 ```
-PWS-403-P20 6.7kW #13,15 (Tesla 80A, measured Feb., 2025)
-PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130 charging cable, measured Feb., 2025)
-PWS-405-P14 8.5kW #14,16 (Tesla Gen3, measured Feb., 2025)
 OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
-OFF PWS-502-P07 6.7kW #19,21 (Tesla 80A, nominal 208V*32A)
+PWS-403-P20 6.70kW #13,15 (Tesla 80A)
+PWS-404-P06 1.45kW #8 (NEMA 5-15R, Toyota G9060-47130 charging cable)
+PWS-405-P14 8.25kW #14,16 (Tesla Gen3)
+PWS-502-P07 2.67kW #19,21 (Tesla 80A)
 ```
 
 The circuit name without the power rating appears as the account name on
@@ -184,9 +184,12 @@ FEE](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf).
 
 ## Merged Circuits
 
-Merged Circuits are used to monitor chargers powered by multiple phases.  The
-name of a merged circuit must match the names of all circuits merged to create
-it.
+Merged Circuits are used to monitor chargers powered by multiple phases.
+Recommended practice is to use the same circuit name, without the kW rating or
+comment, for all circuits merged to create a Merged Circuit.  For example, if
+Circuits 1 and 2 are merged to create a Merged Circuit named `PWS-405-P14 8.5kW
+#14,16 (Tesla Gen3, measured Feb., 2025)`, Circuits 1 and 2 should be named
+`PWS-405-P14`.
 
 # **evbilling** SETTINGS
 
