@@ -15,11 +15,10 @@ no-inline-html MD033
 # SYNOPSIS
 
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
-[**-d** | **--debug** | **--no-debug**] [**--fixocr** | **--no-fixocr**]
-[**--forceocr** | **--no-forceocr**] [**--outdir** *DIRECTORY*] [**--pages**
-*PAGES*] [**--print** | **--no-print**] [**-q** | **--quiet** | **--no-quiet**]
-[**--showocr** | **--no-showocr**] [**--submeter** | **--no-submeter**] [**-v**
-| **--version** | **--no-version**]
+[**-d** | **--debug** | **--no-debug**] [**--forceocr** | **--no-forceocr**]
+[**--outdir** *DIRECTORY*] [**--pages** *PAGES*] [**--print** | **--no-print**]
+[**-q** | **--quiet** | **--no-quiet**] [**--showocr** | **--no-showocr**]
+[**--submeter** | **--no-submeter**] [**-v** | **--version** | **--no-version**]
 **FILES ...**
 
 # DESCRIPTION
@@ -79,9 +78,6 @@ file (see ARGUMENTS below):
 
 **-d, --debug, --no-debug**
 :   Log debugging information; default --no-debug.
-
-**--fixocr, --no-fixocr**
-:   Fix obvious OCR errors; default --fixocr.
 
 **--forceocr, --no-forceocr**
 :   Force OCR; default --no-forceocr.
@@ -188,7 +184,7 @@ Merged Circuits are used to monitor chargers powered by multiple phases.
 Recommended practice is to use the same circuit name, without the kW rating or
 comment, for all circuits merged to create a Merged Circuit.  For example, if
 Circuits 1 and 2 are merged to create a Merged Circuit named `PWS-405-P14 8.5kW
-#14,16 (Tesla Gen3, measured Feb., 2025)`, Circuits 1 and 2 should be named
+ #14,16 (Tesla Gen3, measured Feb., 2025)`, Circuits 1 and 2 should be named
 `PWS-405-P14`.
 
 # **evbilling** SETTINGS
@@ -577,8 +573,8 @@ Even if **evbilling** runs without errors, the plain text version of the PG&E
 bill, which in this example would be named **2318custbill06132024.txt**, should
 be compared to the downloaded bill to assure accuracy.
 
-*OCR actually makes this type of error, but the **evbilling --fixocr** option
-corrects these "obvious" errors before writing the **sidecar** file.
+*OCR actually makes this type of error, but **evbilling** corrects these
+"obvious" errors before writing the **sidecar** file.
 
 # EXPLANATION OF SUBMETER BILL LINE ITEMS
 
@@ -611,13 +607,11 @@ submeter.
 : Adjustment for the difference between the PG&E panel meter reading and the sum of the individual submeter readings.  Formula:
 
 ```
-
    (Submeter Total Usage)
 ----------------------------
-(PG&E main bill Total Usage)
+(Main PG&E bill Total Usage)
 
-X [(PG&E main bill Total Amount Due) - sum(All submeter PG&E and CleanPowerSF charges)]
-
+X [(Main PG&E bill Total Amount Due) - sum(All submeter PG&E and CleanPowerSF charges)]
 ```
 
 **Total Amount Due**
@@ -650,7 +644,6 @@ usage for the current month and the previous 12 months.
                                        (Charger Power Rating in kW)
 (Number 10kW blocks)*Months*Rate X ------------------------------------
                                    sum(All Charger Power Ratings in kW)
-
 ```
 
 **Overage Fees**
@@ -658,10 +651,9 @@ usage for the current month and the previous 12 months.
 Formula:
 
 ```
-(PG&E main bill Overage Fees charge) X (Charger Power Rating in kW)
+(Main PG&E bill Overage Fees charge) X (Charger Power Rating in kW)
 -------------------------------------------------------------------
                 sum(All Charger Power Ratings in kW)
-
 ```
 
 **PG&E Energy Charges**
@@ -683,7 +675,7 @@ period.
 : Credit against the Vintaged Power Charge Indifference Adjustment. Formula:
 
 ```
-(Bundled Power Charge Indifference Adjustment rate $/kWh)*(Submeter Total Usage kWh)
+(Bundled PCIA rate $/kWh)*(Submeter Total Usage kWh)
 ```
 
 **Total Generation Credit**
@@ -695,10 +687,9 @@ CleanPowerSF customers. The PCIA is determined by the "vintage" year that a
 customer started to obtain power from CleanPowerSF.  Formula:
 
 ```
-(PG&E main bill Power Charge Indifference Adjustment charge)
------------------------------------------------------------- X (Submeter Total Usage kWh)
-             (PG&E main bill Total Usage kWh)
-
+                           (Submeter Total Usage kWh)
+(Main PG&E bill PCIA) X --------------------------------
+                        (Main PG&E bill Total Usage kWh)
 ```
 
 **Net Charges**
@@ -710,10 +701,9 @@ Total Generation Credit, and Power Charge Indifference Adjustment.
 transmit, distribute, and supply electricity.  Formula:
 
 ```
- (PG&E main bill Franchise Fee Surcharge)
------------------------------------------- X (Submeter Total PG&E Energy Charges)
-(PG&E main bill Total PG&E Energy Charges)
-
+                                              (Submeter Total PG&E Energy Charges)
+(Main PG&E bill Franchise Fee Surcharge) X ------------------------------------------
+                                           (Main PG&E bill Total PG&E Energy Charges)
 ```
 
 **San Francisco Utility Users' Tax**
@@ -721,10 +711,9 @@ transmit, distribute, and supply electricity.  Formula:
 consumption.  Formula:
 
 ```
-(PG&E main bill San Francisco Utility Users' Tax)
-------------------------------------------------- X (Submeter Net Charges)
-          (PG&E main bill Net Charges)
-
+                                                    (Submeter PG&E Net Charges)
+(Main PG&E bill San Francisco Utility Users' Tax) X ----------------------------
+                                                    (Main bill PG&E Net Charges)
 ```
 
 **SF Prop C Tax Surcharge**
@@ -732,10 +721,9 @@ consumption.  Formula:
 Formula:
 
 ```
-(PG&E main bill SF Prop C Tax Surcharge)
----------------------------------------- X (Submeter Net Charges)
-      (PG&E main bill Net Charges)
-
+                                           (Submeter PG&E Net Charges)
+(Main PG&E bill SF Prop C Tax Surcharge) X ----------------------------
+                                           (Main PG&E bill Net Charges)
 ```
 
 ## Submeter Bill Page 3: Details of CleanPowerSF Electric Generation Charges
@@ -752,10 +740,9 @@ measurements.
 consumption.  Formula:
 
 ```
-(CleanPowerSF main bill Local Utility Users' Tax)
-------------------------------------------------- X (Submeter Net Charges)
-       (CleanPowerSF main bill Net Charges)
-
+                                                    (Submeter CleanPowerSF Net Charges)
+(Main CleanPowerSF bill Local Utility Users' Tax) X ------------------------------------
+                                                    (Main CleanPowerSF bill Net Charges)
 ```
 
 **Energy Commission Surcharge**
@@ -763,10 +750,9 @@ consumption.  Formula:
 energy.  Formula:
 
 ```
-(CleanPowerSF main bill Energy Commission Surcharge)
----------------------------------------------------- X (Submeter Net Charges)
-        (CleanPowerSF main bill Net Charges)
-
+                                                       (Submeter CleanPowerSF Net Charges)
+(Main CleanPowerSF bill Energy Commission Surcharge) X ------------------------------------
+                                                       (Main CleanPowerSF bill Net Charges)
 ```
 
 ## CleanPowerSF Rate Changes
