@@ -15,10 +15,12 @@ no-inline-html MD033
 # SYNOPSIS
 
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
-[**-d** | **--debug** | **--no-debug**] [**--forceocr** | **--no-forceocr**]
+[**-d** | **--debug** | **--no-debug**] [**--detarch** *DETARCH*]
+[**--forceocr** | **--no-forceocr**] [**--maxdist** *MAXDIST*]
 [**--outdir** *DIRECTORY*] [**--pages** *PAGES*] [**--print** | **--no-print**]
-[**-q** | **--quiet** | **--no-quiet**] [**--showocr** | **--no-showocr**]
-[**--submeter** | **--no-submeter**] [**-v** | **--version** | **--no-version**]
+[**-q** | **--quiet** | **--no-quiet**] [**--recoarch** *RECOARCH*]
+[**--showocr** | **--no-showocr**] [**--submeter** | **--no-submeter**]
+[**-v** | **--version** | **--no-version**]
 **FILES ...**
 
 # DESCRIPTION
@@ -45,9 +47,9 @@ The **evbilling** program:
     rate changes and varying Time-Of-Use (TOU) rates.
 
 **evbilling** writes the following files to a directory named *yyyy*-*mm*-*dd*
-that it creates in the current directory or in the directory specified by the
-**--outdir** argument, where *yyyy*-*mm*-*dd* is the statement date of the bill
-file (see ARGUMENTS below):
+that it creates in the directory of the bill file or in the directory specified
+by the **--outdir** argument, where *yyyy*-*mm*-*dd* is the statement date of
+the bill file (see ARGUMENTS below):
 
 * *nnnn*custbill*mmddyyyy*.pdf -- a copy of the PG&E bill file.
 * *nnnn*custbill*mmddyyyy*-OCR.txt -- the OCR result **sidecar** text file for
@@ -79,11 +81,17 @@ file (see ARGUMENTS below):
 **-d, --debug, --no-debug**
 :   Log debugging information; default --no-debug.
 
+**--detarch** *DETARCH*
+:   docTR detector architecture; default db_resnet50.
+
 **--forceocr, --no-forceocr**
 :   Force OCR; default --no-forceocr.
 
+**--maxdist** *MAXDIST*
+:   Maximum Levenshtein distance of recognizable OCR text lines; default: 10.
+
 **--outdir** *directory*
-:   Output directory, default current working directory
+:   Output directory, default: directory of PG&E .pdf bill
 
 **--pages** *ij*
 :   Two single-digit page numbers, *i* is the *Details of PG&E
@@ -95,6 +103,9 @@ file (see ARGUMENTS below):
 
 **-q, --quiet, --no-quiet**
 :   Do not print INFO, WARNING, ERROR, or CRITICAL messages to `stderr`; default --no-quiet.
+
+**--recoarch** *RECOARCH*
+:   docTR recognition architecture; default: crnn_vgg16_bn.
 
 **--showocr, --no-showocr**
 :   Show OCR result; implies **--forceocr**; default --no-showocr.
