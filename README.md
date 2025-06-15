@@ -370,19 +370,6 @@ TOU rate period; for example, the following defines the two-hour TOU range from
 "Super Off Peak" = [[23, 24], [0, 1]]
 ```
 
-## [rate_info]
-
-### cpsf_rate_change
-
-The `cpsf_rate_change` setting defines the month and day when CleanPowerSF
-annually updates electric generation rates.  See *CleanPowerSF Rate Changes*
-for details.
-
-```
-# Date of CleanPowerSF annual rate change
-cpsf_rate_change = "7/1"
-```
-
 # INSTALLATION
 
 ## ENVIRONMENT
@@ -620,7 +607,7 @@ submeter.
 ```
    (Submeter Total Usage)
 ----------------------------
-(Main PG&E bill Total Usage)
+sum(All Submeter Total Usage)
 
 X [(Main PG&E bill Total Amount Due) - sum(All submeter PG&E and CleanPowerSF charges)]
 ```
