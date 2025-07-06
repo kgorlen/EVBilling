@@ -15,8 +15,9 @@ no-inline-html MD033
 # SYNOPSIS
 
 **evbilling** [**-h** | **--help**] [**--autoblock** | **--no-autoblock**]
-[**-d** | **--debug** | **--no-debug**] [**--detarch** *DETARCH*]
-[**--forceocr** | **--no-forceocr**] [**--maxdist** *MAXDIST*]
+[**--binthresh** *BINTHRESH*] [**--boxthresh** *BOXTHRESH*]
+[**-d** | **--debug** | **--no-debug**] [**--detarch** *DETARCH*] [**--dpi** *DPI*]
+[**--forceocr** | **--no-forceocr**] [**--maxscore** *MAXSCORE*]
 [**--outdir** *DIRECTORY*] [**--pages** *PAGES*] [**--print** | **--no-print**]
 [**-q** | **--quiet** | **--no-quiet**] [**--recoarch** *RECOARCH*]
 [**--showocr** | **--no-showocr**] [**--submeter** | **--no-submeter**]
@@ -78,17 +79,26 @@ the bill file (see ARGUMENTS below):
 **--autoblock, --no-autoblock**
 :   Automatically locate OCR text blocks; default --autoblock.
 
+**--binthresh** *BINTHRESH*
+:   docTR OCR detector binarization threshold
+
+**--boxthresh** *BOXTHRESH*
+:   docTR OCR detector box threshold
+
 **-d, --debug, --no-debug**
 :   Log debugging information; default --no-debug.
 
 **--detarch** *DETARCH*
-:   docTR detector architecture; default db_resnet50.
+:   docTR detector architecture; default db_mobilenet_v3_large.
+
+**--dpi** *DPI*
+:   DPI resolution for rendering PDF pages; default: 1200
 
 **--forceocr, --no-forceocr**
-:   Force OCR; default --no-forceocr.
+:   Force OCR.
 
-**--maxdist** *MAXDIST*
-:   Maximum Levenshtein distance of recognizable OCR text lines; default: 10.
+**--maxscore** *MAXSCORE*
+:   Maximum normalized Levenshtein distance of recognizable OCR text lines; default: 0.2.
 
 **--outdir** *directory*
 :   Output directory, default: directory of PG&E .pdf bill
@@ -501,13 +511,13 @@ This will run **evbilling** on the bill file and add **runevbilling.exe** to the
 # EXAMPLES
 
 Most options are intended for testing and debugging.  After downloading a PG&E
-bill named e.g. 2318custbill06132024.pdf, the command:
+bill named e.g. 2318custbill05132025.pdf, the command:
 
 ```
-evbilling 2318custbill06132024.pdf
+evbilling 2318custbill05132025.pdf
 ```
 
-will create a subdirectory named **2024-06-13** to which it will write all files
+will create a subdirectory named **2025-05-13** to which it will write all files
 as described earlier, including the submeter PDF bill files to be sent to the
 Owners.
 
@@ -516,7 +526,7 @@ keywords it requires, or dates are inconsistent, or charges are missing or do
 not reconcile, in which case it reports problems and stops.  It is then
 necessary to manually correct the OCR **sidecar** file and rerun the
 **evbilling** command.  In this example, the **sidecar** file would be named
-**2318custbill06132024-OCR.txt**.
+**2318custbill05132025-OCR.txt**.
 
 When run, **evbilling** checks for an existing **sidecar** file and uses it
 instead of performing OCR on the PG&E bill.  It may be necessary to correct and
@@ -524,55 +534,67 @@ rerun the command repeatedly until all OCR errors have been corrected.  For
 example, suppose **evbilling** fails:
 
 ```
-evbilling 2318custbill07162024.pdf
-2024-07-27 15:42:13 - CRITICAL - Missing 1011044609 PG&E charges: {'Franchise Fee Surcharge'}.; exiting.
+evbilling 2318custbill05132025.pdf
+...
+2025-07-02 12:04:56 - CRITICAL - Failed to find any PG&E rate periods; exiting.
 ```
 
-The **2318custbill07162024-OCR.txt** file may then contain the excerpt:
+The **2318custbill05132025-OCR.txt** file may then contain the excerpt:
 
 ```
 === Page 3 details ===
 Details of PG&E Electric Delivery Charges
-06/08/2024 - 07/09/2024 (32 billing days)
-Service For: 1731 POWELL ST HSE EV CHARGER
+04/08/2025 - 05/06/2025 (29 billing days)
 Service Agreement ID: 3758116729
 Rate Schedule: BEV1 Bus Low Use EV
-06/08/2024 - 06/30/2024
-Subscription Charges 1
-Subscription Level (10kW/block) 10 blocks @ 0.7188 month @ $12.41 $89.20
-Overage Fees 0 kW @ $2.48000 0.00
+04/0872025 - 05/06/2025
+Subscription Charges
+Subscription Level (10kW/block) 1 block @ 1.0000 month @ $12.41 $12.41
+Overage Fees 1 kW @ $2.48000 0.00
 Energy Charges
-Peak 1.904500 kWh @ $0.40040 0.12
-Off Peak 17.028000 kWh @ $0.20938 3.55
-Super Off Peak 2.518500 kWh @ $0.18173 0.46
-Generation Credit -3.14
-Power Charge Indifference Adjustment 0.17
-Franchise e Fee Surcharge 0.02
-San Francisco Utility Users' Tax (7.500%) 6.82
-SF Prop C Tax Surcharge 0.90
+Peak 45.382500 kWh @ $0.38079 17.28
+Off Peak 686.827500 kWh @ $0.18878 129.66
+Super Off Peak 73.461000 kWh @ $0.16212 11.91
+Generation Credit -99.60
+Power Charge Indifference Adjustment 4.46
+Franchise Fee Surcharge 0.85
+San Francisco Utility Users' Tax (7.500%) 5.71
+SF Prop C Tax Surcharge 0.75
+Total PG&E Electric Delivery Charges $83.48
+2018 Vintaged Power Charge Indifference Adjustment
 ```
 
-The problem is the "e" between "Franchise" and "Fee".*  After editing
- **2318custbill07162024-OCR.txt** with e.g. Notepad to remove the 'e',
-**evbilling** is rerun and fails again:
+The problem is the invalid date 04/0872025, where the "/" has been incorrectly
+classified as "7"  After editing **2318custbill05132025-OCR.txt** with e.g.
+ Notepad to correct the date to 04/08/2025, **evbilling** is rerun and fails
+again:
 
 ```
-2024-07-27 15:44:41 - ERROR - Invalid 1011044609 PG&E charge:  Peak 1.804500 kWh @ $0.40040 $ 0.12
-2024-07-27 15:44:41 - ERROR - Calculated PG&E total charges $135.96 not equal to OCR total charges $136.56
-2024-07-27 15:44:41 - ERROR - 2 error(s) found while processing 2318custbill07162024.pdf.
-2024-07-27 15:44:41 - CRITICAL - For details see log file: Testing\evbilling.log.; exiting.
+2025-07-02 12:13:17 - ERROR - Invalid 1011044609 PG&E charge: Peak 45.382500 kWh @ $0.38079 $ 17.23
+2025-07-02 12:13:17 - ERROR - Calculated PG&E total charges $83.38 not equal to OCR total charges $83.43.
+2025-07-02 12:13:17 - CRITICAL - 2 error(s) found while processing 2318custbill05132025.pdf, for details see log file: evbilling.log; exiting.
 ```
 
 Comparing the invalid PG&E charge to the original bill shows that the Peak
-energy charge should be $0.72 instead of $0.12.  After correcting this error,
+energy charge should be $17.28 instead of $17.23.  After correcting this error,
 **evbilling** runs without errors.
 
 Even if **evbilling** runs without errors, the plain text version of the PG&E
-bill, which in this example would be named **2318custbill06132024.txt**, should
-be compared to the downloaded bill to assure accuracy.
+bill, which in this example would be named **2318custbill05132025.txt**, should
+be manually compared to the downloaded bill to assure accuracy.
 
-*OCR actually makes this type of error, but **evbilling** corrects these
-"obvious" errors before writing the **sidecar** file.
+A small (less than 3%) Metering Difference Adjustment indicates good accuracy, for example:
+
+```
+2025-07-02 12:18:30 - evbilling - INFO - Adjustment for 05/13/2025 bill: $167.78 - $171.74 = $-3.96 (-2.3%).
+```
+
+Generally, docTR OCR reliably recognizes digits, but errors result from poor
+text location detection.  For example, instead of `1.23`, a space is inserted
+after a decimal point: `1. 23` or a space and repeated digit are inserted after
+a decimal point: `1.2 23`.  Similar errors frequently occur when detecting
+letters and special symbols. However, **evbilling** auto-corrects nearly all OCR
+errors and reconciles bill amounts, making undetected errors highly unlikely.
 
 # EXPLANATION OF SUBMETER BILL LINE ITEMS
 
