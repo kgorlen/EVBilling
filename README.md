@@ -150,16 +150,17 @@ EV charger circuit names starting with "OFF" are ignored.  Power ratings are
 specified by following the circuit name with space and the power rating in
 kilowatts (kW). Text after "kW" is ignored.  For example circuit names for The
 Palace have the format PWS-*uuu*-P*nn* *d.dd*kW #*breakers*, where *uuu* is the
-Owner's Unit number, *nn* is the EV charger parking space number, *d.dd* is the
+Owner's Unit number, *nn* is the EV charger parking space number, *d.d* is the
 power rating of the EV charger, and *breaker* is a list of the circuit's
 breakers:
 
 ```
-OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS charging cable, nominal 120V*16A)
-PWS-403-P20 6.70kW #13,15 (Tesla 80A)
-PWS-404-P06 1.45kW #8 (NEMA 5-15R, Toyota G9060-47130 charging cable)
-PWS-405-P14 8.25kW #14,16 (Tesla Gen3)
-PWS-502-P07 2.67kW #19,21 (Tesla 80A)
+PWS-203-P07 2.7kW #19,21 (Tesla 80A)
+PWS-204-P26 7.1kW #20,22 (GM PowerUp)
+PWS-403-P20 6.7kW #13,15 (Tesla 80A)
+PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130)
+PWS-405-P14 8.1kW #14,16 (Tesla Gen3)
+OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A)
 ```
 
 The circuit name without the power rating appears as the account name on
