@@ -135,10 +135,11 @@ is specified, all bill files in the directory will be processed.
 
 # EMPORIA APP OR WEBSITE SETTINGS
 
-EV charger names, power ratings, and channels are configured with the Emporia
-Vue app or website under *Manage/Setup Devices -> Energy and Circuits*.
+EV charger names, power ratings, channels, and owner email addresses are
+configured with the Emporia Vue app or website under *Manage/Setup Devices ->
+Energy and Circuits*.
 
-## EV Charger Names and Power Ratings
+## EV Charger Names, Power Ratings, and Owner Email Addresses
 
 The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 **charge** based on a measurement of the maximum kW power usage in any single
@@ -152,14 +153,17 @@ kilowatts (kW). Text after "kW" is ignored.  For example circuit names for The
 Palace have the format PWS-*uuu*-P*nn* *d.dd*kW #*breakers*, where *uuu* is the
 Owner's Unit number, *nn* is the EV charger parking space number, *d.d* is the
 power rating of the EV charger, and *breaker* is a list of the circuit's
-breakers:
+breakers.
+
+A description of the EV charger and a list of email addresses of EV charger
+owners enclosed in `[...]` should be included for use by **evmailbills**:
 
 ```
-PWS-203-P07 2.7kW #19,21 (Tesla 80A)
-PWS-204-P26 7.1kW #20,22 (GM PowerUp)
-PWS-403-P20 6.7kW #13,15 (Tesla 80A)
-PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130)
-PWS-405-P14 8.1kW #14,16 (Tesla Gen3)
+PWS-203-P07 2.7kW #19,21 (Tesla 80A) [owner203@gmail.com]
+PWS-204-P26 7.1kW #20,22 (GM PowerUp) [owner204@comcast.net]
+PWS-403-P20 6.7kW #13,15 (Tesla 80A) [owner403@gmail.com, coowner403@gmail.com]
+PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130) [owner404@outlook.com]
+PWS-405-P14 8.1kW #14,16 (Tesla Gen3) [owner405@apple.com,coowner405@yahoo.com]
 OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A)
 ```
 
@@ -265,6 +269,27 @@ For example:
 keyring set "emporiavue" "pws.ev.energy@gmail.com"
 ```
 
+## [smtp]
+
+```
+[smtp]
+# SMTP server configuration
+smtp_server = "smtp.gmail.com"
+smtp_port = 465
+smtp_user = "pws.ev.energy@gmail.com"
+```
+
+These settings specify the SMTP server used by **evmailbills** to email bills to
+EV charger owners.  Set the SMTP server password with the command:
+<pre>
+keyring set "<i>smtp_server</i>" "<i>smtp_user</i>"
+</pre>
+For example:
+
+```
+keyring set "smtp.gmail.com" "pws.ev.energy@gmail.com"
+```
+
 ## [logging]
 
 The optional `[logging]` section sets where rotating log files are written. If
@@ -274,6 +299,7 @@ omitted, log files are written to the conventional OS-dependent log directory,
 ```
 evbilling = "\\NAS0\home\git\Keith\EVBilling\Testing\evbilling.log"
 evtariffs = "\\NAS0\home\git\Keith\EVBilling\Testing\evtariffs.log"
+evmailbills = '\\NAS0\home\git\Keith\EVBilling\Tests\evmailbills.log'
 ```
 
 ## [tariffs]
@@ -507,6 +533,53 @@ To configure **runevbilling**:
 1. Open **runevbilling.exe**.
 
 This will run **evbilling** on the bill file and add **runevbilling.exe** to the
+*Choose another app* menu for future use.
+
+## CONFIGURE **evmailbills**
+
+The **evmailbills** command emails all submeter bills in a
+*nnnn*custbill*mmddyyyy*.zip file or a single
+*nnnn*custbill*mmddyyyy*-*circuit*.pdf submeter bill file to the list of email
+addresses found for the *circuit* in the Emporia app or website settings.  When
+run on a .zip file, it also emails the corresponding PG&E PDF bill to the
+`contact_email` address configured in the **evbilling.toml** file.
+
+```
+usage: evmailbills.py [-h] [-d | --debug | --no-debug] [--dry-run | --no-dry-run] [--msg MSG] [-v] input_file
+
+Send EV charging bill PDFs to charger owners via email.
+
+positional arguments:
+  input_file            Path to a .zip file containing PDF bills or a single .pdf file
+
+options:
+  -h, --help            show this help message and exit
+  -d, --debug, --no-debug
+                        Log debug info; default --no-debug
+  --dry-run, --no-dry-run
+                        Do not send emails; default --no-dry-run
+  --msg MSG, --message MSG
+                        Message to append to the email body; default: empty
+  -v, --version         Display the version number and exit
+
+```
+
+Optionally, **evmailbills** can be configured for use with the *Windows File
+Explorer* *Open with ...* menu to email all the bills in a
+*nnnn*custbill*mmddyyyy*.zip file without needing to launch a **cmd** window and
+enter a command.
+
+To configure **evmailbills**:
+
+1. Browse with Windows File Explorer to the folder containing the input file to
+   be processed.
+1. Right-click on the bill file and choose *Open with* -> *Choose another app*.
+1. Scroll to the bottom and choose *More apps*.
+1. Scroll to the bottom and choose *Look for another app on this PC*.
+1. Browse to `C:\Users\`*`Username`*`\.local\bin`.
+1. Open **evmailbills.exe**.
+
+This will run **evmailbills** on the .zip file and add **evmailbills.exe** to the
 *Choose another app* menu for future use.
 
 # EXAMPLES
