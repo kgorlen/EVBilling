@@ -64,9 +64,12 @@ the bill file (see ARGUMENTS below):
 * *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
   of the raw usage data, formatted as a day-by-hour matrix, for each *circuit*
   connected to the EV power panel.
-* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files.
-* *nnnn*custbill*mmddyyyy*-EVE.json -- a .json file containing a copy of the charger configuration
-  used to process the PG&E bill.
+* *nnnn*custbill*mmddyyyy*-DUE.json -- a CSV file containing the total amount
+  due for each *circuit*.
+* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files and
+  the *nnnn*custbill*mmddyyyy*-DUE.csv file.
+* *nnnn*custbill*mmddyyyy*-EVE.json -- a JSON (JavaScript Object Notation) file
+  containing a copy of the charger configuration used to process the PG&E bill.
 
 **evbilling** also writes a log file named **evbilling.log**.  See **SETTINGS
 [logging]** for details.
@@ -545,7 +548,7 @@ run on a .zip file, it also emails the corresponding PG&E PDF bill to the
 `contact_email` address configured in the **evbilling.toml** file.
 
 ```
-usage: evmailbills.py [-h] [-d | --debug | --no-debug] [--dry-run | --no-dry-run] [--msg MSG] [-v] input_file
+usage: evmailbills.py [-h] [-d | --debug | --no-debug] [--dry-run | --no-dry-run | --test-run ADDRESS] [--msg MSG] [-v] input_file
 
 Send EV charging bill PDFs to charger owners via email.
 
@@ -558,6 +561,7 @@ options:
                         Log debug info; default --no-debug
   --dry-run, --no-dry-run
                         Do not send emails; default --no-dry-run
+  --test-run ADDRESS    Send all emails to this address instead of the charger owner(s).
   --msg MSG, --message MSG
                         Message to append to the email body; default: empty
   -v, --version         Display the version number and exit
