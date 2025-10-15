@@ -159,7 +159,7 @@ power rating of the EV charger, and *breaker* is a list of the circuit's
 breakers.
 
 A description of the EV charger and a list of email addresses of EV charger
-owners enclosed in `[...]` should be included for use by **evmailbills**:
+owners enclosed in `[...]` should be included for use by **mailevbills**:
 
 ```
 PWS-203-P07 2.7kW #19,21 (Tesla 80A) [owner203@gmail.com]
@@ -249,7 +249,7 @@ data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
 ### contact_email
 
 ```
-# Email address to appear in submeter bill footer
+# Email address to appear in submeter bill footer and **mailevbills** sender address
 contact_email = "pws.ev.energy@gmail.com"
 ```
 
@@ -282,7 +282,7 @@ smtp_port = 465
 smtp_user = "pws.ev.energy@gmail.com"
 ```
 
-These settings specify the SMTP server used by **evmailbills** to email bills to
+These settings specify the SMTP server used by **mailevbills** to email bills to
 EV charger owners.  Set the SMTP server password with the command:
 <pre>
 keyring set "<i>smtp_server</i>" "<i>smtp_user</i>"
@@ -302,7 +302,7 @@ omitted, log files are written to the conventional OS-dependent log directory,
 ```
 evbilling = "\\NAS0\home\git\Keith\EVBilling\Testing\evbilling.log"
 evtariffs = "\\NAS0\home\git\Keith\EVBilling\Testing\evtariffs.log"
-evmailbills = '\\NAS0\home\git\Keith\EVBilling\Tests\evmailbills.log'
+mailevbills = '\\NAS0\home\git\Keith\EVBilling\Tests\mailevbills.log'
 ```
 
 ## [tariffs]
@@ -316,8 +316,8 @@ where it stores them, and the *Ping key* assigned by
 pge_bev_tariff_url = """
 https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf"""
 
-# PG&E BEV tariff download directory for evtariffs command on PalaceSecurity PC:
-pge_bev_tariff_dir = 'C:\Users\Palace_security\OneDrive - Grayson Community Management\General - PWS External\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
+# PG&E BEV tariff download directory for evtariffs command for testing on GBR-PC:
+pge_bev_tariff_dir = '\\NAS0\Household\Household Documents\1731 Powell\HOA\PWS Collaboration\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
 
 # Ping key assigned by https://healthchecks.io/
 healthchecks_uuid = "https://hc-ping.com/**********************"
@@ -336,13 +336,6 @@ tariffs from the `pge_bev_tariff_url` and saves these in the
 Links should be kept current.
 
 ```
-# URL of PG&E BEV PDF tariff file for evtariffs command
-pge_bev_tariff_url = """
-https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf"""
-
-# PG&E BEV tariff download directory for evtariffs command
-pge_bev_tariff_dir = '\\NAS0\Household\Household Documents\1731 Powell\HOA\PWS Collaboration\Documents\Maintenance and Services\PG&E\Tariffs\BEV'
-
 # Further information links:
 
 pge_electric_schedule_bev1 = """[PG&E Electric Schedule BEV-1]\
@@ -538,9 +531,9 @@ To configure **runevbilling**:
 This will run **evbilling** on the bill file and add **runevbilling.exe** to the
 *Choose another app* menu for future use.
 
-## CONFIGURE **evmailbills**
+## CONFIGURE **mailevbills**
 
-The **evmailbills** command emails all submeter bills in a
+The **mailevbills** command emails all submeter bills in a
 *nnnn*custbill*mmddyyyy*.zip file or a single
 *nnnn*custbill*mmddyyyy*-*circuit*.pdf submeter bill file to the list of email
 addresses found for the *circuit* in the Emporia app or website settings.  When
@@ -548,7 +541,7 @@ run on a .zip file, it also emails the corresponding PG&E PDF bill to the
 `contact_email` address configured in the **evbilling.toml** file.
 
 ```
-usage: evmailbills.py [-h] [-d | --debug | --no-debug] [--dry-run | --no-dry-run | --test-run ADDRESS] [--msg MSG] [-v] input_file
+usage: mailevbills.py [-h] [-d | --debug | --no-debug] [--dry-run | --no-dry-run | --test-run ADDRESS] [--msg MSG] [-v] input_file
 
 Send EV charging bill PDFs to charger owners via email.
 
@@ -568,12 +561,12 @@ options:
 
 ```
 
-Optionally, **evmailbills** can be configured for use with the *Windows File
+Optionally, **mailevbills** can be configured for use with the *Windows File
 Explorer* *Open with ...* menu to email all the bills in a
 *nnnn*custbill*mmddyyyy*.zip file without needing to launch a **cmd** window and
 enter a command.
 
-To configure **evmailbills**:
+To configure **mailevbills**:
 
 1. Browse with Windows File Explorer to the folder containing the input file to
    be processed.
@@ -581,9 +574,9 @@ To configure **evmailbills**:
 1. Scroll to the bottom and choose *More apps*.
 1. Scroll to the bottom and choose *Look for another app on this PC*.
 1. Browse to `C:\Users\`*`Username`*`\.local\bin`.
-1. Open **evmailbills.exe**.
+1. Open **mailevbills.exe**.
 
-This will run **evmailbills** on the .zip file and add **evmailbills.exe** to the
+This will run **mailevbills** on the .zip file and add **mailevbills.exe** to the
 *Choose another app* menu for future use.
 
 # EXAMPLES
