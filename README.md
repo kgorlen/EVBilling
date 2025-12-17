@@ -53,23 +53,24 @@ by the **--outdir** argument, where *yyyy*-*mm*-*dd* is the statement date of
 the bill file (see ARGUMENTS below):
 
 * *nnnn*custbill*mmddyyyy*.pdf -- a copy of the PG&E bill file.
-* *nnnn*custbill*mmddyyyy*-OCR.txt -- the OCR result **sidecar** text file for
-  the PG&E bill.
 * *nnnn*custbill*mmddyyyy*.txt -- a plain text version of the PG&E bill, created
-  if OCR completes without errors.
+  if OCR completes without errors, used for regression tests.
+* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files and
+  the *nnnn*custbill*mmddyyyy*-DUE.csv file, used for billing.
+* *nnnn*custbill*mmddyyyy*-DUE.json -- a CSV file containing the total amount
+  due for each *circuit*.
+* *nnnn*custbill*mmddyyyy*-EVE.json -- a JSON (JavaScript Object Notation) file
+  containing a copy of the charger configuration used to process the PG&E bill,
+  used for regression tests.
+* *nnnn*custbill*mmddyyyy*-OCR.txt -- the OCR result **sidecar** text file for
+  the PG&E bill, used to manually correct OCR errors when needed.
 * *nnnn*custbill*mmddyyyy*-*circuit*.pdf -- a PDF submeter bill for each
   *circuit* connected to the EV power panel.
 * *nnnn*custbill*mmddyyyy*-*circuit*.txt -- a plain text submeter bill for each
-  *circuit* connected to the EV power panel.
+  *circuit* connected to the EV power panel, used for regression tests.
 * *nnnn*custbill*mmddyyyy*-*circuit*.csv -- a CSV (Comma Separated Values) file
-  of the raw usage data, formatted as a day-by-hour matrix, for each *circuit*
-  connected to the EV power panel.
-* *nnnn*custbill*mmddyyyy*-DUE.json -- a CSV file containing the total amount
-  due for each *circuit*.
-* *nnnn*custbill*mmddyyyy*.zip -- a .zip file containing all PDF bill files and
-  the *nnnn*custbill*mmddyyyy*-DUE.csv file.
-* *nnnn*custbill*mmddyyyy*-EVE.json -- a JSON (JavaScript Object Notation) file
-  containing a copy of the charger configuration used to process the PG&E bill.
+  of the hourly usage data and daily costs for each *circuit* connected to the
+  EV power panel, useful for calculating prorated costs.
 
 **evbilling** also writes a log file named **evbilling.log**.  See **SETTINGS
 [logging]** for details.
@@ -138,11 +139,11 @@ is specified, all bill files in the directory will be processed.
 
 # EMPORIA APP OR WEBSITE SETTINGS
 
-EV charger names, power ratings, channels, and owner email addresses are
-configured with the Emporia Vue app or website under *Manage/Setup Devices ->
-Energy and Circuits*.
+EV charger names, power ratings, service start date, channels, and owner email
+addresses are configured with the Emporia Vue app or website under *Manage/Setup
+Devices -> Energy and Circuits*.
 
-## EV Charger Names, Power Ratings, and Owner Email Addresses
+## EV Charger Names, Power Ratings, Service Start Dates, and Owner Email Addresses
 
 The PG&E BEV-1 rate schedule includes a **subscription** (a.k.a **demand**)
 **charge** based on a measurement of the maximum kW power usage in any single
@@ -153,20 +154,23 @@ based on their power (kW) ratings.
 EV charger circuit names starting with "OFF" are ignored.  Power ratings are
 specified by following the circuit name with space and the power rating in
 kilowatts (kW). Text after "kW" is ignored.  For example circuit names for The
-Palace have the format PWS-*uuu*-P*nn* *d.dd*kW #*breakers*, where *uuu* is the
-Owner's Unit number, *nn* is the EV charger parking space number, *d.d* is the
-power rating of the EV charger, and *breaker* is a list of the circuit's
-breakers.
+Palace have the format PWS-*uuu*-P*nn* *d.dd*kW *mm*/*dd*/*yyyy* #*breakers* *description* [*emails*] where:<br>
+> *uuu* is the Owner's Unit number<br>
+> *nn* is the EV charger parking space number<br>
+> *d.d* is the power rating of the EV charger<br>
+> *mm*/*dd*/*yyyy* is the service start date<br>
+> *breaker* is a list of the circuit's breakers<br>
+> *description* is a description of the EV charger<br>
+> [*emails*] is a comma-separated list of Owner email addresses for use by **mailevbills**.
 
-A description of the EV charger and a list of email addresses of EV charger
-owners enclosed in `[...]` should be included for use by **mailevbills**:
+For example:
 
 ```
-PWS-203-P07 2.7kW #19,21 (Tesla 80A) [owner203@gmail.com]
-PWS-204-P26 7.1kW #20,22 (GM PowerUp) [owner204@comcast.net]
-PWS-403-P20 6.7kW #13,15 (Tesla 80A) [owner403@gmail.com, coowner403@gmail.com]
-PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130) [owner404@outlook.com]
-PWS-405-P14 8.1kW #14,16 (Tesla Gen3) [owner405@apple.com,coowner405@yahoo.com]
+PWS-203-P07 2.7kW 4/23/2025 #19,21 (Tesla 80A) [owner203@gmail.com]
+PWS-204-P26 7.1kW 5/27/2025 #20,22 (GM PowerUp) [owner204@comcast.net]
+PWS-403-P20 6.7kW 2/21/2025 #13,15 (Tesla 80A) [owner403@gmail.com, coowner403@gmail.com]
+PWS-404-P06 1.5kW 6/13/2024 #8 (NEMA 5-15R, Toyota G9060-47130) [owner404@outlook.com]
+PWS-405-P14 8.1kW 2/21/2025 #14,16 (Tesla Gen3) [owner405@apple.com,coowner405@yahoo.com]
 OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A)
 ```
 
