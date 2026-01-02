@@ -349,19 +349,19 @@ pge_commercial_bev_tariffs = """[Commercial Business Electric Vehicle (BEV) Rate
 (https://www.pge.com/tariffs/en/rate-information/electric-rates.html#accordion-a84c67dc1e-item-69d101345a)"""
 
 cpsf_commercial_rates = """[CleanPowerSF Commercial Rates, B-EV-1, p.5]\
-(https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e64535d5bbbb39dbe/1719950143549/CPSF+Commercial+Rates+2024.pdf)"""
+(https://static1.squarespace.com/static/5a79fded4c326db242490272/t/686427014729f246508ae08c/1751394050402/CPSF%2BCommercial%2BRates%2B2025.pdf)"""
 
 sf_franchise_fee_surcharge  = """[Franchise Fee Surcharge]\
-(https://sfcontroller.org/sites/default/files/Documents/Auditing/BOS%20PGE%20Franchise%20Fee%20Audit%20Report%20%202.23.21.pdf)"""
+(https://help.pge.com/s/article/What-is-a-Franchise-Fee-Surcharge?language=en_US)"""
 
 sf_utility_users_tax = """[San Francisco Utility Users Tax]\
 (https://sfgov.org/lafco/sites/default/files/FileCenter/Documents/52280-4%20City%20and%20County%20of%20San%20Francisco%20Controller%E2%80%99s%20Office%20%28April%202005%29%20The%20Utility%20Users%20Tax.pdf)"""
 
 sf_prop_c_tax_surcharge = """[SF Prop C Tax Surcharge]\
-(https://sftreasurer.org/business/taxes-fees/homelessness-gross-receipts-tax-hgr)"""
+(https://sftreasurer.org/business/taxes-fees/homelessness-gross-receipts-tax-hgr-0)"""
 
 energy_commission_surcharge = """[Energy Commission Surcharge]\
-(https://www.cdtfa.ca.gov/formspubs/L924.pdf)"""
+(https://cdtfa.ca.gov/formspubs/l1020.pdf)"""
 
 evbilling_source = """[EV Billing Software Version {__version__}](https://github.com/kgorlen/EVBilling)"""
 
@@ -793,12 +793,14 @@ Total Generation Credit, and Power Charge Indifference Adjustment.
 
 **Franchise Fee Surcharge**
 : Collect the fee PG&E pays to San Francisco for use of city streets to
-transmit, distribute, and supply electricity.  Formula:
+transmit, distribute, and supply electricity.  PG&E includes both the vintage
+rate from the PG&E E-FFS tariff and an SF Municipal Surcharge Adjustment in the
+calculation of the main PG&E bill Franchise Fee Surcharge.  Formula:
 
 ```
-                                              (Submeter Total PG&E Energy Charges)
-(Main PG&E bill Franchise Fee Surcharge) X ------------------------------------------
-                                           (Main PG&E bill Total PG&E Energy Charges)
+                                              (Submeter Total Usage kWh)
+(Main PG&E bill Franchise Fee Surcharge) X --------------------------------
+                                           (Main PG&E bill Total Usage kWh)
 ```
 
 **San Francisco Utility Users' Tax**
@@ -874,11 +876,11 @@ annual rate update.
 * [Emporia Account Login](https://web.emporiaenergy.com/login)<br>
 * [PG&E Electric Schedule BEV](https://www.pge.com/tariffs/assets/pdf/tariffbook/ELEC_SCHEDS_BEV.pdf)<br>
 * [Commercial Business Electric Vehicle (BEV) Rates](https://www.pge.com/tariffs/en/rate-information/electric-rates.html#accordion-a84c67dc1e-item-69d101345a)<br>
-* [CleanPowerSF Commercial Rates, B-EV-1, p.5](https://static1.squarespace.com/static/5a79fded4c326db242490272/t/66845b3e64535d5bbbb39dbe/1719950143549/CPSF+Commercial+Rates+2024.pdf)<br>
-* [SF Franchise Fee Surcharge](https://sfcontroller.org/sites/default/files/Documents/Auditing/BOS%20PGE%20Franchise%20Fee%20Audit%20Report%20%202.23.21.pdf)<br>
-* [San Francisco Utility Users' Tax (7.500%)](https://sfgov.org/lafco/sites/default/files/FileCenter/Documents/<br>52280-4%20City%20and%20County%20of%20San%20Francisco%20Controller%E2%80%99s%20Office%20%28April%202005%29%20The%20Utility%20Users%20Tax.pdf)<br>
-* [SF Prop C Tax Surcharge](https://docs.cpuc.ca.gov/PublishedDocs/Published/G000/M329/K157/329157496.docx#:~:text=In%20the%20November%202018%20general,of%20%2410%20million%20for%202019.)<br>
-* [Energy Commission Surcharge](https://www.cdtfa.ca.gov/formspubs/L924.pdf)<br>
+* [CleanPowerSF Commercial Rates, B-EV-1, p.5](https://static1.squarespace.com/static/5a79fded4c326db242490272/t/686427014729f246508ae08c/1751394050402/CPSF%2BCommercial%2BRates%2B2025.pdf)<br>
+* [SF Franchise Fee Surcharge](https://help.pge.com/s/article/What-is-a-Franchise-Fee-Surcharge?language=en_US)<br>
+* [San Francisco Utility Users' Tax (7.500%)](https://sfgov.org/lafco/sites/default/files/FileCenter/Documents/52280-4%20City%20and%20County%20of%20San%20Francisco%20Controller%E2%80%99s%20Office%20%28April%202005%29%20The%20Utility%20Users%20Tax.pdf)<br>
+* [SF Prop C Tax Surcharge](https://sftreasurer.org/business/taxes-fees/homelessness-gross-receipts-tax-hgr-0)<br>
+* [Energy Commission Surcharge](https://cdtfa.ca.gov/formspubs/l1020.pdf)<br>
 * [PyEmVue -- Unofficial library for interacting with the Emporia Vue energy monitor](https://pypi.org/project/pyemvue/)<br>
 * [docTR: Document Text Recognition](https://mindee.github.io/doctr/latest/index.html)<br>
 * [TOML: A config file format for humans](https://toml.io/en/)<br>
