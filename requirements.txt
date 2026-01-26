@@ -10,7 +10,6 @@ cryptography==46.0.3
 cycler==0.12.1
 defusedxml==0.7.1
 envs==1.4
--e git+https://github.com/kgorlen/EVBilling_Private.git@1f6bebe567e08d7db4986bde8e603370f675a1e1#egg=evbilling
 fonttools==4.61.1
 fpdf2==2.8.5
 idna==3.11

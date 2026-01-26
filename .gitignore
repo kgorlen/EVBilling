@@ -1,0 +1,16 @@
+*cache*
+.venv
+build/
+dist/
+layout/
+Notes/
+*.egg-info
+.conda
+*.code-workspace
+src/evbilling/test.py
+src/evbilling/evbillplumber.py
+Tests/
+tools/
+commit msg.txt
+keys.json
+PyEmVue/
