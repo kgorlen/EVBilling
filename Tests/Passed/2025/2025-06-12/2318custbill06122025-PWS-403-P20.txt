@@ -1,0 +1,84 @@
+Account No:     3750712318-2
+Meter #:         PWS-403-P20
+Total Usage:       63.868492
+Statement Date:   06/12/2025
+Due Date:           7/1/2025
+Amount Due     $       25.40
+
+Details of PG&E Electric Delivery Charges
+Billing period 5/7/2025 to 6/5/2025 (30 billing days)
+Rate Schedule: BEV1 Bus Low Use EV
+
+5/7/2025 to 5/31/2025
+Subscription Level 0.513 10kW blocks @ 0.8333 month @ $12.41  $    5.31
+ Overage Fees                        0.000000 kW @ $2.48000   $    0.00
+
+PG&E Energy Charges
+ Peak                                0.348650 kWh @ $0.38079  $    0.13
+ Off Peak                            1.959122 kWh @ $0.18878  $    0.37
+ Super Off Peak                      0.413219 kWh @ $0.16212  $    0.07
+PG&E Energy Credits
+ Peak                    0.348650 kWh @ $-0.31741  $   -0.11
+ Off Peak                1.959122 kWh @ $-0.13485  $   -0.26
+ Super Off Peak          0.413219 kWh @ $-0.10946  $   -0.05
+ Bundled PCIA            2.720991 kWh @ $+0.01922  $   +0.05
+Total Generation Credit                                       $   -0.37
+Power Charge Indifference Adjustment ($0.00554/kWh)           $    0.02
+Net Charges                                        $    5.53
+San Francisco Utility Users' Tax (7.500%)                     $    0.41
+SF Prop C Tax Surcharge (0.988%)                              $    0.05
+
+6/1/2025 to 6/5/2025
+Subscription Level 0.513 10kW blocks @ 0.1667 month @ $12.41  $    1.06
+ Overage Fees                        0.000000 kW @ $2.48000   $    0.00
+
+PG&E Energy Charges
+ Peak                               36.475143 kWh @ $0.38079  $   13.89
+ Off Peak                           17.677760 kWh @ $0.18878  $    3.34
+ Super Off Peak                      6.994595 kWh @ $0.16212  $    1.13
+PG&E Energy Credits
+ Peak                   36.475143 kWh @ $-0.31741  $  -11.58
+ Off Peak               17.677760 kWh @ $-0.13485  $   -2.38
+ Super Off Peak          6.994595 kWh @ $-0.10946  $   -0.77
+ Bundled PCIA           61.147498 kWh @ $+0.01922  $   +1.18
+Total Generation Credit                                       $  -13.55
+Power Charge Indifference Adjustment ($0.00554/kWh)           $    0.34
+Net Charges                                        $    6.21
+Franchise Fee Surcharge ($0.00107/kWh)                        $    0.07
+San Francisco Utility Users' Tax (7.504%)                     $    0.47
+SF Prop C Tax Surcharge (1.001%)                              $    0.06
+
+Total PG&E Electric Delivery Charges                          $   12.80
+
+Details of CleanPowerSF Electric Generation Charges
+Billing period 5/7/2025 to 6/5/2025 (30 billing days)
+Rate Schedule: BEV-1 Business Electric Vehicles
+
+5/7/2025 to 5/31/2025
+CleanPowerSF Energy Charges
+ Peak                                0.348650 kWh @ $0.26421  $    0.09
+ Off Peak                            1.959122 kWh @ $0.08948  $    0.18
+ Super Off Peak                      0.413219 kWh @ $0.06518  $    0.03
+Net Charges                                        $    0.30
+Local Utility Users Tax (7.505%)                              $    0.02
+
+6/1/2025 to 6/5/2025
+CleanPowerSF Energy Charges
+ Peak                               36.475143 kWh @ $0.26421  $    9.64
+ Off Peak                           17.677760 kWh @ $0.08948  $    1.58
+ Super Off Peak                      6.994595 kWh @ $0.06518  $    0.46
+Net Charges                                        $   11.68
+Local Utility Users Tax (7.505%)                              $    0.88
+Energy Commission Surcharge ($0.00030/kWh)                    $    0.02
+
+Total CleanPowerSF Electric Delivery Charges                  $   12.90
+
+Summary for Meter # PWS-403-P20
+Charger Power Rating                              6.7 kW
+Total Usage                                 63.868492 kWh
+PG&E Electric Delivery Charges            $     12.80
+CleanPowerSF Electric Generation Charges  $     12.90
+Metering Difference Adjustment            $     -0.30
+Total Amount Due by 7/1/2025              $     25.40
+
+Effective rate (Total Amount Due/Usage):  $0.39769/kWh

@@ -1,0 +1,49 @@
+Account No:     3750712318-2
+Meter #:             PWS-HOA
+Total Usage:        0.000000
+Statement Date:   09/13/2024
+Due Date:          10/1/2024
+Amount Due     $      132.71
+
+Details of PG&E Electric Delivery Charges
+Billing period 8/8/2024 to 9/8/2024 (32 billing days)
+Rate Schedule: BEV1 Bus Low Use EV
+
+8/8/2024 to 8/31/2024
+Subscription Level 9.85  10kW blocks @ 0.7500 month @ $12.41  $   91.73
+ Overage Fees                        0.000000 kW @ $2.48000   $    0.00
+Net Charges                                        $   91.73
+San Francisco Utility Users' Tax (7.496%)                     $    6.88
+SF Prop C Tax Surcharge (0.990%)                              $    0.91
+
+9/1/2024 to 9/8/2024
+Subscription Level 9.85  10kW blocks @ 0.2500 month @ $12.41  $   30.58
+ Overage Fees                        0.000000 kW @ $2.48000   $    0.00
+Net Charges                                        $   30.58
+San Francisco Utility Users' Tax (7.509%)                     $    2.30
+SF Prop C Tax Surcharge (0.999%)                              $    0.31
+
+Total PG&E Electric Delivery Charges                          $  132.71
+
+Details of CleanPowerSF Electric Generation Charges
+Billing period 8/8/2024 to 9/8/2024 (32 billing days)
+Rate Schedule: BEV-1 Business Electric Vehicles
+
+8/8/2024 to 9/8/2024
+CleanPowerSF Energy Charges
+ Super Off Peak                      0.000000 kWh @ $0.06518  $    0.00
+ Off Peak                            0.000000 kWh @ $0.08948  $    0.00
+ Peak                                0.000000 kWh @ $0.26421  $    0.00
+Net Charges                                        $    0.00
+
+Total CleanPowerSF Electric Delivery Charges                  $    0.00
+
+Summary for Meter # PWS-HOA
+Charger Power Rating                             98.5 kW
+Total Usage                                  0.000000 kWh
+PG&E Electric Delivery Charges            $    132.71
+CleanPowerSF Electric Generation Charges  $      0.00
+Metering Difference Adjustment            $     -0.00
+Total Amount Due by 10/1/2024             $    132.71
+
+

@@ -1,0 +1,5 @@
+[console_scripts]
+evbilling = evbilling.evbilling:cli
+evtariffs = evbilling.evtariffs:cli
+mailevbills = evbilling.mailevbills:cli
+runevbilling = evbilling.runevbilling:main

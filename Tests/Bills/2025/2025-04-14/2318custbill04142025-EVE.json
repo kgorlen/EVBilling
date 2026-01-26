@@ -1,0 +1,95 @@
+{
+    "EVE_version": "2.0",
+    "chargers": {
+        "PWS-403-P20": {
+            "channel": {
+                "channelMultiplier": 1.0,
+                "channelNum": "99",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-403-P20 6.7kW #13,15 (Tesla 80A, measured Feb., 2025)",
+                "parentChannelNum": null,
+                "type": "Merged"
+            },
+            "kW": 6.7,
+            "service_start_date": "2/21/2025"
+        },
+        "PWS-404-P06": {
+            "channel": {
+                "channelMultiplier": 1.0,
+                "channelNum": "1",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-404-P06 1.5kW #8 (NEMA 5-15R, Toyota G9060-47130 charging cable, measured Feb., 2025)",
+                "parentChannelNum": null,
+                "type": "FiftyAmp"
+            },
+            "kW": 1.5,
+            "service_start_date": "6/13/2024"
+        },
+        "PWS-405-P14": {
+            "channel": {
+                "channelMultiplier": 1.0,
+                "channelNum": "98",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-405-P14 8.5kW #14,16 (Tesla Gen3, measured Feb., 2025)",
+                "parentChannelNum": null,
+                "type": "Merged"
+            },
+            "kW": 8.5,
+            "service_start_date": "2/21/2025"
+        }
+    },
+    "device_info": {
+        "device_gid": 343481,
+        "device_name": "PWS EV Energy",
+        "firmware": "Vue3-726",
+        "manufacturer_id": "F2332A001A64B708D16BEC",
+        "model": "VUE003"
+    },
+    "merged_channels": {
+        "98": [
+            {
+                "channelMultiplier": 1.0,
+                "channelNum": "5",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-405-P14",
+                "parentChannelNum": "98",
+                "type": "FiftyAmp"
+            },
+            {
+                "channelMultiplier": 1.0,
+                "channelNum": "6",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-405-P14",
+                "parentChannelNum": "98",
+                "type": "FiftyAmp"
+            }
+        ],
+        "99": [
+            {
+                "channelMultiplier": 1.0,
+                "channelNum": "7",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-403-P20",
+                "parentChannelNum": "99",
+                "type": "FiftyAmp"
+            },
+            {
+                "channelMultiplier": 1.0,
+                "channelNum": "8",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-403-P20",
+                "parentChannelNum": "99",
+                "type": "FiftyAmp"
+            }
+        ]
+    },
+    "period_end_date": "2025-04-07",
+    "total_evse_kW": 16.7
+}

@@ -1,0 +1,62 @@
+=== Page 3 header ===
+Account No: 3750712318-2
+Statement Date: 01/08/2026
+Due Date: 01/26/2026
+=== Page 3 details ===
+Details of PG&E Electric Delivery Charges
+12/01/2025 to 01/01/2026 (32 billing days)
+Service Agreement ID: 3758116729
+Rate Schedule: BEV1 Bus Low Use EV
+12/01/2025 to 12/31/2025
+Subscription Charges
+Subscription Level (10kW/block) 2 blocks @ 0.9688 month @ $12.41 $24.04
+Overage Fees 0 kW @ $2.48000 0.00
+Energy Charges
+Peak 59.536500 kWh @ $0.37936 22.59
+Off Peak 1,058.920500 kWh @ $0.18735 198.39
+Super Off Peak 71.034000 kWh @ $0.16069 11.41
+Generation Credit -146.59
+Power Charge Indifference Adjustment 6.59
+Franchise Fee Surcharge 1.25
+San Francisco Utility Users' Tax (7.500%) 8.73
+SF Prop C Tax Surcharge 1.15
+01/01/2026
+Subscription Charges
+Subscription Level (10kW/block) 2 blocks @ 0.0313 month @ $12.41 $0.78
+Overage Fees 0 kW @ $2.48000 0.00
+Energy Charges
+Peak 0.061500 kWh @ $0.35518 0.02
+Off Peak 0.172500 kWh @ $0.16317 0.03
+Super Off Peak 0.061500 kWh @ $0.13651 0.01
+Generation Credit -0.05
+Power Charge Indifference Adjustment 0.01
+San Francisco Utility Users' Tax (7.500%) 0.06
+SF Prop C Tax Surcharge 0.01
+Total PG&E Electric Delivery Charges $128.43
+2018 Vintaged Power Charge Indifference Adjustment
+=== Page 3 service info ===
+Service Information
+Meter # 1011044609
+Total Usage 1,189.786500 kWh
+Rotating Outage Block 50
+=== Page 3 footer ===
+Page 3 of 6
+=== Page 4 header ===
+Account No: 3750712318-2
+Statement Date: 01/08/2026
+Due Date: 01/26/2026
+=== Page 4 details ===
+Details of CleanPowerSF Electric Generation Charges
+12/01/2025 to 01/01/2026 (32 billing days)
+Service Agreement ID: 3759306948 ESP Customer Number: 3758116729
+12/01/2025 to 01/01/2026
+Rate Schedule: B-EV-1
+Generation - On Peak - Winter 59.598000 kWh @ $0.26421 $15.75
+Generation - Off Peak - Winter 1,059.093000 kWh @ $0.08948 $94.77
+Generation - Super Off Peak - Winter 71.095500 kWh @ $0.06518 $4.63
+Net Charges 115.15
+Local Utility Users Tax 8.64
+Energy Commission Surcharge 0.36
+Total CleanPowerSF Electric Generation Charges $124.15
+=== Page 4 footer ===
+Page 4 of 6

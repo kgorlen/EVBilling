@@ -1,0 +1,42 @@
+Account No:     3750712318-2
+Meter #:             PWS-HOA
+Total Usage:        0.000000
+Statement Date:   10/07/2024
+Due Date:          11/1/2024
+Amount Due     $        8.44
+
+Details of PG&E Electric Delivery Charges
+Billing period 9/9/2024 to 9/30/2024 (22 billing days)
+Rate Schedule: BEV1 Bus Low Use EV
+
+9/9/2024 to 9/30/2024
+Subscription Level 0.855 10kW blocks @ 0.7333 month @ $12.41  $    7.78
+ Overage Fees                        0.000000 kW @ $2.48000   $    0.00
+Net Charges                                        $    7.78
+San Francisco Utility Users' Tax (7.478%)                     $    0.58
+SF Prop C Tax Surcharge (0.997%)                              $    0.08
+
+Total PG&E Electric Delivery Charges                          $    8.44
+
+Details of CleanPowerSF Electric Generation Charges
+Billing period 9/9/2024 to 9/30/2024 (22 billing days)
+Rate Schedule: BEV-1 Business Electric Vehicles
+
+9/9/2024 to 9/30/2024
+CleanPowerSF Energy Charges
+ Super Off Peak                      0.000000 kWh @ $0.06518  $    0.00
+ Off Peak                            0.000000 kWh @ $0.08948  $    0.00
+ Peak                                0.000000 kWh @ $0.26421  $    0.00
+Net Charges                                        $    0.00
+
+Total CleanPowerSF Electric Delivery Charges                  $    0.00
+
+Summary for Meter # PWS-HOA
+Charger Power Rating                              8.6 kW
+Total Usage                                  0.000000 kWh
+PG&E Electric Delivery Charges            $      8.44
+CleanPowerSF Electric Generation Charges  $      0.00
+Metering Difference Adjustment            $      0.00
+Total Amount Due by 11/1/2024             $      8.44
+
+

@@ -1,0 +1,57 @@
+Account No:     3750712318-2
+Meter #:         PWS-403-P20
+Total Usage:      295.365570
+Statement Date:   07/15/2025
+Due Date:           8/1/2025
+Amount Due     $       64.23
+
+Details of PG&E Electric Delivery Charges
+Billing period 6/6/2025 to 7/8/2025 (33 billing days)
+Rate Schedule: BEV1 Bus Low Use EV
+
+6/6/2025 to 7/8/2025
+Subscription Level 0.513 10kW blocks @ 1.0000 month @ $12.41  $    6.37
+ Overage Fees                        0.000000 kW @ $2.48000   $    0.00
+
+PG&E Energy Charges
+ Peak                               35.045082 kWh @ $0.38079  $   13.34
+ Off Peak                          191.227130 kWh @ $0.18878  $   36.10
+ Super Off Peak                     69.093360 kWh @ $0.16212  $   11.20
+PG&E Energy Credits
+ Peak                   35.045082 kWh @ $-0.31741  $  -11.12
+ Off Peak              191.227130 kWh @ $-0.13485  $  -25.79
+ Super Off Peak         69.093360 kWh @ $-0.10946  $   -7.56
+ Bundled PCIA          295.365572 kWh @ $+0.01922  $   +5.68
+Total Generation Credit                                       $  -38.79
+Power Charge Indifference Adjustment ($0.00554/kWh)           $    1.64
+Net Charges                                        $   29.86
+Franchise Fee Surcharge ($0.00105/kWh)                        $    0.31
+San Francisco Utility Users' Tax (7.498%)                     $    2.24
+SF Prop C Tax Surcharge (0.986%)                              $    0.29
+
+Total PG&E Electric Delivery Charges                          $   32.70
+
+Details of CleanPowerSF Electric Generation Charges
+Billing period 6/6/2025 to 7/8/2025 (33 billing days)
+Rate Schedule: BEV-1 Business Electric Vehicles
+
+6/6/2025 to 7/8/2025
+CleanPowerSF Energy Charges
+ Super Off Peak                     69.093360 kWh @ $0.06518  $    4.50
+ Off Peak                          191.227130 kWh @ $0.08948  $   17.11
+ Peak                               35.045082 kWh @ $0.26421  $    9.26
+Net Charges                                        $   30.87
+Local Utility Users Tax (7.498%)                              $    2.31
+Energy Commission Surcharge ($0.00030/kWh)                    $    0.09
+
+Total CleanPowerSF Electric Delivery Charges                  $   33.27
+
+Summary for Meter # PWS-403-P20
+Charger Power Rating                              6.7 kW
+Total Usage                                295.365570 kWh
+PG&E Electric Delivery Charges            $     32.70
+CleanPowerSF Electric Generation Charges  $     33.27
+Metering Difference Adjustment            $     -1.74
+Total Amount Due by 8/1/2025              $     64.23
+
+Effective rate (Total Amount Due/Usage):  $0.21746/kWh

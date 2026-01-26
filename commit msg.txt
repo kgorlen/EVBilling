@@ -1,0 +1,8 @@
+__init__: __version__ = '2.0.1'
+evbilling:
+  - PGERatePeriod, CPSFRatePeriod.__str__(): Suppress $0.00 other_charges line items.
+mailevbills:
+  - main(): Skip chargers with no owner email address and show warning.
+
+TODO:
+    pip install --upgrade pyemvue

@@ -1,0 +1,92 @@
+2025-09-16 23:00:40 - evemail - INFO - ============================================================
+2025-09-16 23:00:40 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-16 23:00:40 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-16 23:00:40 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, quiet=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-16 23:00:41 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-16 23:00:41 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-16 23:00:45 - evemail - CRITICAL - [Errno 13] Permission denied: '.'; exiting.
+2025-09-16 23:00:45 - evemail - INFO - ============================================================
+2025-09-16 23:03:56 - evemail - INFO - ============================================================
+2025-09-16 23:03:56 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-16 23:03:56 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-16 23:03:56 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, quiet=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/src/evbilling/evchargers.py')).
+2025-09-16 23:03:57 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-16 23:03:57 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-16 23:05:05 - evemail - CRITICAL - [Errno 13] Permission denied: '.'; exiting.
+2025-09-16 23:05:05 - evemail - INFO - ============================================================
+2025-09-16 23:06:30 - evemail - INFO - ============================================================
+2025-09-16 23:06:30 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-16 23:06:30 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-16 23:06:30 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, quiet=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/src/evbilling/evemail.py')).
+2025-09-16 23:06:30 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-16 23:06:31 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-16 23:06:37 - evemail - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\src\evbilling\evemail.py" ...
+2025-09-16 23:06:37 - evemail - CRITICAL - Input file "\\nas0\home\git\Keith\EVBilling\src\evbilling\evemail.py" must be a .zip or .pdf file; exiting.
+2025-09-16 23:06:37 - evemail - INFO - ============================================================
+2025-09-16 23:07:48 - evemail - INFO - ============================================================
+2025-09-16 23:07:48 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-16 23:07:48 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-16 23:07:48 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, quiet=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-16 23:07:49 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-16 23:07:49 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-16 23:07:54 - evemail - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-09-08\2318custbill09082025-PWS-404-P06.pdf" ...
+2025-09-16 23:07:54 - evemail - INFO - Sending email to ['kgorlen@gmail.com'] ...
+2025-09-16 23:07:55 - evemail - INFO - Email sent to "['kgorlen@gmail.com']".
+2025-09-16 23:07:55 - evemail - INFO - evemail finished.
+2025-09-16 23:07:55 - evemail - INFO - ============================================================
+2025-09-16 23:13:03 - evemail - INFO - ============================================================
+2025-09-16 23:13:03 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-16 23:13:03 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-16 23:13:03 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, quiet=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-16 23:13:04 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-16 23:13:04 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-16 23:13:08 - evemail - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-09-08\2318custbill09082025-PWS-404-P06.pdf" ...
+2025-09-16 23:15:21 - evemail - INFO - Sending email to ['kgorlen@gmail.com'] ...
+2025-09-16 23:15:22 - evemail - INFO - Email sent to "['kgorlen@gmail.com']".
+2025-09-16 23:15:22 - evemail - INFO - evemail finished.
+2025-09-16 23:15:22 - evemail - INFO - ============================================================
+2025-09-16 23:22:49 - evemail - INFO - ============================================================
+2025-09-16 23:22:49 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-16 23:22:49 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-16 23:22:49 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, quiet=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-16 23:22:50 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-16 23:22:50 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-16 23:22:57 - evemail - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-09-08\2318custbill09082025-PWS-404-P06.pdf" ...
+2025-09-16 23:22:57 - evemail - INFO - Sending email to ['kgorlen@gmail.com'] ...
+2025-09-16 23:22:58 - evemail - INFO - Email sent to "['kgorlen@gmail.com']".
+2025-09-16 23:22:58 - evemail - INFO - evemail finished.
+2025-09-16 23:22:58 - evemail - INFO - ============================================================
+2025-09-17 09:33:37 - evemail - INFO - ============================================================
+2025-09-17 09:33:37 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-17 09:33:37 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-17 09:33:37 - evemail - CRITICAL - ParsedArgs.__new__() missing 1 required positional argument: 'quiet'; exiting.
+2025-09-17 09:33:37 - evemail - INFO - ============================================================
+2025-09-17 09:34:18 - evemail - INFO - ============================================================
+2025-09-17 09:34:18 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-17 09:34:18 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-17 09:34:18 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-17 09:34:19 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-17 09:34:19 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-17 09:34:19 - evemail - CRITICAL - type object 'Args' has no attribute 'quiet'; exiting.
+2025-09-17 09:34:19 - evemail - INFO - ============================================================
+2025-09-17 09:35:38 - evemail - INFO - ============================================================
+2025-09-17 09:35:38 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-17 09:35:38 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-17 09:35:38 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-17 09:35:39 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-17 09:35:39 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-17 09:35:48 - evemail - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-09-08\2318custbill09082025-PWS-404-P06.pdf" ...
+2025-09-17 09:35:48 - evemail - INFO - Sending email to ['kgorlen@gmail.com'] ...
+2025-09-17 09:35:48 - evemail - CRITICAL - folded header contains newline: 'Subject: The Palace at Washington Square\nEV Charger Energy Statement for 09/08/2025\n'; exiting.
+2025-09-17 09:35:48 - evemail - INFO - ============================================================
+2025-09-17 09:42:36 - evemail - INFO - ============================================================
+2025-09-17 09:42:36 - evemail - INFO - evemail version 1.0.0 starting ...
+2025-09-17 09:42:36 - evemail - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-09-17 09:42:36 - evemail - INFO - evemail arguments: ParsedArgs(debug=False, version=False, dry_run=False, input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-09-08/2318custbill09082025-PWS-404-P06.pdf')).
+2025-09-17 09:42:37 - evemail - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-09-17 09:42:37 - evemail - INFO - Logged in to SMTP server smtp.gmail.com as palace.hoa.alerts@gmail.com.
+2025-09-17 09:42:42 - evemail - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-09-08\2318custbill09082025-PWS-404-P06.pdf" ...
+2025-09-17 09:42:42 - evemail - INFO - Sending email to ['kgorlen@gmail.com'] ...
+2025-09-17 09:42:43 - evemail - INFO - Email sent to "['kgorlen@gmail.com']".
+2025-09-17 09:42:43 - evemail - INFO - evemail finished.
+2025-09-17 09:42:43 - evemail - INFO - ============================================================

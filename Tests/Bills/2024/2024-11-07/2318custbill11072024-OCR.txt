@@ -1,0 +1,50 @@
+=== Page 3 header ===
+Account No: 3750712318-2
+Statement Date: 11/07/2024
+Due Date: 11/25/2024
+=== Page 3 details ===
+Details of PG&E Electric Delivery Charges
+10/01/2024 - 10/31/2024 (31 billing days)
+Service Agreement ID: 3758116729
+Rate Schedule: BEV1 Bus Low Use EV
+10/01/2024 - 10/31/2024
+Subscription Charges
+Subscription Level (10kW/block) 1 block @ 1.0000 month @ $12.41 $12.41
+Overage Fees 0 kW @ $2.48000 0.00
+Energy Charges
+Peak 3.363000 kWh @ $0.38372 1.29
+Off Peak 16.360500 kWh @ $0.19171 3.14
+Super Off Peak 7.180500 kWh @ $0.16505 1.19
+Generation Credit -3.53
+Power Charge Indifference Adjustment 0.22
+Franchise Fee Surcharge 0.03
+San Francisco Utility Users' Tax (7.500%) 1.10
+SF Prop C Tax Surcharge 0.15
+Total PG&E Electric Delivery Charges $16.00
+2018 Vintaged Power Charge Indifference Adjustment
+=== Page 3 service info ===
+Service Information
+Meter # 1011044609
+Total Usage 26.904000 kWh
+Rotating Outage Block 50
+=== Page 3 footer ===
+Page 3 of 5
+=== Page 4 header ===
+Account No: 3750712318-2
+Statement Date: 11/07/2024
+Due Date: 11/25/2024
+=== Page 4 details ===
+Details of CleanPowerSF Electric Generation Charges
+10/01/2024 - 10/31/2024 (31 billing days)
+Service Agreement ID: 3759306948 ESP Customer Number: 3758116729
+10/01/2024 - 10/31/2024
+Rate Schedule: B-EV-1
+Generation - Super Off Peak - Winter 7.180500 kWh @ $0.06518 $0.47
+Generation - Off Peak - Winter 16.360500 kWh @ $0.08948 $1.46
+Generation - On Peak - Winter 3.363000 kWh @ $0.26421 $0.89
+Net Charges 2.82
+Local Utility Users Tax 0.21
+Energy Commission Surcharge 0.01
+Total CleanPowerSF Electric Generation Charges $3.04
+=== Page 4 footer ===
+Page 4 of 5

@@ -1,0 +1,66 @@
+=== Page 3 header ===
+Account No: 3750712318-2
+Statement Date: 06/12/2025
+Due Date: 06/30/2025
+=== Page 3 details ===
+Details of PG&E Electric Delivery Charges
+05/07/2025 - 06/05/2025 (30 billing days)
+Service Agreement ID: 3758116729
+Rate Schedule: BEV1 Bus Low Use EV
+05/07/2025 - 05/31/2025
+Subscription Charges
+Subscription Level (10kW/block) 2 blocks @ 0.8333 month @ $12.41 $20.68
+Overage Fees 0 kW @ $2.48000 0.00
+Energy Charges
+Peak 35.341500 kWh @ $0.38079 13.46
+Off Peak 680.315580 kWh @ $0.18878 128.43
+Super Off Peak 59.999920 kWh @ $0.16212 9.73
+Generation Credit -94.60
+Power Charge Indifference Adjustment 4.30
+Franchise Fee Surcharge 0.81
+San Francisco Utility Users' Tax (7.500%) 6.15
+SF Prop C Tax Surcharge 0.81
+06/01/2025 - 06/05/2025
+Subscription Charges
+Subscription Level (10kW/block) 2 blocks @ 0.1667 month @ $12.41 $4.14
+Overage Fees 0 kW @ $2.48000 0.00
+Energy Charges
+Peak 41.334000 kWh @ $0.38079 15.74
+Off Peak 119.004000 kWh @ $0.18878 22.47
+Super Off Peak 36.543000 kWh @ $0.16212 5.92
+Generation Credit -29.37
+Power Charge Indifference Adjustment 1.09
+Franchise Fee Surcharge 0.21
+San Francisco Utility Users' Tax (7.500%) 1.50
+SF Prop C Tax Surcharge 0.20
+Total PG&E Electric Delivery Charges $111.67
+2018 Vintaged Power Charge Indifference Adjustment
+=== Page 3 service info ===
+Service Information
+Meter # 1011044609
+Total Usage 972.538000 kWh
+Rotating Outage Block 50
+=== Page 3 footer ===
+Page 3 of 5
+=== Page 4 header ===
+Account No: 3750712318-2
+Statement Date: 06/12/2025
+Due Date: 06/30/2025
+=== Page 4 details ===
+Details of CleanPowerSF Electric Generation Charges
+05/07/2025 - 06/05/2025 (30 billing days)
+Service Agreement ID: 3759306948 ESP Customer Number: 3758116729
+05/07/2025 - 06/05/2025
+Rate Schedule: B-EV-1
+Generation - Super Off Peak - Summer 36.543000 kWh @ $0.06518 $2.38
+Generation - Super Off Peak - Winter 59.999900 kWh @ $0.06518 $3.91
+Generation - Off Peak - Summer 119.004000 kWh @ $0.08948 $10.65
+Generation - Off Peak - Winter 680.315600 kWh @ $0.08948 $60.87
+Generation - On Peak - Summer 41.334000 kWh @ $0.26421 $10.92
+Generation - On Peak - Winter 35.341500 kWh @ $0.26421 $9.34
+Net Charges 98.07
+Local Utility Users Tax 7.36
+Energy Commission Surcharge 0.29
+Total CleanPowerSF Electric Generation Charges $105.72
+=== Page 4 footer ===
+Page 4 of 5

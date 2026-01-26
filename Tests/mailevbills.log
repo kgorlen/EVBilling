@@ -1,0 +1,431 @@
+2025-10-14 12:50:44 - mailevbills - INFO - ============================================================
+2025-10-14 12:50:44 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-10-14 12:50:44 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-10-14 12:50:44 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=False, test_run='kgorlen@gmail.com', msg='', input_file=WindowsPath('2318custbill10072025.zip')).
+2025-10-14 12:50:44 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-10-14 12:50:44 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2025-10-14 12:50:45 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-10-14 12:50:45 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2025-10-14 12:50:45 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2025-10-14 12:50:45 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2025-10-14 12:50:45 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2025-10-14 12:50:45 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2025-10-14 12:50:47 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2025-10-14 12:50:47 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2025-10-14 12:50:47 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO - EV chargers found:
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 emails: kgorlen@gmail.com, ccweisner@comcast.net
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 emails: saharandmatthew@gmail.com
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 emails: jmingolia@gmail.com, isandler28@gmail.com
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO - Merged channels:
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    97: 3, 4
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    98: 5, 6
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    99: 7, 8
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO -    100: 9, 10
+2025-10-14 12:50:48 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2025-10-14 12:50:48 - mailevbills - INFO - Processing input file "2318custbill10072025.zip" ...
+2025-10-14 12:50:59 - mailevbills - INFO - Ready to send bill for charger PWS-203-P07 to neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com.
+2025-10-14 12:50:59 - mailevbills - INFO - Ready to send bill for charger PWS-204-P26 to jmingolia@gmail.com, isandler28@gmail.com.
+2025-10-14 12:50:59 - mailevbills - INFO - Ready to send bill for charger PWS-403-P20 to jola.kieturakis@gmail.com, peastty@icloud.com.
+2025-10-14 12:50:59 - mailevbills - INFO - Ready to send bill for charger PWS-404-P06 to kgorlen@gmail.com, ccweisner@comcast.net.
+2025-10-14 12:50:59 - mailevbills - INFO - Ready to send bill for charger PWS-405-P14 to saharandmatthew@gmail.com.
+2025-10-14 12:50:59 - mailevbills - INFO - Skipping "2318custbill10072025.pdf".
+2025-10-14 12:50:59 - mailevbills - INFO - Ready to send amounts due and 2318custbill10072025.zip file to pws.ev.energy@gmail.com.
+2025-10-14 12:50:59 - mailevbills - INFO - Test run: all emails will be sent to kgorlen@gmail.com instead of charger owners.
+2025-10-14 12:51:13 - mailevbills - INFO - Sending 2318custbill10072025-PWS-203-P07.pdf to ['kgorlen@gmail.com'] ...
+2025-10-14 12:51:14 - mailevbills - INFO - Sent 2318custbill10072025-PWS-203-P07.pdf to ['kgorlen@gmail.com']
+2025-10-14 12:51:14 - mailevbills - INFO - Sending 2318custbill10072025-PWS-204-P26.pdf to ['kgorlen@gmail.com'] ...
+2025-10-14 12:51:16 - mailevbills - INFO - Sent 2318custbill10072025-PWS-204-P26.pdf to ['kgorlen@gmail.com']
+2025-10-14 12:51:16 - mailevbills - INFO - Sending 2318custbill10072025-PWS-403-P20.pdf to ['kgorlen@gmail.com'] ...
+2025-10-14 12:51:17 - mailevbills - INFO - Sent 2318custbill10072025-PWS-403-P20.pdf to ['kgorlen@gmail.com']
+2025-10-14 12:51:17 - mailevbills - INFO - Sending 2318custbill10072025-PWS-404-P06.pdf to ['kgorlen@gmail.com'] ...
+2025-10-14 12:51:18 - mailevbills - INFO - Sent 2318custbill10072025-PWS-404-P06.pdf to ['kgorlen@gmail.com']
+2025-10-14 12:51:18 - mailevbills - INFO - Sending 2318custbill10072025-PWS-405-P14.pdf to ['kgorlen@gmail.com'] ...
+2025-10-14 12:51:20 - mailevbills - INFO - Sent 2318custbill10072025-PWS-405-P14.pdf to ['kgorlen@gmail.com']
+2025-10-14 12:51:20 - mailevbills - INFO - Extracting 2318custbill10072025-DUE.csv from 2318custbill10072025.zip ...
+2025-10-14 12:51:20 - mailevbills - INFO - Sending 2318custbill10072025.zip to ['kgorlen@gmail.com'] ...
+2025-10-14 12:51:23 - mailevbills - INFO - Sent 2318custbill10072025.zip to ['kgorlen@gmail.com']
+2025-10-14 12:51:23 - mailevbills - INFO - mailevbills finished.
+2025-10-14 12:51:23 - mailevbills - INFO - ============================================================
+2025-10-15 17:17:33 - mailevbills - INFO - ============================================================
+2025-10-15 17:17:34 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-10-15 17:17:34 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-10-15 17:17:34 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=False, test_run='kgorlen@gmail.com', msg='', input_file=WindowsPath('2318custbill10072025.zip')).
+2025-10-15 17:17:34 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-10-15 17:17:34 - mailevbills - ERROR - keyring.get_password("smtp.gmail.com", "palace.hoa.alerts@gmail.com") Failed.
+
+2025-10-15 17:17:34 - mailevbills - INFO - Set SMTP server password with the command:
+	keyring set smtp.gmail.com palace.hoa.alerts@gmail.com
+2025-10-15 17:17:34 - mailevbills - CRITICAL - smtp.gmail.com palace.hoa.alerts@gmail.com password not found.; exiting.
+2025-10-15 17:17:34 - mailevbills - INFO - mailevbills finished.
+2025-10-15 17:17:34 - mailevbills - INFO - ============================================================
+2025-10-15 17:18:44 - mailevbills - INFO - ============================================================
+2025-10-15 17:18:44 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-10-15 17:18:44 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-10-15 17:18:44 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=False, test_run='kgorlen@gmail.com', msg='', input_file=WindowsPath('2318custbill10072025.zip')).
+2025-10-15 17:18:44 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-10-15 17:18:44 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2025-10-15 17:18:45 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-10-15 17:18:45 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2025-10-15 17:18:45 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2025-10-15 17:18:45 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2025-10-15 17:18:45 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2025-10-15 17:18:45 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2025-10-15 17:18:47 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2025-10-15 17:18:47 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2025-10-15 17:18:47 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO - EV chargers found:
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 emails: kgorlen@gmail.com, ccweisner@comcast.net
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 emails: saharandmatthew@gmail.com
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 emails: jmingolia@gmail.com, isandler28@gmail.com
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO - Merged channels:
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    97: 3, 4
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    98: 5, 6
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    99: 7, 8
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO -    100: 9, 10
+2025-10-15 17:18:48 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2025-10-15 17:18:48 - mailevbills - INFO - Processing input file "2318custbill10072025.zip" ...
+2025-10-15 17:18:59 - mailevbills - INFO - Skipping "2318custbill10072025.pdf".
+2025-10-15 17:18:59 - mailevbills - INFO - Ready to send bill for charger PWS-404-P06 to kgorlen@gmail.com, ccweisner@comcast.net.
+2025-10-15 17:18:59 - mailevbills - INFO - Ready to send bill for charger PWS-203-P07 to neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com.
+2025-10-15 17:18:59 - mailevbills - INFO - Ready to send bill for charger PWS-405-P14 to saharandmatthew@gmail.com.
+2025-10-15 17:18:59 - mailevbills - INFO - Ready to send bill for charger PWS-403-P20 to jola.kieturakis@gmail.com, peastty@icloud.com.
+2025-10-15 17:18:59 - mailevbills - INFO - Ready to send bill for charger PWS-204-P26 to jmingolia@gmail.com, isandler28@gmail.com.
+2025-10-15 17:18:59 - mailevbills - INFO - Ready to send amounts due and 2318custbill10072025.zip file to pws.ev.energy@gmail.com.
+2025-10-15 17:18:59 - mailevbills - INFO - Test run: all emails will be sent to kgorlen@gmail.com instead of charger owners.
+2025-10-15 17:19:05 - mailevbills - INFO - Sending 2318custbill10072025-PWS-404-P06.pdf to ['kgorlen@gmail.com'] ...
+2025-10-15 17:19:06 - mailevbills - INFO - Sent 2318custbill10072025-PWS-404-P06.pdf to ['kgorlen@gmail.com']
+2025-10-15 17:19:06 - mailevbills - INFO - Sending 2318custbill10072025-PWS-203-P07.pdf to ['kgorlen@gmail.com'] ...
+2025-10-15 17:19:08 - mailevbills - INFO - Sent 2318custbill10072025-PWS-203-P07.pdf to ['kgorlen@gmail.com']
+2025-10-15 17:19:08 - mailevbills - INFO - Sending 2318custbill10072025-PWS-405-P14.pdf to ['kgorlen@gmail.com'] ...
+2025-10-15 17:19:09 - mailevbills - INFO - Sent 2318custbill10072025-PWS-405-P14.pdf to ['kgorlen@gmail.com']
+2025-10-15 17:19:09 - mailevbills - INFO - Sending 2318custbill10072025-PWS-403-P20.pdf to ['kgorlen@gmail.com'] ...
+2025-10-15 17:19:10 - mailevbills - INFO - Sent 2318custbill10072025-PWS-403-P20.pdf to ['kgorlen@gmail.com']
+2025-10-15 17:19:10 - mailevbills - INFO - Sending 2318custbill10072025-PWS-204-P26.pdf to ['kgorlen@gmail.com'] ...
+2025-10-15 17:19:12 - mailevbills - INFO - Sent 2318custbill10072025-PWS-204-P26.pdf to ['kgorlen@gmail.com']
+2025-10-15 17:19:12 - mailevbills - INFO - Extracting 2318custbill10072025-DUE.csv from 2318custbill10072025.zip ...
+2025-10-15 17:19:12 - mailevbills - INFO - Sending 2318custbill10072025.zip to ['kgorlen@gmail.com'] ...
+2025-10-15 17:19:14 - mailevbills - INFO - Sent 2318custbill10072025.zip to ['kgorlen@gmail.com']
+2025-10-15 17:19:14 - mailevbills - INFO - mailevbills finished.
+2025-10-15 17:19:15 - mailevbills - INFO - ============================================================
+2025-11-28 09:29:56 - mailevbills - INFO - ============================================================
+2025-11-28 09:29:56 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-11-28 09:29:56 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-11-28 09:31:11 - mailevbills - INFO - ============================================================
+2025-11-28 09:31:11 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-11-28 09:31:11 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-11-28 09:31:11 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=True, test_run='', msg='', input_file=WindowsPath('2318custbill10072025.zip')).
+2025-11-28 09:31:11 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-11-28 09:31:11 - mailevbills - ERROR - keyring.get_password("smtp.gmail.com", "palace.hoa.alerts@gmail.com") Failed.
+
+2025-11-28 09:31:11 - mailevbills - INFO - Set SMTP server password with the command:
+	keyring set smtp.gmail.com palace.hoa.alerts@gmail.com
+2025-11-28 09:31:11 - mailevbills - CRITICAL - smtp.gmail.com palace.hoa.alerts@gmail.com password not found.; exiting.
+2025-11-28 09:31:11 - mailevbills - INFO - mailevbills finished.
+2025-11-28 09:31:11 - mailevbills - INFO - ============================================================
+2025-11-28 09:33:41 - mailevbills - INFO - ============================================================
+2025-11-28 09:33:41 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-11-28 09:33:41 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-11-28 09:33:41 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=True, test_run='', msg='', input_file=WindowsPath('2318custbill10072025.zip')).
+2025-11-28 09:33:41 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-11-28 09:33:41 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2025-11-28 09:33:41 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-11-28 09:33:41 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2025-11-28 09:33:42 - mailevbills - CRITICAL - (535, b'5.7.8 Username and Password not accepted. For more information, go to\n5.7.8  https://support.google.com/mail/?p=BadCredentials 98e67ed59e1d1-3476a5603bdsm9301061a91.8 - gsmtp'); exiting.
+2025-11-28 09:33:42 - mailevbills - INFO - mailevbills finished.
+2025-11-28 09:33:42 - mailevbills - INFO - ============================================================
+2025-11-28 09:34:07 - mailevbills - INFO - ============================================================
+2025-11-28 09:34:07 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-11-28 09:34:07 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-11-28 09:34:07 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=True, test_run='', msg='', input_file=WindowsPath('2318custbill10072025.zip')).
+2025-11-28 09:34:07 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-11-28 09:34:08 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2025-11-28 09:34:08 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-11-28 09:34:08 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2025-11-28 09:34:08 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2025-11-28 09:34:08 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2025-11-28 09:34:08 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2025-11-28 09:34:08 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2025-11-28 09:34:10 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO - EV chargers found:
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 emails: kgorlen@gmail.com, ccweisner@comcast.net
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 emails: saharandmatthew@gmail.com
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 emails: jmingolia@gmail.com, isandler28@gmail.com
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO - Merged channels:
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    97: 3, 4
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    98: 5, 6
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    99: 7, 8
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO -    100: 9, 10
+2025-11-28 09:34:11 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2025-11-28 09:34:11 - mailevbills - INFO - Processing input file "2318custbill10072025.zip" ...
+2025-11-28 09:34:11 - mailevbills - INFO - Statement date 10/7/2025 is more than 30 days old.
+2025-11-28 09:34:30 - mailevbills - INFO - Operation cancelled; no emails sent.
+2025-11-28 09:34:30 - mailevbills - INFO - mailevbills finished.
+2025-11-28 09:34:30 - mailevbills - INFO - ============================================================
+2025-12-17 13:19:11 - mailevbills - INFO - ============================================================
+2025-12-17 13:19:11 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2025-12-17 13:19:11 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2025-12-17 13:19:11 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=True, test_run='', msg='', input_file=WindowsPath('//nas0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-12-05/2318custbill12052025.zip')).
+2025-12-17 13:19:11 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2025-12-17 13:19:12 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2025-12-17 13:19:12 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2025-12-17 13:19:12 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2025-12-17 13:19:12 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2025-12-17 13:19:12 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2025-12-17 13:19:12 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2025-12-17 13:19:12 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - EV chargers found:
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 emails: kgorlen@gmail.com, ccweisner@comcast.net
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 emails: saharandmatthew@gmail.com
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 emails: jmingolia@gmail.com, isandler28@gmail.com
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - Merged channels:
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    97: 3, 4
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    98: 5, 6
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    99: 7, 8
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO -    100: 9, 10
+2025-12-17 13:19:17 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2025-12-17 13:19:17 - mailevbills - INFO - Processing input file "\\nas0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-12-05\2318custbill12052025.zip" ...
+2025-12-17 13:19:29 - mailevbills - INFO - Ready to send bill for charger PWS-203-P07 to neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com.
+2025-12-17 13:19:29 - mailevbills - INFO - Ready to send bill for charger PWS-204-P26 to jmingolia@gmail.com, isandler28@gmail.com.
+2025-12-17 13:19:29 - mailevbills - INFO - Ready to send bill for charger PWS-403-P20 to jola.kieturakis@gmail.com, peastty@icloud.com.
+2025-12-17 13:19:29 - mailevbills - INFO - Ready to send bill for charger PWS-404-P06 to kgorlen@gmail.com, ccweisner@comcast.net.
+2025-12-17 13:19:29 - mailevbills - INFO - Ready to send bill for charger PWS-405-P14 to saharandmatthew@gmail.com.
+2025-12-17 13:19:29 - mailevbills - INFO - Skipping "2318custbill12052025.pdf".
+2025-12-17 13:19:29 - mailevbills - INFO - Ready to send amounts due and 2318custbill12052025.zip file to pws.ev.energy@gmail.com.
+2025-12-17 13:19:45 - mailevbills - INFO - DRY RUN: would send 2318custbill12052025-PWS-203-P07.pdf to ['neeshu89@gmail.com', 'jcn@lacorneta.com', 'cindy@lacorneta.com']
+2025-12-17 13:19:45 - mailevbills - INFO - DRY RUN: would send 2318custbill12052025-PWS-204-P26.pdf to ['jmingolia@gmail.com', 'isandler28@gmail.com']
+2025-12-17 13:19:45 - mailevbills - INFO - DRY RUN: would send 2318custbill12052025-PWS-403-P20.pdf to ['jola.kieturakis@gmail.com', 'peastty@icloud.com']
+2025-12-17 13:19:45 - mailevbills - INFO - DRY RUN: would send 2318custbill12052025-PWS-404-P06.pdf to ['kgorlen@gmail.com', 'ccweisner@comcast.net']
+2025-12-17 13:19:45 - mailevbills - INFO - DRY RUN: would send 2318custbill12052025-PWS-405-P14.pdf to ['saharandmatthew@gmail.com']
+2025-12-17 13:19:45 - mailevbills - INFO - Extracting 2318custbill12052025-DUE.csv from 2318custbill12052025.zip ...
+2025-12-17 13:19:45 - mailevbills - INFO - DRY RUN: would send 2318custbill12052025.zip to pws.ev.energy@gmail.com
+2025-12-17 13:19:45 - mailevbills - INFO - mailevbills finished.
+2025-12-17 13:19:45 - mailevbills - INFO - ============================================================
+2026-01-02 12:32:39 - mailevbills - INFO - ============================================================
+2026-01-02 12:32:39 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-02 12:32:39 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-02 12:32:39 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=True, test_run='', msg='', input_file=WindowsPath('2318custbill11072025.zip')).
+2026-01-02 12:32:39 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2026-01-02 12:32:39 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2026-01-02 12:32:40 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2026-01-02 12:32:40 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2026-01-02 12:32:40 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2026-01-02 12:32:40 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2026-01-02 12:32:40 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2026-01-02 12:32:40 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2026-01-02 12:32:42 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2026-01-02 12:32:42 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2026-01-02 12:32:42 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO - EV chargers found:
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 emails: kgorlen@gmail.com, ccweisner@comcast.net
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 emails: saharandmatthew@gmail.com
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 emails: jmingolia@gmail.com, isandler28@gmail.com
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO - Merged channels:
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    97: 3, 4
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    98: 5, 6
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    99: 7, 8
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO -    100: 9, 10
+2026-01-02 12:32:43 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2026-01-02 12:32:43 - mailevbills - INFO - Processing input file "2318custbill11072025.zip" ...
+2026-01-02 12:32:43 - mailevbills - INFO - Statement date 11/7/2025 is more than 30 days old.
+2026-01-02 12:32:50 - mailevbills - INFO - Skipping "2318custbill11072025.pdf".
+2026-01-02 12:32:50 - mailevbills - INFO - Ready to send bill for charger PWS-203-P07 to neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com.
+2026-01-02 12:32:50 - mailevbills - INFO - Ready to send bill for charger PWS-204-P26 to jmingolia@gmail.com, isandler28@gmail.com.
+2026-01-02 12:32:50 - mailevbills - INFO - Ready to send bill for charger PWS-403-P20 to jola.kieturakis@gmail.com, peastty@icloud.com.
+2026-01-02 12:32:50 - mailevbills - INFO - Ready to send bill for charger PWS-404-P06 to kgorlen@gmail.com, ccweisner@comcast.net.
+2026-01-02 12:32:50 - mailevbills - INFO - Ready to send bill for charger PWS-405-P14 to saharandmatthew@gmail.com.
+2026-01-02 12:32:50 - mailevbills - INFO - Ready to send amounts due and 2318custbill11072025.zip file to pws.ev.energy@gmail.com.
+2026-01-02 12:32:59 - mailevbills - INFO - DRY RUN: would send 2318custbill11072025-PWS-203-P07.pdf to ['neeshu89@gmail.com', 'jcn@lacorneta.com', 'cindy@lacorneta.com']
+2026-01-02 12:32:59 - mailevbills - INFO - DRY RUN: would send 2318custbill11072025-PWS-204-P26.pdf to ['jmingolia@gmail.com', 'isandler28@gmail.com']
+2026-01-02 12:32:59 - mailevbills - INFO - DRY RUN: would send 2318custbill11072025-PWS-403-P20.pdf to ['jola.kieturakis@gmail.com', 'peastty@icloud.com']
+2026-01-02 12:32:59 - mailevbills - INFO - DRY RUN: would send 2318custbill11072025-PWS-404-P06.pdf to ['kgorlen@gmail.com', 'ccweisner@comcast.net']
+2026-01-02 12:32:59 - mailevbills - INFO - DRY RUN: would send 2318custbill11072025-PWS-405-P14.pdf to ['saharandmatthew@gmail.com']
+2026-01-02 12:32:59 - mailevbills - INFO - Extracting 2318custbill11072025-DUE.csv from 2318custbill11072025.zip ...
+2026-01-02 12:32:59 - mailevbills - INFO - DRY RUN: would send 2318custbill11072025.zip to pws.ev.energy@gmail.com
+2026-01-02 12:32:59 - mailevbills - INFO - mailevbills finished.
+2026-01-02 12:32:59 - mailevbills - INFO - ============================================================
+2026-01-02 15:38:05 - mailevbills - INFO - ============================================================
+2026-01-02 15:38:05 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-02 15:38:05 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-02 15:38:05 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=False, test_run='', msg='', input_file=WindowsPath('//NAS0/home/git/Keith/EVBilling/Tests/Bills/2025/2025-06-12/2318custbill06122025-PWS-404-P06.pdf')).
+2026-01-02 15:38:05 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2026-01-02 15:38:05 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2026-01-02 15:38:06 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2026-01-02 15:38:06 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2026-01-02 15:38:06 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2026-01-02 15:38:06 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2026-01-02 15:38:06 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2026-01-02 15:38:06 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2026-01-02 15:38:08 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO - EV chargers found:
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 emails: kgorlen@gmail.com, ccweisner@comcast.net
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 emails: saharandmatthew@gmail.com
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 emails: jmingolia@gmail.com, isandler28@gmail.com
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO - Merged channels:
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    97: 3, 4
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    98: 5, 6
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    99: 7, 8
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO -    100: 9, 10
+2026-01-02 15:38:09 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2026-01-02 15:38:09 - mailevbills - INFO - Processing input file "\\NAS0\home\git\Keith\EVBilling\Tests\Bills\2025\2025-06-12\2318custbill06122025-PWS-404-P06.pdf" ...
+2026-01-02 15:38:09 - mailevbills - INFO - Statement date 6/12/2025 is more than 30 days old.
+2026-01-02 15:38:25 - mailevbills - INFO - Operation cancelled; no emails sent.
+2026-01-02 15:38:25 - mailevbills - INFO - mailevbills finished.
+2026-01-02 15:38:25 - mailevbills - INFO - ============================================================
+2026-01-15 13:26:39 - mailevbills - INFO - ============================================================
+2026-01-15 13:26:39 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-15 13:26:39 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-15 13:56:20 - mailevbills - INFO - ============================================================
+2026-01-15 13:56:20 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-15 13:56:20 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-15 13:56:20 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=True, test_run='', msg='', input_file=WindowsPath('2318custbill01082026.zip')).
+2026-01-15 13:56:20 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2026-01-15 13:56:20 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2026-01-15 13:56:21 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2026-01-15 13:56:21 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2026-01-15 13:56:21 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2026-01-15 13:56:21 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2026-01-15 13:56:21 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2026-01-15 13:56:21 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2026-01-15 13:56:23 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO - EV chargers found:
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 owner_emails: kgorlen@gmail.com, ccweisner@comcast.net
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 owner_emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 owner_emails: saharandmatthew@gmail.com
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 owner_emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 owner_emails: jmingolia@gmail.com, isandler28@gmail.com
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO - Merged channels:
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    97: 3, 4
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    98: 5, 6
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    99: 7, 8
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO -    100: 9, 10
+2026-01-15 13:56:24 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2026-01-15 13:56:24 - mailevbills - INFO - Processing input file "2318custbill01082026.zip" ...
+2026-01-15 13:56:29 - mailevbills - INFO - Ready to send bill for charger PWS-203-P07 to neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com.
+2026-01-15 13:56:29 - mailevbills - INFO - Ready to send bill for charger PWS-204-P26 to jmingolia@gmail.com, isandler28@gmail.com.
+2026-01-15 13:56:29 - mailevbills - INFO - Ready to send bill for charger PWS-403-P20 to jola.kieturakis@gmail.com, peastty@icloud.com.
+2026-01-15 13:56:29 - mailevbills - INFO - Ready to send bill for charger PWS-404-P06 to kgorlen@gmail.com, ccweisner@comcast.net.
+2026-01-15 13:56:29 - mailevbills - INFO - Ready to send bill for charger PWS-405-P14 to saharandmatthew@gmail.com.
+2026-01-15 13:56:29 - mailevbills - INFO - Skipping "2318custbill01082026.pdf".
+2026-01-15 13:56:29 - mailevbills - INFO - Ready to send amounts due and 2318custbill01082026.zip file to pws.ev.energy@gmail.com.
+2026-01-15 13:56:47 - mailevbills - INFO - DRY RUN: would send 2318custbill01082026-PWS-203-P07.pdf to ['neeshu89@gmail.com', 'jcn@lacorneta.com', 'cindy@lacorneta.com']
+2026-01-15 13:56:47 - mailevbills - INFO - DRY RUN: would send 2318custbill01082026-PWS-204-P26.pdf to ['jmingolia@gmail.com', 'isandler28@gmail.com']
+2026-01-15 13:56:47 - mailevbills - INFO - DRY RUN: would send 2318custbill01082026-PWS-403-P20.pdf to ['jola.kieturakis@gmail.com', 'peastty@icloud.com']
+2026-01-15 13:56:47 - mailevbills - INFO - DRY RUN: would send 2318custbill01082026-PWS-404-P06.pdf to ['kgorlen@gmail.com', 'ccweisner@comcast.net']
+2026-01-15 13:56:47 - mailevbills - INFO - DRY RUN: would send 2318custbill01082026-PWS-405-P14.pdf to ['saharandmatthew@gmail.com']
+2026-01-15 13:56:47 - mailevbills - INFO - Extracting 2318custbill01082026-DUE.csv from 2318custbill01082026.zip ...
+2026-01-15 13:56:47 - mailevbills - INFO - DRY RUN: would send 2318custbill01082026.zip to pws.ev.energy@gmail.com
+2026-01-15 13:56:47 - mailevbills - INFO - mailevbills finished.
+2026-01-15 13:56:47 - mailevbills - INFO - ============================================================
+2026-01-15 13:58:21 - mailevbills - INFO - ============================================================
+2026-01-15 13:58:21 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-15 13:58:21 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-15 13:59:25 - mailevbills - INFO - ============================================================
+2026-01-15 13:59:25 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-15 13:59:25 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-15 13:59:25 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=False, test_run='kgorlen@gmail.com', msg='', input_file=WindowsPath('2318custbill01082026.zip')).
+2026-01-15 13:59:25 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2026-01-15 13:59:25 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2026-01-15 13:59:25 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2026-01-15 13:59:25 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2026-01-15 13:59:26 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2026-01-15 13:59:26 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2026-01-15 13:59:26 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2026-01-15 13:59:26 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2026-01-15 13:59:28 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2026-01-15 13:59:28 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2026-01-15 13:59:28 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO - EV chargers found:
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 owner_emails: kgorlen@gmail.com, ccweisner@comcast.net
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 owner_emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 owner_emails: saharandmatthew@gmail.com
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 owner_emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 owner_emails: jmingolia@gmail.com, isandler28@gmail.com
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO - Merged channels:
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    97: 3, 4
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    98: 5, 6
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    99: 7, 8
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO -    100: 9, 10
+2026-01-15 13:59:29 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2026-01-15 13:59:29 - mailevbills - INFO - Processing input file "2318custbill01082026.zip" ...
+2026-01-15 13:59:37 - mailevbills - INFO - Ready to send bill for charger PWS-203-P07 to neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com.
+2026-01-15 13:59:37 - mailevbills - INFO - Ready to send bill for charger PWS-204-P26 to jmingolia@gmail.com, isandler28@gmail.com.
+2026-01-15 13:59:37 - mailevbills - INFO - Ready to send bill for charger PWS-403-P20 to jola.kieturakis@gmail.com, peastty@icloud.com.
+2026-01-15 13:59:37 - mailevbills - INFO - Ready to send bill for charger PWS-404-P06 to kgorlen@gmail.com, ccweisner@comcast.net.
+2026-01-15 13:59:37 - mailevbills - INFO - Ready to send bill for charger PWS-405-P14 to saharandmatthew@gmail.com.
+2026-01-15 13:59:37 - mailevbills - INFO - Skipping "2318custbill01082026.pdf".
+2026-01-15 13:59:37 - mailevbills - INFO - Ready to send amounts due and 2318custbill01082026.zip file to pws.ev.energy@gmail.com.
+2026-01-15 13:59:37 - mailevbills - INFO - Test run: all emails will be sent to kgorlen@gmail.com instead of charger owners.
+2026-01-15 13:59:51 - mailevbills - INFO - Sending 2318custbill01082026-PWS-203-P07.pdf to ['kgorlen@gmail.com'] ...
+2026-01-15 13:59:53 - mailevbills - INFO - Sent 2318custbill01082026-PWS-203-P07.pdf to ['kgorlen@gmail.com']
+2026-01-15 13:59:53 - mailevbills - INFO - Sending 2318custbill01082026-PWS-204-P26.pdf to ['kgorlen@gmail.com'] ...
+2026-01-15 13:59:54 - mailevbills - INFO - Sent 2318custbill01082026-PWS-204-P26.pdf to ['kgorlen@gmail.com']
+2026-01-15 13:59:54 - mailevbills - INFO - Sending 2318custbill01082026-PWS-403-P20.pdf to ['kgorlen@gmail.com'] ...
+2026-01-15 13:59:56 - mailevbills - INFO - Sent 2318custbill01082026-PWS-403-P20.pdf to ['kgorlen@gmail.com']
+2026-01-15 13:59:56 - mailevbills - INFO - Sending 2318custbill01082026-PWS-404-P06.pdf to ['kgorlen@gmail.com'] ...
+2026-01-15 13:59:57 - mailevbills - INFO - Sent 2318custbill01082026-PWS-404-P06.pdf to ['kgorlen@gmail.com']
+2026-01-15 13:59:57 - mailevbills - INFO - Sending 2318custbill01082026-PWS-405-P14.pdf to ['kgorlen@gmail.com'] ...
+2026-01-15 13:59:58 - mailevbills - INFO - Sent 2318custbill01082026-PWS-405-P14.pdf to ['kgorlen@gmail.com']
+2026-01-15 13:59:58 - mailevbills - INFO - Extracting 2318custbill01082026-DUE.csv from 2318custbill01082026.zip ...
+2026-01-15 13:59:58 - mailevbills - INFO - Sending 2318custbill01082026.zip to ['kgorlen@gmail.com'] ...
+2026-01-15 14:00:01 - mailevbills - INFO - Sent 2318custbill01082026.zip to ['kgorlen@gmail.com']
+2026-01-15 14:00:01 - mailevbills - INFO - mailevbills finished.
+2026-01-15 14:00:01 - mailevbills - INFO - ============================================================
+2026-01-16 16:38:19 - mailevbills - INFO - ============================================================
+2026-01-16 16:38:19 - mailevbills - INFO - mailevbills version 1.2.0 starting ...
+2026-01-16 16:38:19 - mailevbills - INFO - Configuration loaded from "C:\Users\Keith\AppData\Roaming\EVBilling\evbilling.toml".
+2026-01-16 16:38:19 - mailevbills - INFO - mailevbills arguments: ParsedArgs(debug=False, version=False, dry_run=False, test_run='', msg='', input_file=WindowsPath('//NAS0/home/git/Keith/EVBilling/Tests/Bills/2026/2026-01-08/2318custbill01082026.zip')).
+2026-01-16 16:38:19 - mailevbills - INFO - Getting SMTP server smtp.gmail.com password for palace.hoa.alerts@gmail.com from keyring...
+2026-01-16 16:38:19 - mailevbills - INFO - Connecting using SMTP_SSL for port 465 ...
+2026-01-16 16:38:20 - mailevbills - INFO - Connected to SMTP_SSL smtp.gmail.com:465
+2026-01-16 16:38:20 - mailevbills - INFO - Logging into SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com ...
+2026-01-16 16:38:20 - mailevbills - INFO - Log in OK, connected to SMTP server smtp.gmail.com:465 as palace.hoa.alerts@gmail.com.
+2026-01-16 16:38:20 - mailevbills.evchargers - INFO - Logging into Emporia Vue AWS server ...
+2026-01-16 16:38:20 - mailevbills.evchargers - INFO - Getting password from keyring ...
+2026-01-16 16:38:20 - mailevbills.evchargers - INFO - Logging into emporiavue as pws.ev.energy@gmail.com ...
+2026-01-16 16:38:22 - mailevbills.evchargers - INFO - Getting Emporia Vue details ...
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO - Log in OK, current Emporia Vue details for device PWS EV Energy loaded.
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO - Discovering EV charging devices ...
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO - OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A) [rger@mac.com] skipped.
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO - EV chargers found:
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    PWS-404-P06  1.50kW on channel 1 owner_emails: kgorlen@gmail.com, ccweisner@comcast.net
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    PWS-203-P07  2.70kW on channel 97 owner_emails: neeshu89@gmail.com, jcn@lacorneta.com, cindy@lacorneta.com
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    PWS-405-P14  8.30kW on channel 98 owner_emails: saharandmatthew@gmail.com
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    PWS-403-P20  6.70kW on channel 99 owner_emails: jola.kieturakis@gmail.com, peastty@icloud.com
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    PWS-204-P26  7.10kW on channel 100 owner_emails: jmingolia@gmail.com, isandler28@gmail.com
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO - Merged channels:
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    97: 3, 4
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    98: 5, 6
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    99: 7, 8
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO -    100: 9, 10
+2026-01-16 16:38:23 - mailevbills.evchargers - INFO - Current EV charger configuration loaded.
+2026-01-16 16:38:23 - mailevbills - INFO - Processing input file "\\NAS0\home\git\Keith\EVBilling\Tests\Bills\2026\2026-01-08\2318custbill01082026.zip" ...

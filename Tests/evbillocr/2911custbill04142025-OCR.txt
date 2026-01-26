@@ -1,0 +1,49 @@
+=== Page 3 header ===
+Account No: 0347802911-3
+Statement Date: 04/14/2025
+Due Date: 05/01/2025
+=== Page 3 details ===
+Details of PG&E Electric Delivery Charges
+03/10/2025 - 04/07/2025 (29 billing days)
+Service Agreement ID: 0343609710
+Rate Schedule: B1 Bus Low Use
+03/10/2025 - 04/07/2025
+Customer Charge 29 days @ $0.82136 $23.82
+Energy Charges
+Peak 1.312 kWh @ $640000.0 43502.57102
+Off Peak 3.754 kWh @ $480000.0 41890.157275
+Super Off Peak 1.257 kWh @ $680000.0 40248.50619
+Generation Credit -893.48
+Power Charge Indifference Adjustment 40.10
+Franchise Fee Surcharge 6.64
+San Francisco Utility Users' Tax (7.500%) 136.53
+SF Prop C Tax Surcharge 17.95
+Total PG&E Electric Delivery Charges $1.98152
+2018 Vintaged Power Charge Indifference Adjustment
+=== Page 3 service info ===
+Service Information
+Meter # 1010248831
+Total Usage 6.324 kWh800000
+Serial P
+Rotating Outage Block 50
+=== Page 3 footer ===
+Page 3 of 6
+=== Page 4 header ===
+Account No: 0347802911-3
+Statement Date: 04/14/2025
+Due Date: 05/01/2025
+=== Page 4 details ===
+Details of CleanPowersF Electric Generation Charges
+03/10/2025 - 04/07/2025 (29 billing days)
+Service Agreement ID: 0349623041 ESP Customer Number: 0343609710
+03/10/2025 - 04/07/2025
+Rate Schedule: B-1
+Generation - Super Off Peak - Winter 1.257 kWh @ $680000.0 $10798.13580
+Generation - Off Peak - Winter 3.754 kWh @ $480000.0 $12565.47175
+Generation - On Peak - Winter 1.312 kWh @ $640000.0 $14300.18771
+Net Charges 795.26
+Local Utility Users Tax 59.64
+Energy Commission Surcharge 1.90
+Total CleanPowerSF Electric Generation Charges $856.80
+=== Page 4 footer ===
+Page 4 of 6

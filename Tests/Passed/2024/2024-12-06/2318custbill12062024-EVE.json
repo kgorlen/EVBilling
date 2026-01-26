@@ -1,0 +1,38 @@
+{
+    "EVE_version": "2.0",
+    "chargers": {
+        "PWS-404-P06": {
+            "channel": {
+                "channelMultiplier": 1.0,
+                "channelNum": "1",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-404-P06 1.45kW (NEMA 5-15R, Toyota G9060-47130 charging cable, measured June, 2024)",
+                "type": "FiftyAmp"
+            },
+            "kW": 1.45,
+            "service_start_date": "6/13/2024"
+        },
+        "PWS-HOA": {
+            "channel": {
+                "channelMultiplier": 1.0,
+                "channelNum": "2",
+                "channelTypeGid": 9,
+                "deviceGid": 343481,
+                "name": "PWS-HOA 8.55kW (Dummy to account for excess subscription charge)",
+                "type": "FiftyAmp"
+            },
+            "kW": 8.55,
+            "service_start_date": "6/13/2024"
+        }
+    },
+    "device_info": {
+        "device_gid": 343481,
+        "device_name": "PWS EV Energy",
+        "firmware": "Vue3-723",
+        "manufacturer_id": "F2332A001A64B708D16BEC",
+        "model": "VUE003"
+    },
+    "period_end_date": "2024-12-01",
+    "total_evse_kW": 10.0
+}

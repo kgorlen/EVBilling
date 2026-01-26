@@ -1,0 +1,21 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../../Other/magico13/PyEmVue"
+		}
+	],
+	"settings": {
+		"autoDocstring.docstringFormat": "numpy",
+    	"terminal.integrated.defaultProfile.windows": "PowerShell",
+		"terminal.integrated.profiles.windows": {
+			"PowerShell": {
+				"source": "PowerShell",
+				"icon": "terminal-powershell",
+				"args": ["-NoExit", "-ExecutionPolicy", "Bypass", "-Command", "& '.venv\\Scripts\\Activate.ps1'"]
+			}
+		},
+	}
+}
