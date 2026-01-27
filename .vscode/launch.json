@@ -1,0 +1,212 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "2.0.0",
+    "configurations": [
+        {
+            "name": "Python Debugger: Current File",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Python Debugger: evbilling ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+               "${file}"
+            ]
+        },
+        {
+            "name": "Python Debugger: --debug evbilling ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+               "--debug ${file}"
+            ]
+        },
+        {
+            "name": "Python Debugger: --link --outdir 'Tests/outdir-test' evbilling ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--link",
+                "--outdir", "Tests/outdir-test",
+                "${file}"
+        ]
+        },
+        {
+            "name": "Python Debugger: evbilling --pages 35 --outdir 'Tests/Bills/2024/2024-07-16 --pages 35' Tests/Bills/2024/2318custbill07162024.pdf",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--pages", "35",
+                "--outdir", "Tests/Bills/2024/2024-07-16 --pages 35",
+                "Tests/Bills/2024/2318custbill07162024.pdf",
+            ],
+        },
+        {
+            "name": "Python Debugger: evbilling --pages 46 --outdir 'Tests/Bills/2024/2024-07-16 --pages 46' Tests/Bills/2024/2318custbill07162024.pdf",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--pages", "46",
+                "--outdir", "Tests/Bills/2024/2024-07-16 --pages 46",
+                "Tests/Bills/2024/2318custbill07162024.pdf",
+            ],
+        },
+        {
+            "name": "Python Debugger: evbilling Tests/Bills/2024/*custbill0[89]??2024.pdf Tests/Bills/2024/*custbill1???2024.pdf Tests/Bills/202[5-9]/*custbill????202[5-9].pdf",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+                "Tests/Bills/2024/*custbill0[89]??2024.pdf",
+                "Tests/Bills/2024/*custbill1???2024.pdf",
+                "Tests/Bills/202[5-9]/*custbill????202[5-9].pdf",
+                "Tests/Bills/20[3-9]?/*custbill????20[3-9]?.pdf",
+            ],
+        },
+        {
+            "name": "Python Debugger, searchable PDF only: evbilling Tests/Bills/2025/*custbill1[1-2]??2025.pdf Tests/Bills/202[6-9]/*custbill????202[6-9].pdf",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": [
+                "Tests/Bills/2025/*custbill1[1-2]??2025.pdf",
+                "Tests/Bills/202[6-9]/*custbill????202[6-9].pdf",
+                "Tests/Bills/20[3-9]?/*custbill????20[3-9]?.pdf",
+            ],
+        },
+       {
+            "name": "Python Debugger: evsettings",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evsettings.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Python Debugger: test_evunits",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/test_evunits.py",
+            "console": "integratedTerminal",
+        },
+        {
+            "name": "Python Debugger: evbilltext --outdir Tests/evbilltext ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilltext.py",
+            "console": "integratedTerminal",
+            "args": [
+                "--outdir", "Tests\\evbilltext",             
+                "${file}"
+            ]
+        },
+        {
+            "name": "Python Debugger: runevbilling ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/runevbilling.py",
+            "console": "integratedTerminal",
+            "args": "${file}",
+        },
+        {
+            "name": "Python Debugger: evtariffs -d --no-quiet Tests/tariffs",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evtariffs.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-d",
+                "--no-quiet",
+                "Tests\\tariffs"
+            ],
+        },
+        {
+            "name": "Python Debugger: mailevbills --dry-run ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/mailevbills.py",
+            "console": "integratedTerminal",
+            "args": "--dry-run ${file}",
+        },
+        {
+            "name": "Python Debugger: mailevbills --test-run ADDRESS ${file}",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/mailevbills.py",
+            "console": "integratedTerminal",
+            "args": "--test-run ${input:email} --msg \"NOTE: This is a test email message.\" ${file}",
+        },
+        {
+            "name": "Python Debugger: evbilling --help",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": ["--help"],
+        },
+        {
+            "name": "Python Debugger: evtariffs --help",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evtariffs.py",
+            "console": "integratedTerminal",
+            "args": ["--help"],
+        },
+        {
+            "name": "Python Debugger: mailevbills --help",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/mailevbills.py",
+            "console": "integratedTerminal",
+            "args": ["--help"],
+        },
+        {
+            "name": "Python Debugger: evbilling --version",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evbilling.py",
+            "console": "integratedTerminal",
+            "args": ["--version"],
+        },
+        {
+            "name": "Python Debugger: evtariffs --version",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/evtariffs.py",
+            "console": "integratedTerminal",
+            "args": ["--version"],
+        },
+        {
+            "name": "Python Debugger: mailevbills --version",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "src/evbilling/mailevbills.py",
+            "console": "integratedTerminal",
+            "args": ["--version"],
+        },
+    ],
+    "inputs": [
+        {
+            "id": "email",
+            "type": "promptString",
+            "description": "Enter email address",
+        }
+  ]
+}
