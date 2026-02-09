@@ -2380,7 +2380,7 @@ class Submeter:
         sizes, labels, colors = zip(*[pieslice for pieslice in pieslices if pieslice.size >= 0.01])
 
         plt.rcParams['font.size'] = 6
-        fig, ax = plt.subplots(figsize=(4, 3.5))
+        fig, ax = plt.subplots(figsize=(4.5, 3.5))
         ax.pie(
             list(sizes),
             labels=list(labels),

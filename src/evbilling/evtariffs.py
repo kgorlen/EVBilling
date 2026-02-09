@@ -11,9 +11,10 @@ References:
 '''
 
 __author__ = 'Keith Gorlen'
-__version__ = '1.0.0'
+__version__ = '1.0.1'
 
 import os
+import subprocess
 import sys
 import argparse
 from datetime import datetime, timedelta
@@ -21,7 +22,7 @@ from pathlib import Path
 import logging
 from logging.handlers import RotatingFileHandler
 import re
-from typing import NamedTuple, Optional
+from typing import NamedTuple, Optional, NoReturn
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 """Path to directory containing this Python script."""
@@ -37,8 +38,7 @@ import pgebev1tariff
 from pgebev1tariff import PGEBEV1Tariff
 import evargs
 import urllib3
-import requests  # type: ignore
-from requests.models import Response
+
 import pdfplumber
 
 # pylint: enable=wrong-import-position
@@ -111,45 +111,94 @@ ARGS: ParsedArgs
 """Arguments parsed by argparse() in main()."""
 
 
-def request(url: str, msg: str = "", get=False) -> requests.Response:
-    """Send HTTP POST or GET to URL with retries on timeout.
+def download_file(url: str, output_path: Path, timeout: int = 30) -> None:
+    """_summary_
+
+    Parameters5
+    ----------
+    url : str
+        Download URL
+    output_path : Path
+        Path to save downloaded file
+    timeout : int, optional
+        curl --max-time, by default 30
+
+    Raises
+    ------
+    RuntimeError
+        Failed to download file
+    """
+    cmd = [
+        "curl",
+        "-fL",  # fail on HTTP errors, follow redirects
+        "--max-time",
+        str(timeout),
+        "--retry",
+        "5",
+        "--retry-delay",
+        "2",
+        "-o",
+        str(output_path),
+        url,
+    ]
+
+    result = subprocess.run(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        check=False,
+    )
+
+    if result.returncode != 0:
+        raise RuntimeError(f"Failed to download {url}: {result.stderr.strip()}")
+
+
+def exit_with_status(status: int) -> NoReturn:
+    """Exit with status.
 
     Args:
-        url (str): healthchecks.io URL
-        msg (str): message to send (default: "")
-        op (bool): True for GET request, False for POST request (default: False)
-
-    Returns:
-        requests.Response: The response object from the POST request.
-
-    Raises:
-        requests.RequestException: If the request fails or returns a bad status code.
-        requests.exceptions.Timeout: If the request times out after retries.
+        status (int): exit status
     """
-    # url = "https://httpstat.us/504?sleep=60000" # For testing, simulates a 504 Gateway Timeout
-    op = requests.get if get else requests.post
-    logger.info(f'Sending request to {url} data="{msg}" ...')
-    for timeout in (5, 10, 15):
-        try:
-            response = op(url, timeout=timeout, data=msg)
-            response.raise_for_status()  # Raise an exception for bad status codes (4xx, 5xx)
-            return response
-        except requests.exceptions.Timeout:
-            logger.info(f"Request to {url} timed out after {timeout}s, retrying ...")
-    raise requests.exceptions.Timeout(f"Request to {url} timed out after multiple retries")
+    logger.info(f'{"=" * 60}')
+    logging.shutdown()
+    sys.exit(status)
 
 
-def ping(url: str, msg: str = "") -> Response:
-    """Ping healthchecks.io with an optional message.
+def ping_healthchecks(url: str, data: str = "", timeout=10) -> None:
+    """Send ping to healthchecks.io: https://healthchecks.io/docs/.
 
-    Args:
-        url (str): healthchecks.io URL
-        msg (str): message to log (default: "")
-
-    Returns:
-        requests.Response: The response object from the POST request.
+    Arguments:
+                url -- healthchecks.io URL with unique ping code
+                data -- optional data to include in the ping
+                timeout -- timeout for the ping request (default: 10 seconds)
     """
-    return request(url, msg)
+    cmd = [
+        "curl",
+        "-fsS",
+        "--max-time",
+        str(timeout),
+        "--retry",
+        "5",
+        "-o",
+        "NUL" if os.name == "nt" else "/dev/null",
+    ]
+    if data:
+        cmd += ["--data-raw", data]
+    # cmd.append("http://this-hostname-should-not-exist.invalid")  # Test DNS failure
+    # cmd.append("https://10.255.255.1") # For testing, simulates a 504 Gateway Timeout
+    cmd.append(url)
+    logger.info(f"Pinging healthchecks.io with command: {' '.join(cmd)} ...")
+
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+        err = result.stderr
+
+        if result.returncode != 0:
+            raise RuntimeError(f"{' '.join(cmd)} failed: {err.strip()}")
+
+    except OSError as e:
+        raise OSError(f"curl not found or error: {e}")  # pylint: disable=raise-missing-from
 
 
 def main() -> None:
@@ -227,15 +276,11 @@ def main() -> None:
         raise RuntimeError(f'urllib3.util.parse_url({Config.pge_bev_tariff_url}).path failed')
 
     url_path = Path(url)
-
-    info_msg(logger, f'Downloading tariff from {Config.pge_bev_tariff_url} ...')
-    response = request(Config.pge_bev_tariff_url, get=True)
-    info_msg(logger, f'{Config.pge_bev_tariff_url} downloaded.')
-
     tariff_file = tariff_path.joinpath(url_path.name)
-    info_msg(logger, f'Saving tariff to "{tariff_file}" ...')
-    with open(tariff_file, 'wb') as f:
-        f.write(response.content)
+
+    info_msg(logger, f'Downloading tariff from {Config.pge_bev_tariff_url} to {tariff_file} ...')
+    download_file(Config.pge_bev_tariff_url, tariff_file)
+    info_msg(logger, f'{Config.pge_bev_tariff_url} downloaded.')
 
     info_msg(logger, 'Looking for "UNBUNDLING OF TOTAL RATES" page ...')
 
@@ -277,8 +322,7 @@ def main() -> None:
     )
 
     info_msg(logger, 'Pinging healthchecks.io ...')
-    # Raise an exception for bad status codes (4xx, 5xx)
-    ping(Config.healthchecks_url)
+    ping_healthchecks(Config.healthchecks_url)
     info_msg(logger, 'Successful ping sent.')
 
     info_msg(logger, f'{SCRIPT_NAME} finished.')
@@ -287,27 +331,29 @@ def main() -> None:
     sys.exit(0)
 
 
-def fatal_error(msg: str) -> None:
-    """Log a CRITICAL message and sys.exit(1)."""
+def signal_failure(url: str, msg: str) -> NoReturn:
+    """Signal failure and exit.
+
+    Args:
+        url (str): healthchecks.io URL
+        msg (str): message to log
+    """
+    logger.info(f"Signaling failure to {url}, data='{msg}' ...")
+    try:
+        ping_healthchecks(url + "/fail", msg)
+    except Exception as e:  # pylint: disable=broad-exception-caught
+        logger.critical(f"Unexpected error pinging {url}: {type(e).__name__}: {e}")
     print(f'{datetime.now().strftime(DATE_FMT)} - CRITICAL - {msg}; exiting.', file=sys.stderr)
     logger.critical(f'{msg}; exiting.')
-    logger.info(f'{"=" * 60}')
-    logging.shutdown()
-    sys.exit(1)
+    exit_with_status(1)
 
 
 def cli() -> None:
     """Command line interface for evtariffs."""
     try:
         main()
-    except requests.exceptions.RequestException as e:
-        fatal_error(str(e))
     except Exception as e:  # pylint: disable=broad-exception-caught
-        info_msg(logger, 'Pinging healthchecks.io ...')
-        ping(Config.healthchecks_url + '/fail', str(e))
-        info_msg(logger, 'Failure ping sent.')
-        fatal_error(str(e))
-
+        signal_failure(Config.healthchecks_url + '/fail', str(e))
 
 if __name__ == '__main__':
     cli()
