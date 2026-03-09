@@ -227,13 +227,6 @@ data directory, `C:\Users\`*`Username`*`\AppData\Roaming\EVBilling` on Windows.
 
 ## [credentials]
 
-### contact_email
-
-```
-# Email address to appear in submeter bill footer and **mailevbills** sender address
-contact_email = "pws.ev.energy@gmail.com"
-```
-
 ### ev_system and ev_username
 
 ```
@@ -251,6 +244,26 @@ For example:
 
 ```
 keyring set "emporiavue" "pws.ev.energy@gmail.com"
+```
+
+## [contacts]
+
+The required `[contacts]` section sets email addresses used by **evbilling**
+and **mailevbills**.
+
+### contact_email
+
+```
+# Email address to appear in submeter bill footer and mailevbills sender address
+contact_email = "pws.ev.energy@gmail.com"
+```
+
+### billing_emails
+
+```
+# List of email addresses to which **mailevbills** sends amounts due table
+# and the *nnnn*custbill*mmddyyyy*.zip file
+billing_emails = ["pws.ev.energy@gmail.com", "billing_dept@mybuilding.com"]
 ```
 
 ## [smtp]

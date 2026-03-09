@@ -9,7 +9,7 @@ contact_email address.
 '''
 
 __author__ = 'Keith Gorlen'
-__version__ = '1.2.1'
+__version__ = '1.2.3'
 
 import os
 import sys
@@ -444,10 +444,10 @@ def email_zip(
     attachments = [(zip_name, zip_bytes)]
 
     if ARGS.dry_run:
-        info_msg(logger, f'DRY RUN: would send {zip_name} to {Config.contact_email}')
+        info_msg(logger, f'DRY RUN: would send {zip_name} to {Config.billing_emails}')
         return
 
-    mail_to: list[str] = [ARGS.test_run] if ARGS.test_run else [Config.contact_email]
+    mail_to: list[str] = [ARGS.test_run] if ARGS.test_run else Config.billing_emails
 
     try:
         logger.info(f'Sending {zip_name} to {mail_to} ...')
@@ -509,7 +509,9 @@ def main() -> None:
             return
 
     if not ARGS.msg:
-        email_msg: str = input('Enter optional message to include with email: ').strip()
+        email_msg: str = input(
+            'Enter optional message to include with email; press Enter if none: '
+        ).strip()
     else:
         email_msg = ARGS.msg
 
@@ -562,7 +564,9 @@ def main() -> None:
         zip_bytes = zip_path.read_bytes()
         email_funcs.append(partial(email_zip, zip_path, zip_bytes, statement_date, smtp_conn))
         info_msg(
-            logger, f'Ready to send amounts due and {zip_path.name} file to {Config.contact_email}.'
+            logger,
+            f'Ready to send amounts due and {zip_path.name} file to '
+            f'{", ".join(Config.billing_emails)}.',
         )
 
     elif input_suffix == '.pdf':

@@ -17,7 +17,6 @@ import sys
 from enum import StrEnum
 from pathlib import Path
 import tomllib
-from collections import namedtuple
 from itertools import chain
 from typing import Any
 
@@ -120,40 +119,6 @@ class Config:
         ) from e
 
     @classmethod
-    def namedtuple_from_dict(cls, typename: str, key: str) -> tuple[str | float, ...]:
-        """Create a namedtuple from a dictionary.
-
-        Parameters
-        ----------
-        typename : str
-            Name for the namedtuple.
-        key : str
-            Table key to retrieve from config_data.
-
-        Returns
-        -------
-        tuple[str | float, ...]
-            Namedtuple with fields corresponding to the keys in config_data.
-
-        Raises
-        ------
-        KeyError
-            Table key not found in config_data.
-
-        Notes
-        -----
-        Fields of dynamically created namedtuples are unknown to pylint, mypy,
-        and other static type checkers.
-        """
-
-        try:
-            ntpl = namedtuple(typename, cls.config_data[key].keys())(**cls.config_data[key])
-        except KeyError as e:
-            raise KeyError(f'Table "{key}" not found') from e
-
-        return ntpl
-
-    @classmethod
     def init(cls) -> None:
         """Initialize configuration from .toml configuration file."""
         try:
@@ -190,30 +155,27 @@ class Config:
                     else cls.default_evmailbills_log
                 )
 
-            cls.credentials: tuple[str | float, ...] = cls.namedtuple_from_dict(
-                'Credentials', 'credentials'
-            )
-            """contact_email and keyring arguments for the Emporia Vue server."""
-
-            cls.contact_email: str = cls.credentials.contact_email  # type: ignore
-            """Email address to appear in submeter bill footer."""
-
-            cls.ev_system: str = cls.credentials.ev_system  # type: ignore
+            cls.ev_system: str = cls.config_data['credentials']['ev_system']
             """keyring system argument for the Emporia Vue server."""
 
-            cls.ev_username: str = cls.credentials.ev_username  # type: ignore
+            cls.ev_username: str = cls.config_data['credentials']['ev_username']
             """keyring username argument for the Emporia Vue server."""
 
-            cls.smtp: tuple[str | float, ...] = cls.namedtuple_from_dict('SMTP', 'smtp')
-            """SMTP server settings."""
+            cls.contact_email: str = cls.config_data['contacts']['contact_email']
+            """Email address to appear in submeter bill footer."""
 
-            cls.smtp_server: str = cls.smtp.smtp_server  # type: ignore
+            cls.billing_emails: list[str] = (
+                _ if isinstance(_ := cls.config_data['contacts']['billing_emails'], list) else [_]
+            )
+            """ List of email addresses to which mailevbills sends NNNNcustbillMMDDYYYY.zip."""
+
+            cls.smtp_server: str = cls.config_data['smtp']['smtp_server']
             """SMTP server hostname or IP address."""
 
-            cls.smtp_port: int = cls.smtp.smtp_port  # type: ignore
+            cls.smtp_port: int = cls.config_data['smtp']['smtp_port']
             """SMTP server port number."""
 
-            cls.smtp_user: str = cls.smtp.smtp_user  # type: ignore
+            cls.smtp_user: str = cls.config_data['smtp']['smtp_user']
             """SMTP server user name."""
 
             cls.tariffs: dict[str, str] = cls.config_data['tariffs']
@@ -264,8 +226,8 @@ class Config:
 
         except KeyError as e:
             raise KeyError(
-                f'{e} not found in configuration file {
-                            cls.config_file}'
+                f'{e} not found in configuration file {cls.config_file}, '
+                f'see evbilling SETTINGS documentation in README.md.'
             ) from e
 
         if (sum(cls.tou_hours_mask[tou] for tou in Tou) != 1).any():  # type: ignore

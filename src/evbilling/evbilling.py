@@ -128,7 +128,7 @@ import os
 import sys
 import re
 from pathlib import Path
-import tempfile
+from io import BytesIO
 import logging
 from logging.handlers import RotatingFileHandler
 from enum import IntEnum
@@ -524,7 +524,7 @@ class RatePeriod(ABC):
             A Period instance; may be multiple periods if rates change during billing period.
         text : str
             Bill PDF text covering the specified rate period.
-       """
+        """
         self.bill: Bill = bill
         """Main or submeter Bill instance."""
         self.period: BillPeriod = period
@@ -934,16 +934,29 @@ class PGERatePeriod(RatePeriod):
             error_msg(logger, f'PG&E rate period {self.period} invalid {self.overage_fee}.')
             ok = False
 
-        credit = sum((gc.credit for gc in self.energy_credits.values()), Dollars('0.00'))
-        if abs(credit - self.generation_credit) > Dollars('0.01'):
-            msg = f'PG&E rate period {self.period} calculated generation credit {credit} '
-            msg += f'not equal to generation credit {self.generation_credit} shown on bill; '
-            msg += 'check BEV-1 tariff UNBUNDLING OF TOTAL RATES, Generation and Bundled PCIA.'
-            if abs((credit - self.generation_credit) / self.generation_credit) > 0.01:
-                error_msg(logger, msg)
+        # Calculated generation credit occasionally differs by a few cents from
+        # the generation credit shown on the bill for no apparent reason.
+
+        gen_credit: Dollars = sum(
+            (gc.credit for gc in self.energy_credits.values()), Dollars('0.00')
+        )
+        gen_credit_diff: Dollars = abs(gen_credit - self.generation_credit)
+
+        if gen_credit_diff > Dollars('0.02'):
+            info_msg(
+                logger,
+                f'PG&E rate period {self.period} calculated generation credit {gen_credit} '
+                f'not equal to generation credit {self.generation_credit} shown on bill.',
+            )
+
+            if abs(gen_credit_diff / self.generation_credit) > 0.005:
+                error_msg(
+                    logger,
+                    'Calculated generation credit difference exceeds 0.1%; '
+                    'check BEV-1 tariff UNBUNDLING OF TOTAL RATES, '
+                    'Generation and Bundled PCIA.',
+                )
                 ok = False
-            else:
-                warning_msg(logger, msg)
 
         return super().valid() and ok
 
@@ -1302,12 +1315,10 @@ class CPSFBillDetails(BillDetails):
         -----
         CleanPowerSF represents rate changes with pairs of TOU rates in a single
         rate period instead of multiple rate periods.  This has been observed to
-        occur on July 1 for the annual rate change and on June 1 and October 1
-        for the seasonal rate changes even if the rates remain the same, and
-        the PG&E bill details have had corresponding separate rate periods even
-        if the PG&E rates remain the same. For consistency, the CleanPowerSF
-        rate period is split into two on the first day of the second PG&E rate
-        period.
+        occur even if the rates remain the same, and the PG&E bill details have
+        had corresponding separate rate periods even if the PG&E rates remain
+        the same. For consistency, the CleanPowerSF rate period is split into
+        two on the first day of the second PG&E rate period.
 
         """
         super().__init__(bill, text)
@@ -1342,11 +1353,11 @@ class CPSFBillDetails(BillDetails):
             )
 
         change_date = bill.pge_bill_details.rate_periods[1].period.fr
-        if change_date.month not in (6, 7, 10) or change_date.day != 1:
+        if change_date.day != 1:
             warning_msg(
                 logger,
                 f'CleanPowerSF rate change on {change_date} '
-                f'not on expected date of 6/1, 7/1, or 10/1; check bill.',
+                f'not on first day of month; check bill.',
             )
 
         if len(self.rate_periods) > 1:
@@ -2343,13 +2354,13 @@ class Submeter:
             tax_fees += usage.tax_fees.sum()
         return tax_fees
 
-    def plot_cost_pie(self, plotfile) -> None:
-        """Write a pie chart of submeter costs to the specified PDF plotfile.
+    def plot_cost_pie(self, plotbuf: BytesIO) -> None:
+        """Write a pie chart of submeter costs to the specified PDF plotbuf.
 
         Parameters
         ----------
-        plotfile : file instance
-            File to which the plot is written.
+        plotbuf : BytesIO instance
+            Buffer to which the plot is written.
 
         """
         logger.info(f'Generating {self.evse_id} cost pie chart ...')
@@ -2411,16 +2422,16 @@ class Submeter:
 
         plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
         plt.title(f'{self.evse_id} Cost Breakdown {self.main_bill.period}', fontsize=9, pad=15)
-        plt.savefig(plotfile, format='png')
+        plt.savefig(plotbuf, format='png')
         plt.close(fig)
 
-    def plot_cost_vs_day(self, plotfile) -> None:
-        """Write a stacked bar chart of submeter costs to the specified PDF plotfile.
+    def plot_cost_vs_day(self, plotbuf: BytesIO) -> None:
+        """Write a stacked bar chart of submeter costs to the specified PDF plotbuf.
 
         Parameters
         ----------
-        plotfile : file instance
-            File to which the plot is written.
+        plotbuf : BytesIO instance
+            Buffer to which the plot is written.
 
         """
         logger.info(f'Generating {self.evse_id} cost stacked bar chart ...')
@@ -2469,16 +2480,16 @@ class Submeter:
         )
         plt.tight_layout()
         plt.plot()
-        plt.savefig(plotfile, format='png')
+        plt.savefig(plotbuf, format='png')
         plt.close(fig)
 
-    def plot_tou_kWh_history(self, plotfile) -> None:
-        """Write a stacked bar chart of submeter TOU kWh usage to the specified PDF plotfile.
+    def plot_tou_kWh_history(self, plotbuf: BytesIO) -> None:
+        """Write a stacked bar chart of submeter TOU kWh usage to the specified PDF plotbuf.
 
         Parameters
         ----------
-        plotfile : file instance
-            File to which the plot is written.
+        plotbuf : BytesIO instance
+            Buffer to which the plot is written.
 
         """
         logger.info(f'Generating {self.evse_id} usage history stacked bar chart ...')
@@ -2520,7 +2531,7 @@ class Submeter:
         )
         plt.tight_layout()
         plt.plot()
-        plt.savefig(plotfile, format='png')
+        plt.savefig(plotbuf, format='png')
         plt.close(fig)
 
     def write_pdf(self, subbillfile) -> None:
@@ -2551,17 +2562,17 @@ class Submeter:
         pdf.set_font('Helvetica', '', 12)
         pdf.multi_cell(0, None, self.effective_rate(), border=0, align='L')
 
-        with tempfile.TemporaryFile() as plotfile:
-            self.plot_cost_pie(plotfile)
-            pdf.image(plotfile, x=2 + 3 / 16, y=7 - 0.5 - 3.5, w=4)  # type: ignore[reportCallIssue]
+        plotbuf = BytesIO()
+        self.plot_cost_pie(plotbuf)
+        pdf.image(plotbuf, x=2 + 3 / 16, y=7 - 0.5 - 3.5, w=4)  # type: ignore[reportCallIssue]
 
-        with tempfile.TemporaryFile() as plotfile:
-            self.plot_cost_vs_day(plotfile)
-            pdf.image(plotfile, x=0.5, y=9 - 0.5 - 2, w=7.5)  # type: ignore[reportCallIssue]
+        plotbuf = BytesIO()
+        self.plot_cost_vs_day(plotbuf)
+        pdf.image(plotbuf, x=0.5, y=9 - 0.5 - 2, w=7.5)  # type: ignore[reportCallIssue]
 
-        with tempfile.TemporaryFile() as plotfile:
-            self.plot_tou_kWh_history(plotfile)
-            pdf.image(plotfile, x=0.5, y=11 - 0.5 - 2, w=7.5)  # type: ignore[reportCallIssue]
+        plotbuf = BytesIO()
+        self.plot_tou_kWh_history(plotbuf)
+        pdf.image(plotbuf, x=0.5, y=11 - 0.5 - 2, w=7.5)  # type: ignore[reportCallIssue]
 
         # Write PG&E Electric Delivery Charges details page
 
