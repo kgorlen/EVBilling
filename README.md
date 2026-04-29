@@ -156,8 +156,11 @@ submeter bills.
 
 EV charger circuits must be updated whenever EV chargers are connected,
 disconnected, or replaced.  Initially, the nominal charger power rating can be
-set, but should be updated to the actual value as measured by the Emporia Vue
-application.
+set; however, **evbilling** will attempt to determine the metered charger power
+rating from recent 15-minute average kWh usage data.  It will use the metered
+power rating if it is close (see [power_rating](#power_rating)) to the nominal
+power rating; otherwise it will use the the nominal power rating and log a
+WARNING message.
 
 **NB**: Whenever the load on the EV power panel changes, contact the PG&E Solar
 department at 877-743-4112 and ask to be transferred to Solar/EV Business
@@ -395,6 +398,22 @@ TOU rate period; for example, the following defines the two-hour TOU range from
 
 ```
 "Super Off Peak" = [[23, 24], [0, 1]]
+```
+
+## [power_rating]
+
+The optional `[power_rating]` section sets parameters for measuring EV charger
+power ratings from 15-minute average kWh usage data.  Data values less than
+`sample_min_kWh` are ignored as idle power usage or noise.  If the metered power
+rating differs from the nominal power rating specified in the circuit name
+(see [EV Charger Names](#ev-charger-names-power-ratings-service-start-dates-and-owner-email-addresses))
+by more than `tolerance_kW`, the nominal power rating is used with a warning
+message. Default values are shown in this example:
+
+```
+"samples" = 4           # Number of 15-minute kWh samples to use
+"sample_min_kW" = 1.0   # 15-minute kW sample threshold
+"tolerance_kW" = 0.25   # Metered charger power rating tolerance
 ```
 
 # INSTALLATION

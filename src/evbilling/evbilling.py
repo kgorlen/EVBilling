@@ -7,7 +7,7 @@ evbilling:
 - Generates bills for submetered EV chargers, a.k.a Electric Vehicle Service
   Equipment (EVSE).
 
-Copyright (C) 2024, 2025 Keith Gorlen kgorlen@gmail.com
+Copyright (C) 2024, 2025, 2026 Keith Gorlen kgorlen@gmail.com
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -104,7 +104,7 @@ EnergyMonitor -- Energy monitor configuration
  ├─> chargers: EVCharger (multiple)
  ├─> merged_channels: VueDeviceChannel (multiple)
 
-EVCharger -- EV charger power rating and data channel
+EVCharger -- EV charger service start date, power rating, Emporia Vue data channel, and Owner email.
 
 PDFXtractr -- Abstract base class definitions for extracting text from
  |            PG&E/CPSF BEV-1 searchable PDF bill
@@ -118,8 +118,6 @@ Config -- EVBillingConfiguration and settings
 
 EVFiles -- Manage file naming for EV billing
 
-TODO:
-    Default tou_rates to NaN instead of zero?
 """
 
 __author__ = 'Keith Gorlen'
@@ -160,6 +158,8 @@ from evunits import (
     RE_DOLLARS,
     RE_kWh,
     RE_RATES,
+    SUBMETER_PLACES_kW,
+    SUBMETER_PLACES_kWh,
     Percent,
     SubscriptionMonths,
     Kilowatts,
@@ -264,18 +264,6 @@ class DailySubscriptionCostBreakdown(NamedTuple):
 class Bill:
     """PG&E main or submeter bill."""
 
-    FIELDS = (
-        ('account_no', r'(Account No): (\d{10}-\d)'),
-        ('meter_no', r'(Meter #) (\d{10})'),
-        ('total_usage', rf'(Total Usage) {RE_kWh}'),
-        ('statement_date', rf'(Statement Date): {RE_DATE}'),
-        ('due_date', rf'(Due Date): {RE_DATE}'),
-    )
-
-    LABELS = {
-        field[0]: re.search(r"\(([^)]+)\)", field[1]).group(1) for field in FIELDS  # type: ignore
-    }
-
     def __init__(self, ev_files: EVFiles, pdfpages: tuple[str, str]) -> None:
         """Initialize bill from PDF text.
 
@@ -315,23 +303,31 @@ class Bill:
         self.adjustment = Dollars('0.00')
         """Submetering difference adjustment charge allocation to match PG&E
         bill."""
-        self.found: set[str] = set()
-        """Set of found field attribute names."""
+        self.places_kW: int = 6
+        """Number of decimal places for printing kW values."""
+        self.places_kWh: int = 6
+        """Number of decimal places for printing kWh values."""
+        self.is_main_bill: bool = True
+        """True if main PG&E bill, False if submeter bill."""
+
+        def parse_field(label: str, pattern: str) -> str:
+            '''Parse a field from the PG&E Details page.'''
+            if m := re.search(pattern, pdfpages[0], re.IGNORECASE):
+                return m.group(1)
+
+            error_msg(logger, f'PG&E {label} not found.')
+            return ''
 
         logger.info('Parsing bill ...')
 
-        for var, pattern in self.FIELDS:
-            if m := re.search(pattern, pdfpages[0], re.IGNORECASE):
-                setattr(self, var, m.group(2))
-                self.found.add(var)
-
-        logger.info(f'Found fields: {self.found}.')
-
-        if self.total_usage:
-            self.total_usage_pdf = str(self.total_usage)
-            self.total_usage = KilowattHours(self.total_usage_pdf)
-        else:
-            error_msg(logger, 'Total Usage not found.')
+        self.account_no = parse_field('Account No', r'Account No: (\d{10}-\d)')
+        self.meter_no = parse_field('Meter #', r'Meter # (\d{10})')
+        self.total_usage_pdf = parse_field('Total Usage', rf'Total Usage {RE_kWh}')
+        self.total_usage = KilowattHours(
+            self.total_usage_pdf.replace(',', '') if self.total_usage_pdf else 0
+        )
+        self.statement_date = parse_field('Statement Date', rf'Statement Date: {RE_DATE}')
+        self.due_date = parse_field('Due Date', rf'Due Date: {RE_DATE}')
 
         self.pge_bill_details = PGEBillDetails(self, pdfpages[0])
         self.cpsf_bill_details = CPSFBillDetails(self, pdfpages[1])
@@ -339,20 +335,16 @@ class Bill:
 
     def __str__(self) -> str:
         """Return PG&E main or submeter bill as formatted string."""
-        s = '\n'.join(
-            f'{self.LABELS[var]+":":16}{getattr(self, var):>12}'
-            for var, _ in self.FIELDS
-            if getattr(self, var) is not None
+        return (
+            f'Account No:     {self.account_no:>12}\n'
+            f'Meter #:        {self.meter_no:>12}\n'
+            f'Total Usage:    {self.total_usage:>12,.0{self.places_kWh}f} kWh\n'
+            f'Statement Date: {self.statement_date:>12}\n'
+            f'Due Date:       {self.due_date:>12}\n'
+            f'Amount Due:    ${self.total_amount_due:>12,.02f}\n\n'
+            f'{self.pge_bill_details}\n'
+            f'{self.cpsf_bill_details}\n'
         )
-        s += f'\nAmount Due     ${self.total_amount_due:>12,.02f}\n'
-        s += f'\n{self.pge_bill_details}\n'
-        s += f'\n{self.cpsf_bill_details}\n'
-        return s
-
-    @property
-    def is_main_bill(self) -> bool:
-        """Return True if main PG&E bill, not submeter bill."""
-        return self.total_usage_pdf != ''
 
     def submeter_bill(self, submeter: 'Submeter') -> 'Bill':
         """Make a copy of the panel meter bill and update with Emporia Vue usage
@@ -378,6 +370,9 @@ class Bill:
         subbill: Bill = copy.deepcopy(self)
         subbill.meter_no = submeter.evse_id
         subbill.total_usage_pdf = ''
+        subbill.places_kW = SUBMETER_PLACES_kW
+        subbill.places_kWh = SUBMETER_PLACES_kWh
+        subbill.is_main_bill = False
 
         # Update attributes specific to a submeter
         subbill.pge_bill_details.submeter_bill_details(submeter)
@@ -472,17 +467,12 @@ class Bill:
         str
             Bill summary as a string.
         """
-        s = (
-            '\n'.join(
-                [
-                    f'{"Total Usage":<40} {self.total_usage:>12,.06f} kWh',
-                    f'{"PG&E Electric Delivery Charges":<40}  '
-                    f'${self.pge_bill_details.total_charges:>10}',
-                    f'{"CleanPowerSF Electric Generation Charges":<40}  '
-                    f'${self.cpsf_bill_details.total_charges:>10}',
-                ]
-            )
-            + '\n'
+        s: str = (
+            f'{"Total Usage":<40} {self.total_usage:>12,.0{self.places_kWh}f} kWh\n'
+            f'{"PG&E Electric Delivery Charges":<42}'
+            f'${self.pge_bill_details.total_charges:>10}\n'
+            f'{"CleanPowerSF Electric Generation Charges":<42}'
+            f'${self.cpsf_bill_details.total_charges:>10}\n'
         )
         if not self.is_main_bill:
             s += f'{f"Metering Difference Adjustment":<40}  ${self.adjustment:>10}\n'
@@ -499,7 +489,7 @@ class Bill:
         """
         return (
             f'Effective rate (Total Amount Due/Usage):  '
-            f'${(self.amount_due + self.adjustment)/self.total_usage}/kWh'
+            f'${(self.amount_due + self.adjustment)/self.total_usage:.2f}/kWh'
             if self.total_usage > 0
             else ''
         )
@@ -710,6 +700,7 @@ class RatePeriod(ABC):
                 )
             )
             energy.charge = energy.kWh * energy.rate
+            energy.places = SUBMETER_PLACES_kWh
 
     def valid(self) -> bool:
         """Return True if all energy usage charges in a rate period are valid.
@@ -784,7 +775,7 @@ class PGERatePeriod(RatePeriod):
 
         # Overage Fees
         if m := re.search(rf'Overage Fees (\d+) kW @ {RE_RATES} {RE_DOLLARS}', text, re.IGNORECASE):
-            self.overage_fee = OverageFee(*m.group(1, 2, 3))
+            self.overage_fee = OverageFee(*m.group(1, 2, 3), places=6)
         else:
             raise LookupError('PG&E Overage Fees not found')
 
@@ -826,16 +817,20 @@ class PGERatePeriod(RatePeriod):
 
     def __str__(self) -> str:
         """Return PG&E rate period as a formatted string."""
-        s: str = '\n'.join([f'{self.period}', f'{self.subscription}', f'{self.overage_fee}']) + '\n'
+        s: str = f'{self.period}\n' f'{self.subscription}\n' f'{self.overage_fee}\n'
         if self.total_energy_charges > 0:
-            s += f'\n{self.provider} Energy Charges\n'
-            s += '\n'.join(str(charge) for charge in self.energy_charges)
-            s += f'\n{self.provider} Energy Credits\n'
-            s += '\n'.join(str(credit) for credit in self.energy_credits.values())
-            s += f'\n{"Total Generation Credit":<60}  ${self.generation_credit:8,.02f}\n'
-            s += f'{self.pcia}\n'
-        s += f'{"Net Charges":<50} ${self.net_charges:8,.02f}\n'
-        s += '\n'.join(str(ch) for ch in self.other_charges.values() if ch.charge > 0)
+            s += (
+                f'\n{self.provider} Energy Charges\n'
+                f'{"\n".join(str(charge) for charge in self.energy_charges)}\n'
+                f'{self.provider} Energy Credits\n'
+                f'{"\n".join(str(credit) for credit in self.energy_credits.values())}\n'
+                f'{"Total Generation Credit":<60}  ${self.generation_credit:8,.02f}\n'
+                f'{self.pcia}\n'
+            )
+        s += (
+            f'{"Net Charges":<50} ${self.net_charges:8,.02f}\n'
+            f'{"\n".join(str(ch) for ch in self.other_charges.values() if ch.charge > 0)}'
+        )
         return s
 
     @property
@@ -871,6 +866,8 @@ class PGERatePeriod(RatePeriod):
         del self.pcia.charge
 
         super().submeter_rate_period(submeter)
+
+        self.overage_fee.places = SUBMETER_PLACES_kW
 
         self.generation_credit = Dollars('0.00')
         for energy_credit in self.energy_credits.values():
@@ -984,11 +981,14 @@ class CPSFRatePeriod(RatePeriod):
 
     def __str__(self) -> str:
         """Return CPSF rate period as a formatted string."""
-        s: str = '\n'.join([f'{self.period}', f'{self.provider} Energy Charges\n'])
-        s += '\n'.join(str(charge) for charge in self.energy_charges)
-        s += f'\n{"Net Charges":<50} ${self.net_charges:8,.02f}'
+        s: str = (
+            f'{self.period}\n'
+            f'{self.provider} Energy Charges\n'
+            f'{"\n".join(str(charge) for charge in self.energy_charges)}\n'
+            f'{"Net Charges":<50} ${self.net_charges:8,.02f}'
+        )
         if self.net_charges > 0:
-            s += '\n' + '\n'.join(str(ch) for ch in self.other_charges.values() if ch.charge > 0)
+            s += f'\n{"\n".join(str(ch) for ch in self.other_charges.values() if ch.charge > 0)}'
         return s
 
     @property
@@ -1102,9 +1102,11 @@ class BillDetails:
     def __str__(self) -> str:
         """Return PG&E Electric Delivery or CleanPowerSF Electric Generation
         bill details as a formatted string."""
-        s = f'Billing period {self.period} ({len(self.period)} billing days)\n'
-        s += f'Rate Schedule: {self.rate_schedule}\n\n'
-        s += '\n\n'.join(str(rp) for rp in self.rate_periods) + '\n'
+        s: str = (
+            f'Billing period {self.period} ({len(self.period)} billing days)\n'
+            f'Rate Schedule: {self.rate_schedule}\n\n'
+            f'{"\n\n".join(str(rp) for rp in self.rate_periods)}\n'
+        )
         return s
 
     @property
@@ -1239,9 +1241,11 @@ class PGEBillDetails(BillDetails):
 
     def __str__(self):
         """Return PG&E main or submeter bill delivery details as a formatted string."""
-        s = 'Details of PG&E Electric Delivery Charges\n'
-        s += super().__str__()
-        s += f'\n{"Total PG&E Electric Delivery Charges":<60}  ${self.total_charges:8,.02f}'
+        s: str = (
+            'Details of PG&E Electric Delivery Charges\n'
+            f'{super().__str__()}\n'
+            f'{"Total PG&E Electric Delivery Charges":<60}  ${self.total_charges:8,.02f}\n'
+        )
         return s
 
     @property
@@ -1305,6 +1309,8 @@ class CPSFBillDetails(BillDetails):
         Raises
         ------
         LookupError
+            No CleanPowerSF energy charges found in bill details
+        LookupError
             Inconsistent CleanPowerSF energy charges found in bill details
         LookupError
             No PG&E rate period found for corresponding CleanPowerSF rate change
@@ -1324,8 +1330,6 @@ class CPSFBillDetails(BillDetails):
         super().__init__(bill, text)
 
         # Check for rate change and split rate period into two if so.
-
-        change_date = None
 
         tou_labels: list[list[str]] = [
             re.findall(
@@ -1352,7 +1356,7 @@ class CPSFBillDetails(BillDetails):
                 'check bill.',
             )
 
-        change_date = bill.pge_bill_details.rate_periods[1].period.fr
+        change_date: date = bill.pge_bill_details.rate_periods[1].period.fr
         if change_date.day != 1:
             warning_msg(
                 logger,
@@ -1421,9 +1425,11 @@ class CPSFBillDetails(BillDetails):
 
     def __str__(self) -> str:
         """Return CleanPowerSF main or submeter bill delivery details as string."""
-        s = 'Details of CleanPowerSF Electric Generation Charges\n'
-        s += super().__str__()
-        s += f'\n{"Total CleanPowerSF Electric Delivery Charges":<60}  ${self.total_charges:8,.02f}'
+        s: str = (
+            'Details of CleanPowerSF Electric Generation Charges\n'
+            f'{super().__str__()}\n'
+            f'{"Total CleanPowerSF Electric Delivery Charges":<60}  ${self.total_charges:8,.02f}'
+        )
         return s
 
     @property
@@ -1532,7 +1538,7 @@ class SubscriptionCharge:
 class OverageFee:
     """Subscription Level Overage Fee, $/kW."""
 
-    def __init__(self, kW: str, rate: str, charge: str) -> None:
+    def __init__(self, kW: str, rate: str, charge: str, places: int = 6) -> None:
         """Initialize an OverageFee instance from PG&E bill PDF text.
 
         Parameters
@@ -1543,6 +1549,8 @@ class OverageFee:
             Subscription Overage Fee Rate, $/kWh: 'd.ddddd'
         charge : str
             Overage Fee, kWh*rate: 'd,ddd.dd'.
+        places : int
+            Number of decimal places for formatting.
 
         """
         self.kW = Kilowatts(kW)
@@ -1551,11 +1559,14 @@ class OverageFee:
         """Subscription Overage Fee Rate, $/kWh."""
         self.charge = Dollars(charge)
         """Overage Fee, kWh*rate"""
+        self.places: int = places
+        """Number of decimal places for formatting."""
 
     def __str__(self) -> str:
         """Return overage fee as formatted string."""
         return (
-            f' {'Overage Fees':<32}{self.kW:12,.06f} kW @ ${self.rate:.5f}   ${self.charge:8,.02f}'
+            f' {'Overage Fees':<32}{self.kW:12,.0{self.places}f} kW '
+            f'@ ${self.rate:.5f}   ${self.charge:8,.02f}'
         )
 
     def submeter_overage_fee(self, evse_kW_rating: Kilowatts, total_evse_kW: Kilowatts) -> None:
@@ -1593,7 +1604,12 @@ class EnergyCharge:
     """Time Of Use Energy (kWh) Usage Charges."""
 
     def __init__(
-        self, tou: Tou, kWh: str = '0.000000', rate: str = '0.00000', charge: str = '0.00'
+        self,
+        tou: Tou,
+        kWh: str = '0.000000',
+        rate: str = '0.00000',
+        charge: str = '0.00',
+        places: int = 6,
     ) -> None:
         """Initialize an EnergyCharge instance from PG&E bill PDF text.
 
@@ -1607,6 +1623,8 @@ class EnergyCharge:
             Energy usage rate, $ per kWh: 'd.ddddd'
         charge : str
             kWh*rate: 'd,ddd.dd'.
+        places : int
+            Number of decimal places for formatting.
 
         """
         self.tou = Tou(initial_caps(tou))
@@ -1617,10 +1635,15 @@ class EnergyCharge:
         """Energy usage rate, $ per kWh."""
         self.charge = Dollars(charge)
         """Energy charge $, should equal kWh*rate."""
+        self.places: int = places
+        """Number of decimal places for formatting."""
 
     def __str__(self) -> str:
         """Return Energy Charge as formatted string."""
-        return f' {self.tou:<32}{self.kWh:12,.06f} kWh @ ${self.rate:.5f}  ${self.charge:8,.02f}'
+        return (
+            f' {self.tou:<32}{self.kWh:12,.0{self.places}f} kWh '
+            f'@ ${self.rate:.5f}  ${self.charge:8,.02f}'
+        )
 
     def valid(self) -> bool:
         """Return True if energy charge is valid.
@@ -1796,7 +1819,9 @@ class EnergyCredit(ABC):
     """Energy (kWh) Credit."""
 
     @abstractmethod
-    def __init__(self, name: str, kWh: KilowattHours, rate: DollarsPerKilowattHour) -> None:
+    def __init__(
+        self, name: str, kWh: KilowattHours, rate: DollarsPerKilowattHour, places: int = 6
+    ) -> None:
         """Initialize an EnergyCredit instance for a RatePeriod.
 
         Parameters
@@ -1807,6 +1832,8 @@ class EnergyCredit(ABC):
             Energy (kWh) used.
         rate : DollarsPerKilowattHour
             Energy credit rate, $/kWh from PG&E BEV-1 tariff.
+        places : int, optional
+            Number of decimal places for formatting, by default 6
         """
         self.name: str = name
         """Energy credit name."""
@@ -1816,14 +1843,20 @@ class EnergyCredit(ABC):
         """Energy credit rate, $/kWh from PG&E BEV-1 tariff."""
         self.credit: Dollars = self.kWh * self.rate
         """Energy credit $, kWh*rate"""
+        self.places: int = places
+        """Number of decimal places for formatting."""
 
     def __str__(self) -> str:
         """Return EnergyCredit as formatted string."""
-        return f' {self.name:<20}{self.kWh:12,.06f} kWh @ ${self.rate:+.5f}  ${self.credit:+8,.02f}'
+        return (
+            f' {self.name:<20}{self.kWh:12,.0{self.places}f} kWh '
+            f'@ ${self.rate:+.5f}  ${self.credit:+8,.02f}'
+        )
 
     @abstractmethod
     def submeter_energy_credit(self, rate_period: RatePeriod) -> None:
         """Update PG&E credit for a submeter."""
+        self.places = SUBMETER_PLACES_kWh
 
 
 class TOUGenerationCredit(EnergyCredit):
@@ -1856,6 +1889,8 @@ class TOUGenerationCredit(EnergyCredit):
         rate_period : RatePeriod
             Rate period to be updated.
         """
+        super().submeter_energy_credit(rate_period)
+
         energy_charge = next(
             (
                 energy_charge
@@ -1905,6 +1940,7 @@ class PCIACredit(EnergyCredit):
         rate_period : RatePeriod
             Rate period to be updated.
         """
+        super().submeter_energy_credit(rate_period)
         self.kWh: KilowattHours = rate_period.total_kWh
         self.credit: Dollars = Dollars(self.kWh * self.rate)
 
@@ -2157,12 +2193,10 @@ class Submeter:
 
     def summary(self) -> str:
         """Return a submeter bill summary as a string."""
-        s = '\n'.join(
-            [
-                f'Summary for Meter # {self.evse_id}',
-                f'{"Charger Power Rating":<40} {self.evse_kW_rating:>12.1f} kW',
-                self.submeter_bill.summary(),
-            ]
+        s: str = (
+            f'Summary for Meter # {self.evse_id}\n'
+            f'{"Charger Power Rating":<40} {self.evse_kW_rating:>12.2f} kW\n'
+            f'{self.submeter_bill.summary()}'
         )
         return s
 
@@ -2392,6 +2426,7 @@ class Submeter:
 
         plt.rcParams['font.size'] = 6
         fig, ax = plt.subplots(figsize=(4.5, 3.5))
+        fig.subplots_adjust(top=0.85)
         ax.pie(
             list(sizes),
             labels=list(labels),
@@ -2406,22 +2441,18 @@ class Submeter:
         # See: https://stackoverflow.com/questions/71817949/framing-a-pie-chart-in-matplotlib
 
         rect = Rectangle(
-            (-0.15, -0.1),
-            1.275,
-            1.15,
+            (0.01, 0.01),
+            0.98,
+            0.94,
             fill=False,
             color='black',
             linewidth=1,
-            zorder=-1,
-            transform=ax.transAxes,
+            transform=fig.transFigure,
         )
-        # rect = plt.Rectangle((0.01, 0.01), .98, .99,
-        #                      fill=False, color='black', linewidth=1, zorder=-1,
-        #                      transform=fig.transFigure)
         fig.add_artist(rect)
 
         plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-        plt.title(f'{self.evse_id} Cost Breakdown {self.main_bill.period}', fontsize=9, pad=15)
+        plt.title(f'{self.evse_id} Cost Breakdown {self.main_bill.period}', fontsize=9, pad=32)
         plt.savefig(plotbuf, format='png')
         plt.close(fig)
 
@@ -2564,7 +2595,7 @@ class Submeter:
 
         plotbuf = BytesIO()
         self.plot_cost_pie(plotbuf)
-        pdf.image(plotbuf, x=2 + 3 / 16, y=7 - 0.5 - 3.5, w=4)  # type: ignore[reportCallIssue]
+        pdf.image(plotbuf, x=2 + 3 / 16, y=7 - 0.25 - 3.5, w=4)  # type: ignore[reportCallIssue]
 
         plotbuf = BytesIO()
         self.plot_cost_vs_day(plotbuf)
@@ -2807,11 +2838,6 @@ def process_main_bill(bill_path: Path) -> Bill:
             f'Due Date {bill.due_date} is less than 30 days '
             f'after Statement Date {bill.statement_date}.',
         )
-
-    # Check for missing fields
-    for var, _ in bill.FIELDS:
-        if var not in bill.found:
-            warning_msg(logger, f'PG&E {bill.LABELS[var]} not found')
 
     # Check for PG&E billing period equal to CPSF billing period
     if bill.pge_bill_details.period != bill.cpsf_bill_details.period:

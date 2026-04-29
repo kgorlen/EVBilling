@@ -8,6 +8,7 @@ References:
 
 __author__ = 'Keith Gorlen'
 __all__: list[str] = [
+    'LoginError',
     'Tou',
     'Config',
 ]
@@ -31,8 +32,13 @@ from __init__ import __version__  # pylint: disable=no-name-in-module
 from platformdirs import user_config_dir, user_log_dir
 import numpy as np
 import numpy.typing as npt
+from evunits import Kilowatts
 
 # pylint: enable=wrong-import-position
+
+
+class LoginError(Exception):
+    """Raised when login credentials are invalid."""
 
 
 class Tou(StrEnum):
@@ -134,26 +140,19 @@ class Config:
                     if not cls.thumbnail.exists():
                         cls.thumbnail = cls.default_thumbnail
 
-            cls.evbilling_log: Path
+            cls.evbilling_log: Path = cls.default_evbilling_log
             """evbilling log file path."""
-            cls.evtariffs_log: Path
+            cls.evtariffs_log: Path = cls.default_evtariffs_log
             """evtariffs log file path."""
+            cls.evmailbills_log: Path = cls.default_evmailbills_log
+            """mailevbills log file path."""
             if 'logging' in cls.config_data:
-                cls.evbilling_log = (
-                    expand_path(cls.config_data['logging']['evbilling'])
-                    if 'evbilling' in cls.config_data['logging']
-                    else cls.default_evbilling_log
-                )
-                cls.evtariffs_log = (
-                    expand_path(cls.config_data['logging']['evtariffs'])
-                    if 'evtariffs' in cls.config_data['logging']
-                    else cls.default_evtariffs_log
-                )
-                cls.evmailbills_log = (
-                    expand_path(cls.config_data['logging']['mailevbills'])
-                    if 'mailevbills' in cls.config_data['logging']
-                    else cls.default_evmailbills_log
-                )
+                if 'evbilling' in cls.config_data['logging']:
+                    cls.evbilling_log = expand_path(cls.config_data['logging']['evbilling'])
+                if 'evtariffs' in cls.config_data['logging']:
+                    cls.evtariffs_log = expand_path(cls.config_data['logging']['evtariffs'])
+                if 'mailevbills' in cls.config_data['logging']:
+                    cls.evmailbills_log = expand_path(cls.config_data['logging']['mailevbills'])
 
             cls.ev_system: str = cls.config_data['credentials']['ev_system']
             """keyring system argument for the Emporia Vue server."""
@@ -206,6 +205,23 @@ class Config:
                 cls.links[url] for url in cls.links['cpsf_reference_urls']
             )
             """'Further information' CleanPowerSF links in submeter bill PDF files"""
+
+            cls.power_rating_samples: int = 4
+            """Number of EV charger power rating samples to use."""
+            cls.power_rating_sample_min_kW: Kilowatts = Kilowatts(1.0)
+            """Minimum kW for EV charger power rating samples."""
+            cls.power_rating_tolerance_kW: Kilowatts = Kilowatts(0.25)
+            """Maximum allowed difference between metered and 
+            configured EV charger power ratings."""
+            if 'power_rating' in cls.config_data:
+                if 'samples' in cls.config_data['power_rating']:
+                    cls.power_rating_samples = cls.config_data['power_rating']['samples']
+                if 'sample_min_kW' in cls.config_data['power_rating']:
+                    cls.power_rating_sample_min_kW = cls.config_data['power_rating'][
+                        'sample_min_kW'
+                    ]
+                if 'tolerance_kW' in cls.config_data['power_rating']:
+                    cls.power_rating_tolerance_kW = cls.config_data['power_rating']['tolerance_kW']
 
             cls.tou_hours_mask: dict[Tou, npt.NDArray[np.bool_]] = {}
             """Time-Of-Use hour Boolean masks calculated from tou_hours ranges."""

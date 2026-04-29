@@ -18,6 +18,8 @@ __all__: list[str] = [
     'RE_DOLLARS',
     'RE_kWh',
     'RE_RATES',
+    'SUBMETER_PLACES_kW',
+    'SUBMETER_PLACES_kWh',
     'Percent',
     'SubscriptionMonths',
     'Kilowatts',
@@ -49,6 +51,10 @@ RE_kWh = r'(\d{1,3}(?:,?\d{3})*\.\d{6})'
 RE_RATES = r'\$(\d{1,3}\.\d{5})'
 """Regular expression for $nnn.nnnnn dollars/kWh."""
 
+SUBMETER_PLACES_kW = 3
+"""Number of decimal places for submeter kW values."""
+SUBMETER_PLACES_kWh = 3
+"""Number of decimal places for submeter kWh values."""
 
 class Percent(Decimal):
     """Percentages."""
@@ -167,6 +173,12 @@ class Kilowatts:
     def __neg__(self) -> Self:
         return type(self)(-self.value)
 
+    def __abs__(self):
+        return type(self)(self.value if self.value >= 0 else -self.value)
+
+    def __round__(self, ndigits: int = 0):
+        return type(self)(round(self.value, ndigits))
+
     def __add__(self, other: Union[str, int, float, Decimal, Self]) -> Self:
         return type(self)(self.value + Kilowatts(other).value)
 
@@ -283,6 +295,12 @@ class KilowattHours:
 
     def __neg__(self) -> Self:
         return type(self)(-self.value)
+
+    def __abs__(self):
+        return type(self)(self.value if self.value >= 0 else -self.value)
+
+    def __round__(self, ndigits: int = 0):
+        return type(self)(round(self.value, ndigits))
 
     def __add__(self, other: Union[str, int, float, Decimal, Self]) -> Self:
         return type(self)(self.value + KilowattHours(other).value)

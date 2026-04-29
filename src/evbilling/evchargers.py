@@ -13,7 +13,7 @@ import sys
 import logging
 from pathlib import Path
 import tempfile
-from datetime import date, datetime, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 from zoneinfo import ZoneInfo
 import re
 import json
@@ -29,16 +29,16 @@ sys.path.append(str(SCRIPT_DIR))
 
 from __init__ import __version__
 from evlogger import info_msg, warning_msg, error_msg
-from evsettings import Config
+from evsettings import Config, LoginError
 from evunits import RE_DATE, Kilowatts
 from evbillperiod import BillPeriod
 import keyring
 from tzlocal import get_localzone
 import numpy as np
 import numpy.typing as npt
-from pyemvue import PyEmVue
-from pyemvue.device import VueDeviceChannel, VueDevice
-from pyemvue.enums import Scale, Unit
+from pyemvue import PyEmVue  # type: ignore[import-untyped]
+from pyemvue.device import VueDeviceChannel, VueDevice  # type: ignore[import-untyped]
+from pyemvue.enums import Scale, Unit  # type: ignore[import-untyped]
 
 # pylint: enable=wrong-import-position
 
@@ -52,7 +52,7 @@ logger = logging.getLogger(f'evbilling.{__name__}')
 
 
 class EVCharger(NamedTuple):
-    """EV charger power rating and Emporia Vue data channel."""
+    """EV charger service start date, power rating, Emporia Vue data channel, and Owner email."""
 
     evse_id: str
     """Electric Vehicle Service Equipment (EVSE) ID."""
@@ -76,6 +76,8 @@ class EnergyMonitor:
         ------
         LookupError
             Emporia Vue password not found.
+        LoginError
+            Login to Emporia Vue server failed.
         LookupError
             No Emporia Vue devices found.
         LookupError
@@ -122,10 +124,13 @@ class EnergyMonitor:
             raise LookupError(f'{Config.ev_system} {Config.ev_username} password not found.')
 
         logger.info(f'Logging into {Config.ev_system} as {Config.ev_username} ...')
-        tokenfile = tempfile.TemporaryFile(delete=True, delete_on_close=False)
-        self.vue.login(
-            username=Config.ev_username, password=password, token_storage_file=tokenfile.name
-        )
+        tokenfile = tempfile.TemporaryFile(delete_on_close=False)
+        try:
+            self.vue.login(
+                username=Config.ev_username, password=password, token_storage_file=tokenfile.name
+            )
+        except Exception as e:
+            raise LoginError(f'Login to {Config.ev_system} failed: {e}') from e
 
         logger.info('Getting Emporia Vue details ...')
         devices: list[VueDevice] = self.vue.get_devices()
@@ -223,7 +228,7 @@ class EnergyMonitor:
             if m := re.match(
                 rf'\s*([^\s]+)\s+(\d+.\d+)\s*kW\s+{RE_DATE}[^[]*(?:\[(.*)\])?', device.name
             ):
-                evsid, kW, on_mmddyyy, emails = m.groups()
+                evsid, kW_str, on_mmddyyy, email_str = m.groups()
 
                 try:
                     on_dt: date = datetime.strptime(on_mmddyyy, '%m/%d/%Y').date()
@@ -233,20 +238,50 @@ class EnergyMonitor:
                         f'in device name: "{device.name}"'
                     ) from e
 
+                kW: Kilowatts = Kilowatts(kW_str)
+                owner_emails: list[str] = re.split(r'[\s,]+', email_str) if email_str else []
+
                 self.chargers[evsid] = EVCharger(
                     evsid,
                     on_dt,
-                    Kilowatts(kW),
+                    kW,
                     self.channels[device.channel_num],
-                    re.split(r'[\s,]+', emails) if emails else [],
+                    owner_emails,
                 )
-                self.total_evse_kW += Kilowatts(kW)
+
+                metered_kW_rating: Kilowatts | None = self.get_peak_kW(evsid, period_end_date)
+
+                if metered_kW_rating is not None:
+                    logger.info(
+                        f'Charger {evsid} metered power rating: {metered_kW_rating:.2f} kW, '
+                        f'configured: {kW:.1f} kW.',
+                    )
+
+                    if abs(metered_kW_rating - Kilowatts(kW)) <= Config.power_rating_tolerance_kW:
+                        self.chargers[evsid] = EVCharger(
+                            evsid,
+                            on_dt,
+                            metered_kW_rating,
+                            self.channels[device.channel_num],
+                            owner_emails,
+                        )
+
+                    else:
+                        warning_msg(
+                            logger,
+                            f'Charger {evsid} metered power rating {metered_kW_rating:.2f} kW '
+                            f'differs from the nominal rating in the circuit name ({kW:.1f} kW) '
+                            f'by more than {Config.power_rating_tolerance_kW:.2f} kW; '
+                            f'using nominal rating {kW:.1f} kW; check charger and circuit name.',
+                        )
 
             else:
                 raise ValueError(f'Invalid device name: "{device.name}".')
 
         if len(self.chargers) == 0:
             raise LookupError('No EV charging devices found.')
+
+        self.total_evse_kW = sum((charger.kW for charger in self.chargers.values()), Kilowatts(0.0))
 
         merged: set[str] = set(
             charger.channel.channel_num
@@ -303,7 +338,7 @@ class EnergyMonitor:
         start_utc, end_utc = period.to_datetime_utc()
         """Rate period start and end datetime in UTC."""
         start_local: datetime = start_utc.astimezone(TZ_LOCAL)
-        """Rate period start in UTC."""
+        """Rate period start in local time."""
         len_hours: int = period.len_hours()
         """Length of rate period in hours."""
         hourly_kWh = np.zeros((len(period), 24), dtype=np.float32)
@@ -409,6 +444,103 @@ class EnergyMonitor:
 
         hourly_kWh.setflags(write=False)
         return hourly_kWh
+
+    def get_peak_kW(self, evse_id: str, end_date: date) -> Kilowatts | None:
+        """Get peak kW for EV charger during billing period.
+
+        Parameters
+        ----------
+        evse_id : str
+            Electric Vehicle Service Equipment (EVSE) ID.
+        end_date : date
+            End date for the billing period.
+
+        Returns
+        -------
+        Peak 15-minute average kW for EV charger or None if insufficient usage data.
+        """
+        peak_kW: Kilowatts = Kilowatts(0.0)
+        """Peak kW for EV charger."""
+        samples: int = 0
+        """Number of 15-minute samples with usage data > Config.power_rating_sample_min_kWh."""
+        on_utc: datetime = datetime.combine(
+            self.chargers[evse_id].on_dt, time.min, tzinfo=TZ_LOCAL
+        ).astimezone(timezone.utc)
+        """UTC time EV charger was placed into service."""
+        chnl: VueDeviceChannel = self.chargers[evse_id].channel
+        """EV charger channel."""
+        end_utc: datetime = datetime.combine(
+            end_date + ONE_DAY, time.min, tzinfo=TZ_LOCAL
+        ).astimezone(timezone.utc)
+        chunk_len: timedelta = timedelta(days=7)
+        """get_chart_usage() time period length limit."""
+        chunk_end_utc: datetime = end_utc
+        """End time in UTC of data chunk."""
+        chunk_start_utc: datetime = max(chunk_end_utc - chunk_len, on_utc)
+        """Start time in UTC of data chunk."""
+
+        # Step backwards from end_date in 7-day chunks until we have at least 4
+        # samples over the minimum kWh.
+
+        while (
+            # Require at least 4 (default) samples to consider peak_kW valid.
+            samples < Config.power_rating_samples
+            # Don't consider readings before charger was placed into service.
+            and chunk_start_utc > on_utc
+            # Don't exceed Emporia 15-minute data retention limit of 1 year.
+            and datetime.now(timezone.utc) - chunk_end_utc < timedelta(days=360)
+        ):
+            logger.info(
+                f'get_chart_usage(channel={chnl.channel_num}, '
+                f'{chunk_start_utc=}, {chunk_end_utc=}, '
+                f'scale={Scale.MINUTES_15.value}, unit={Unit.KWH.value})'
+            )
+            chunk_kWh, start_time = self.vue.get_chart_usage(
+                chnl,
+                chunk_start_utc,
+                chunk_end_utc - timedelta(seconds=1),  # Exclude midnight
+                scale=Scale.MINUTES_15.value,
+                unit=Unit.KWH.value,
+            )
+
+            assert len(chunk_kWh) > 0, 'get_chart_usage() returned no data.'
+            assert isinstance(
+                start_time, datetime
+            ), f'get_chart_usage() start_time {start_time} is not a datetime object.'
+            assert start_time == chunk_start_utc, (
+                f'Start time of Emporia usage data {start_time.astimezone(TZ_LOCAL)} '
+                f'is not equal to chunk start time {chunk_start_utc.astimezone(TZ_LOCAL)}'
+            )
+
+            if all(kWh is None for kWh in chunk_kWh):
+                logger.info(
+                    f'{evse_id} channel {chnl.channel_num} has no readings from '
+                    f'{chunk_start_utc.astimezone(TZ_LOCAL)} to '
+                    f'{chunk_end_utc.astimezone(TZ_LOCAL)}.'
+                )
+                break
+
+            # Reject small readings as likely idle power usage or noise.
+            good_samples: list[Kilowatts] = [
+                Kilowatts(kWh * 4) # Convert kWh per 15 minutes to kW, i.e. multiply by 4
+                for kWh in chunk_kWh
+                if kWh is not None and kWh * 4 > Config.power_rating_sample_min_kW
+            ]
+
+            peak_kW = max(peak_kW, Kilowatts(max(good_samples, default=Kilowatts(0.0))))
+            samples += len(good_samples)
+
+            chunk_end_utc = chunk_start_utc
+            chunk_start_utc = max(chunk_start_utc - chunk_len, on_utc)
+
+        logger.info(
+            f'{chnl.name} '
+            f'channel: {chnl.channel_num} '
+            f'multipier: {chnl.channel_multiplier} '
+            f'peak_kW: {peak_kW:.2f} kW'
+        )
+
+        return round(peak_kW, 2) if peak_kW > Kilowatts(0.0) else None
 
     def save(self) -> None:
         """Save EV charger configuration to .json file."""
