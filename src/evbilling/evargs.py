@@ -105,8 +105,10 @@ class Args:
             '--link',
             action=argparse.BooleanOptionalAction,
             default=False,
-            help=('Link PDF bill input file to standard name file '
-                  'instead of renaming it; default: --no-link.'),
+            help=(
+                'Link PDF bill input file to standard name file '
+                'instead of renaming it; default: --no-link.'
+            ),
         )
         parser.add_argument(
             '--maxscore',
@@ -209,6 +211,11 @@ def file_path_generator(
     ------
     Generator[Path, None, None]
         List of Path objects for matched files.
+
+    Raises
+    ------
+    ValueError           If file name does not match allowed patterns.
+    FileNotFoundError    File not found or not accessible.
     """
     assert pattern is not None
 
@@ -226,16 +233,31 @@ def file_path_generator(
         Yields
         ------
         Generator[Path, None, None]
-            Paths from expanded glob.
+            File paths from expanded glob.
+
+        Raises
+        ------
+        ValueError           If file name does not match allowed patterns.
+        FileNotFoundError    File not found or not accessible.
         """
-        for filename in glob.iglob(glob_pattern, recursive=recursive):
+
+        for filename in (
+            glob.iglob(glob_pattern, recursive=recursive)
+            if glob.has_magic(glob_pattern)
+            else [glob_pattern]
+        ):
             path = Path(os.path.expanduser(os.path.expandvars(filename)))
-            if path.is_file() and any(path.match(p) for p in patterns):
-                yield path
+            if not any(path.match(p) for p in patterns):
+                raise ValueError(f'Invalid file name "{filename}"')
+            if not path.is_file():
+                raise FileNotFoundError(f'File not found or not accessible: "{filename}"')
+            print(f'expand_glob({glob_pattern}) yielding "{path}"', file=sys.stderr)
+            yield path
 
     for glob_pattern in globs:
         if glob_pattern == '-':
-            logger.debug('Reading FILES from stdin ...')
+            logger.info('Reading FILES from stdin ...')
+            print('Reading FILES from stdin ...', file=sys.stderr)
             for stdin_glob in sys.stdin.read().splitlines():
                 yield from expand_glob(stdin_glob.strip())
             continue
@@ -272,7 +294,5 @@ def pge_pdf_bill_paths(globs: list[str]) -> Generator[Path, None, None]:
 
     bill_id_pat = '[0-9a-f]' * 8 + ('-' + '[0-9a-f]' * 4) * 3 + '-' + '[0-9a-f]' * 12 + '.pdf'
 
-    yield from [
-        bill_path.absolute()
-        for bill_path in file_path_generator(globs, ['????custbill????????.pdf', bill_id_pat])
-    ]
+    for bill_path in file_path_generator(globs, ['????custbill????????.pdf', bill_id_pat]):
+        yield bill_path.resolve()

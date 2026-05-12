@@ -213,7 +213,7 @@ TOU_STR: list[str] = [tou.value for tou in Tou]
 logger = logging.getLogger(SCRIPT_NAME)
 """Logging facility."""
 rotating_handler = RotatingFileHandler(
-    Config.evbilling_log, maxBytes=5 * 1024 * 1024, backupCount=3
+    Config.evbilling_log, maxBytes=10_000_000, backupCount=9
 )
 """Rotating log file handler."""
 rotating_handler.setLevel(logging.INFO)

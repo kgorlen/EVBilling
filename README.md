@@ -131,10 +131,10 @@ based on their power (kW) ratings.
 EV charger circuit names starting with "OFF" are ignored.  Power ratings are
 specified by following the circuit name with space and the power rating in
 kilowatts (kW). Text after "kW" is ignored.  For example circuit names for The
-Palace have the format PWS-*uuu*-P*nn* *d.dd*kW *mm*/*dd*/*yyyy* #*breakers* *description* [*emails*] where:<br>
+Palace have the format PWS-*uuu*-P*nn* *d.d*kW *mm*/*dd*/*yyyy* #*breakers* *description* [*emails*] where:<br>
 > *uuu* is the Owner's Unit number<br>
 > *nn* is the EV charger parking space number<br>
-> *d.d* is the power rating of the EV charger<br>
+> *d.d* is the nominal power rating of the EV charger<br>
 > *mm*/*dd*/*yyyy* is the service start date<br>
 > *breaker* is a list of the circuit's breakers<br>
 > *description* is a description of the EV charger<br>
@@ -154,13 +154,8 @@ OFF PWS-304-P05 2.0kW #17 (NEMA 5-15R, 3030-PSE-16-7.7C-AS, nominal 120V*16A)
 The circuit name without the power rating appears as the account name on
 submeter bills.
 
-EV charger circuits must be updated whenever EV chargers are connected,
-disconnected, or replaced.  Initially, the nominal charger power rating can be
-set; however, **evbilling** will attempt to determine the metered charger power
-rating from recent 15-minute average kWh usage data.  It will use the metered
-power rating if it is close (see [power_rating](#power_rating)) to the nominal
-power rating; otherwise it will use the the nominal power rating and log a
-WARNING message.
+**NB**: EV charger circuits must be updated whenever EV chargers are connected,
+disconnected, or replaced.
 
 **NB**: Whenever the load on the EV power panel changes, contact the PG&E Solar
 department at 877-743-4112 and ask to be transferred to Solar/EV Business
@@ -403,17 +398,22 @@ TOU rate period; for example, the following defines the two-hour TOU range from
 ## [power_rating]
 
 The optional `[power_rating]` section sets parameters for measuring EV charger
-power ratings from 15-minute average kWh usage data.  Data values less than
-`sample_min_kWh` are ignored as idle power usage or noise.  If the metered power
+power ratings from 15-minute average kWh usage data.  The nominal power rating
+in the curcuit name (see
+[EV Charger Names](#ev-charger-names-power-ratings-service-start-dates-and-owner-email-addresses))
+is used for billing, and the measured power rating is used to
+detect and warn of significant deviations from the nominal rating.
+
+Data values less than `sample_threshold` % of the nominal power rating are ignored
+as idle power usage or noise.  A warning message is shown if the metered power
 rating differs from the nominal power rating specified in the circuit name
-(see [EV Charger Names](#ev-charger-names-power-ratings-service-start-dates-and-owner-email-addresses))
-by more than `tolerance_kW`, the nominal power rating is used with a warning
-message. Default values are shown in this example:
+by more than `tolerance` % of the nominal power rating. Default values are
+shown in this example:
 
 ```
-"samples" = 4           # Number of 15-minute kWh samples to use
-"sample_min_kW" = 1.0   # 15-minute kW sample threshold
-"tolerance_kW" = 0.25   # Metered charger power rating tolerance
+"samples" = 4             # Number of 15-minute kWh samples to use
+"sample_threshold" = .7   # 15-minute kW sample threshold (70%)
+"tolerance" = .5          # Metered charger power rating tolerance (5%)
 ```
 
 # INSTALLATION

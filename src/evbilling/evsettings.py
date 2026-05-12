@@ -32,7 +32,6 @@ from __init__ import __version__  # pylint: disable=no-name-in-module
 from platformdirs import user_config_dir, user_log_dir
 import numpy as np
 import numpy.typing as npt
-from evunits import Kilowatts
 
 # pylint: enable=wrong-import-position
 
@@ -208,20 +207,20 @@ class Config:
 
             cls.power_rating_samples: int = 4
             """Number of EV charger power rating samples to use."""
-            cls.power_rating_sample_min_kW: Kilowatts = Kilowatts(1.0)
-            """Minimum kW for EV charger power rating samples."""
-            cls.power_rating_tolerance_kW: Kilowatts = Kilowatts(0.25)
+            cls.power_rating_sample_threshold: float = .7
+            """Minimum kW valid EV charger samples as proportion of nominal kW rating."""
+            cls.power_rating_tolerance: float = .05
             """Maximum allowed difference between metered and 
-            configured EV charger power ratings."""
+            configured EV charger power ratings as proportion of nominal kW rating."""
             if 'power_rating' in cls.config_data:
                 if 'samples' in cls.config_data['power_rating']:
                     cls.power_rating_samples = cls.config_data['power_rating']['samples']
-                if 'sample_min_kW' in cls.config_data['power_rating']:
-                    cls.power_rating_sample_min_kW = cls.config_data['power_rating'][
-                        'sample_min_kW'
+                if 'sample_threshold' in cls.config_data['power_rating']:
+                    cls.power_rating_sample_threshold = cls.config_data['power_rating'][
+                        'sample_threshold'
                     ]
-                if 'tolerance_kW' in cls.config_data['power_rating']:
-                    cls.power_rating_tolerance_kW = cls.config_data['power_rating']['tolerance_kW']
+                if 'tolerance' in cls.config_data['power_rating']:
+                    cls.power_rating_tolerance = cls.config_data['power_rating']['tolerance']
 
             cls.tou_hours_mask: dict[Tou, npt.NDArray[np.bool_]] = {}
             """Time-Of-Use hour Boolean masks calculated from tou_hours ranges."""

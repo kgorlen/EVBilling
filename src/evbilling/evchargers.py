@@ -207,7 +207,10 @@ class EnergyMonitor:
             return
 
         if date.today() - period_end_date > timedelta(days=31):
-            warning_msg(logger, 'Current EV charger configuration may be out of date.')
+            warning_msg(
+                logger,
+                'Current EV charger configuration more than 31 days old; may be out of date.',
+            )
 
         logger.info('Discovering EV charging devices ...')
         device_usage_dict = self.vue.get_device_list_usage(
@@ -252,28 +255,31 @@ class EnergyMonitor:
                 metered_kW_rating: Kilowatts | None = self.get_peak_kW(evsid, period_end_date)
 
                 if metered_kW_rating is not None:
+                    tolerance: Kilowatts = self.chargers[evsid].kW * Config.power_rating_tolerance
                     logger.info(
                         f'Charger {evsid} metered power rating: {metered_kW_rating:.2f} kW, '
-                        f'configured: {kW:.1f} kW.',
+                        f'configured: {kW:.1f} kW, tolerance: {tolerance:.2f} kW '
+                        f'({Config.power_rating_tolerance:.0%}).'
                     )
 
-                    if abs(metered_kW_rating - Kilowatts(kW)) <= Config.power_rating_tolerance_kW:
-                        self.chargers[evsid] = EVCharger(
-                            evsid,
-                            on_dt,
-                            metered_kW_rating,
-                            self.channels[device.channel_num],
-                            owner_emails,
-                        )
-
-                    else:
+                    if abs(metered_kW_rating - kW) > tolerance:
                         warning_msg(
                             logger,
                             f'Charger {evsid} metered power rating {metered_kW_rating:.2f} kW '
                             f'differs from the nominal rating in the circuit name ({kW:.1f} kW) '
-                            f'by more than {Config.power_rating_tolerance_kW:.2f} kW; '
+                            f'by more than {Config.power_rating_tolerance:.0%}; '
                             f'using nominal rating {kW:.1f} kW; check charger and circuit name.',
                         )
+
+                    # To use metered_kW_rating instead of nominal kW rating:
+                    # else:
+                    #     self.chargers[evsid] = EVCharger(
+                    #         evsid,
+                    #         on_dt,
+                    #         metered_kW_rating,
+                    #         self.channels[device.channel_num],
+                    #         owner_emails,
+                    #     )
 
             else:
                 raise ValueError(f'Invalid device name: "{device.name}".')
@@ -400,20 +406,16 @@ class EnergyMonitor:
         if dst_hours is not None:  # DST began or ended during billing period
             if period.to_dst:  # DST began: the hour from 2 to 3 AM is skipped
                 chnl_kWh.insert(dst_hours - 1, 0.0)  # insert an hour of zero usage at 2 AM
-                logger.info(
-                    f'DST started at {start_utc.astimezone(TZ_LOCAL)
-                                        + timedelta(hours=dst_hours)}.'
-                )
+                logger.info(f'DST started at {start_utc.astimezone(TZ_LOCAL)
+                                        + timedelta(hours=dst_hours)}.')
             else:  # DST ended during billing period: the hour from 1 to 2 AM occurs twice
                 if chnl_kWh[dst_hours - 1] is not None:
                     chnl_kWh[dst_hours] += chnl_kWh[
                         dst_hours - 1
                     ]  # Add the first 1 to 2 AM usage to the second
                 del chnl_kWh[dst_hours - 1]  # and delete the first 1 to 2 AM usage
-                logger.info(
-                    f'DST ended at {end_utc.astimezone(TZ_LOCAL)
-                                        + timedelta(hours=dst_hours)}.'
-                )
+                logger.info(f'DST ended at {end_utc.astimezone(TZ_LOCAL)
+                                        + timedelta(hours=dst_hours)}.')
 
         # get_chart_usage() returns None for hours with missing data
         # np.array() converts None to nan, np.nan_to_num converts nan to zero
@@ -462,7 +464,7 @@ class EnergyMonitor:
         peak_kW: Kilowatts = Kilowatts(0.0)
         """Peak kW for EV charger."""
         samples: int = 0
-        """Number of 15-minute samples with usage data > Config.power_rating_sample_min_kWh."""
+        """Number of 15-minute samples with usage data > threshold."""
         on_utc: datetime = datetime.combine(
             self.chargers[evse_id].on_dt, time.min, tzinfo=TZ_LOCAL
         ).astimezone(timezone.utc)
@@ -478,6 +480,13 @@ class EnergyMonitor:
         """End time in UTC of data chunk."""
         chunk_start_utc: datetime = max(chunk_end_utc - chunk_len, on_utc)
         """Start time in UTC of data chunk."""
+        threshold: Kilowatts = self.chargers[evse_id].kW * Config.power_rating_sample_threshold
+        """Minimum kW for valid EV charger power rating samples."""
+        logger.info(
+            f'Getting peak kW for {evse_id}, '
+            f'nominal power rating: {self.chargers[evse_id].kW:.2f} kW, '
+            f'threshold: {threshold:.2f} kW ({Config.power_rating_sample_threshold:.0%}) ...'
+        )
 
         # Step backwards from end_date in 7-day chunks until we have at least 4
         # samples over the minimum kWh.
@@ -522,9 +531,10 @@ class EnergyMonitor:
 
             # Reject small readings as likely idle power usage or noise.
             good_samples: list[Kilowatts] = [
-                Kilowatts(kWh * 4) # Convert kWh per 15 minutes to kW, i.e. multiply by 4
+                Kilowatts(kWh * 4)  # Convert kWh per 15 minutes to kW, i.e. multiply by 4
                 for kWh in chunk_kWh
-                if kWh is not None and kWh * 4 > Config.power_rating_sample_min_kW
+                if kWh is not None
+                and abs(Kilowatts(kWh * 4) - self.chargers[evse_id].kW) <= threshold
             ]
 
             peak_kW = max(peak_kW, Kilowatts(max(good_samples, default=Kilowatts(0.0))))
