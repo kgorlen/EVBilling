@@ -251,17 +251,9 @@ def file_path_generator(
                 raise ValueError(f'Invalid file name "{filename}"')
             if not path.is_file():
                 raise FileNotFoundError(f'File not found or not accessible: "{filename}"')
-            print(f'expand_glob({glob_pattern}) yielding "{path}"', file=sys.stderr)
             yield path
 
     for glob_pattern in globs:
-        if glob_pattern == '-':
-            logger.info('Reading FILES from stdin ...')
-            print('Reading FILES from stdin ...', file=sys.stderr)
-            for stdin_glob in sys.stdin.read().splitlines():
-                yield from expand_glob(stdin_glob.strip())
-            continue
-
         path = Path(os.path.expanduser(os.path.expandvars(glob_pattern)))
         if path.is_dir():
             for p in patterns:

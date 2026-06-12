@@ -11,7 +11,7 @@ References:
 '''
 
 __author__ = 'Keith Gorlen'
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 import os
 import subprocess
@@ -353,7 +353,7 @@ def cli() -> None:
     try:
         main()
     except Exception as e:  # pylint: disable=broad-exception-caught
-        signal_failure(Config.healthchecks_url + '/fail', str(e))
+        signal_failure(Config.healthchecks_url, str(e))
 
 if __name__ == '__main__':
     cli()
